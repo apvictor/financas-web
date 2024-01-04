@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 export function Welcome() {
   return (
-    <main className="h-screen w-screen flex flex-col justify-between p-8">
-      <div className="mb-10">
+    <main className="h-screen w-screen flex flex-col justify-between px-8 p-4">
+      <div className="mb-5">
         <img src={logo} alt="PIGPAY" />
       </div>
 
@@ -20,8 +20,8 @@ export function Welcome() {
         </p>
       </div>
 
-      <div className="flex justify-center items-center py-10">
-        <img height={100} width={220} src={illustration} alt="Ilustração" />
+      <div className="flex justify-center items-center">
+        <img height={200} width={200} src={illustration} alt="Ilustração" />
       </div>
 
       <button className="bg-[#15C770] hover:bg-[#15c771c2] transition-colors w-full h-12 rounded-lg px-4 py-3 uppercase">
