@@ -12,7 +12,7 @@ interface Props {
   open: boolean;
   onClose(): void;
 }
-export function CreateTransactions({ open, onClose }: Props) {
+export function CreateExpense({ open, onClose }: Props) {
   const [accounts, setAccounts] = useState<{ id: number; name: string }[]>([]);
   const [costCenters, setCostCenters] = useState<
     { id: number; name: string }[]
@@ -35,6 +35,7 @@ export function CreateTransactions({ open, onClose }: Props) {
       api
         .post("transactions", {
           ...values,
+          transactionType: "EXPENSE",
           value: formatCurrencyFloat(value),
           accountId: parseInt(accountId),
           costCenterId: parseInt(costCenterId),
@@ -57,7 +58,7 @@ export function CreateTransactions({ open, onClose }: Props) {
   }, [open]);
 
   return (
-    <Modal title="Criar Transação" open={open} onClose={onClose}>
+    <Modal title="Criar Despesa" open={open} onClose={onClose}>
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6 flex items-center justify-center">
           <CurrencyInput
@@ -74,24 +75,6 @@ export function CreateTransactions({ open, onClose }: Props) {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="relative">
-            <label className="absolute left-[13px] pointer-events-none text-[#CCC] text-xs top-2 peer-placeholder-shown:text-base peer-placeholder-shown:top-3.5 transition-all">
-              Tipo de transação
-            </label>
-            <select
-              id="transactionType"
-              name="transactionType"
-              className="bg-[#343A40] w-full rounded-lg border border-[#495057] px-3 h-[52px] pt-4 peer placeholder-shown:pt-0 focus:border-gray-800 transition-all outline-none"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.transactionType}
-            >
-              <option value="SELECIONE">Selecione</option>
-              <option value="INCOME">Receita</option>
-              <option value="EXPENSE">Despesa</option>
-            </select>
-          </div>
-
           <Input
             name="name"
             placeholder="Nome"
@@ -145,7 +128,7 @@ export function CreateTransactions({ open, onClose }: Props) {
 
           <Button
             type="submit"
-            // disabled={!formik.isValid || formik.isSubmitting}
+            disabled={!formik.isValid || formik.isSubmitting}
           >
             {formik.isSubmitting ? "Carregando..." : "Salvar"}
           </Button>

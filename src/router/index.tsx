@@ -5,6 +5,7 @@ import { Login } from "../view/pages/Login";
 import { Register } from "../view/pages/Register";
 import { Home } from "../view/pages/Home";
 import { AuthGuard } from "./AuthGuard";
+import { Transactions } from "../view/pages/Transactions";
 
 export function Router() {
   return (
@@ -18,6 +19,7 @@ export function Router() {
 
         <Route element={<AuthGuard isPrivate />}>
           <Route path="/home" element={<Home />} />
+          <Route path="/transactions" element={<Transactions />} />
         </Route>
       </Routes>
     </BrowserRouter>

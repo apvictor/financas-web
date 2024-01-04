@@ -1,17 +1,24 @@
 import {
   ArrowDownCircle,
   ArrowUpCircle,
+  Bell,
   ChevronRight,
   Eye,
-  Menu,
+  LayoutGrid,
+  LucideLandmark,
   Plus,
   User2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CreateTransactions } from "../../modals/CreateTransactions";
+import { CreateIncome } from "../../modals/CreateIncome";
 import { CardCostCenter } from "./components/CardCostCenter";
 import { api } from "../../../services/api";
 import { formatCurrency } from "../../../helpers/formatCurrency";
+import { DropdownMenu } from "../../components/DropdownMenu";
+import { CreateAccounts } from "../../modals/CreateAccounts";
+import { CreateExpense } from "../../modals/CreateExpense";
+import { CreateCostCenters } from "../../modals/CreateCostCenters";
+import { useNavigate } from "react-router-dom";
 
 interface CostCenterModel {
   id: number;
@@ -19,9 +26,14 @@ interface CostCenterModel {
   value: number;
   percentage: number;
 }
-
 export function Home() {
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const [openCreateIncome, setOpenCreateIncome] = useState(false);
+  const [openCreateExpense, setOpenCreateExpense] = useState(false);
+  const [openCreateAccounts, setOpenCreateAccounts] = useState(false);
+  const [openCreateCostCenters, setOpenCreateCostCenters] = useState(false);
+
   const [account, setAccount] = useState<{
     total: number;
     totalInvestment: number;
@@ -51,26 +63,31 @@ export function Home() {
     getTotalAccounts();
     getCostCenters();
     getTransactionsTotal();
-  }, [open]);
+  }, [
+    openCreateAccounts,
+    openCreateCostCenters,
+    openCreateExpense,
+    openCreateIncome,
+  ]);
 
   return (
     <main className="p-8 flex flex-col gap-8">
       <header className="flex justify-between items-center gap-8">
-        <button>
-          <Menu />
-        </button>
-
-        <span className="border border-solid w-full border-white/15"></span>
-
         <div className="p-1 bg-[#B2F2BB] rounded-full">
           <User2 size={20} className="text-black" />
         </div>
+
+        <span className="border border-solid w-full border-white/15"></span>
+
+        <button>
+          <Bell />
+        </button>
       </header>
 
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <p className="text-[#AAA] text-sm">Saldo atual em contas</p>
-          <button>
+          <button onClick={() => navigate("/transactions")}>
             <ChevronRight />
           </button>
         </div>
@@ -84,7 +101,7 @@ export function Home() {
         </div>
         <div className="text-xs flex gap-1">
           <p className="text-[#AAA]">Você vem investindo</p>
-          <span className="text-[#15C770]">
+          <span className="text-[#15C770] font-semibold">
             {formatCurrency(account.totalInvestment)}
           </span>
         </div>
@@ -125,14 +142,68 @@ export function Home() {
         </div>
       </div>
 
-      <button
-        onClick={() => setOpen(!open)}
-        className="bg-[#15C770] hover:bg-[#15c771c2] transition-colors p-2 bottom-5 right-5 fixed rounded-full"
-      >
-        <Plus color="#212529" size={20} />
-      </button>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <button className="bg-[#15C770] hover:bg-[#15c771c2] transition-colors p-2 bottom-5 right-5 fixed rounded-full">
+            <Plus color="#212529" size={24} />
+          </button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>
+            <button
+              onClick={() => setOpenCreateIncome(!openCreateIncome)}
+              className="flex gap-4 items-center"
+            >
+              <ArrowUpCircle className="text-teal-900" />
+              Nova Receita
+            </button>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item>
+            <button
+              onClick={() => setOpenCreateExpense(!openCreateExpense)}
+              className="flex gap-4 items-center"
+            >
+              <ArrowDownCircle className="text-red-900" />
+              Nova Despesa
+            </button>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item>
+            <button
+              onClick={() => setOpenCreateAccounts(!openCreateAccounts)}
+              className="flex gap-4 items-center"
+            >
+              <LucideLandmark className="text-blue-900" />
+              Nova Conta
+            </button>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item>
+            <button
+              onClick={() => setOpenCreateCostCenters(!openCreateCostCenters)}
+              className="flex gap-4 items-center"
+            >
+              <LayoutGrid />
+              Novo Centro de Custo
+            </button>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
 
-      <CreateTransactions open={open} onClose={() => setOpen(false)} />
+      <CreateIncome
+        open={openCreateIncome}
+        onClose={() => setOpenCreateIncome(false)}
+      />
+      <CreateExpense
+        open={openCreateExpense}
+        onClose={() => setOpenCreateExpense(false)}
+      />
+      <CreateAccounts
+        open={openCreateAccounts}
+        onClose={() => setOpenCreateAccounts(false)}
+      />
+      <CreateCostCenters
+        open={openCreateCostCenters}
+        onClose={() => setOpenCreateCostCenters(false)}
+      />
     </main>
   );
 }
