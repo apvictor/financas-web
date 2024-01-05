@@ -5,10 +5,10 @@ interface Props {
   title: string;
   limit: number;
   value: number;
-  totalIncome: number;
+  total: number;
 }
-export function CardCostCenter({ title, limit, value, totalIncome }: Props) {
-  const valor_limite_gasto = (limit * totalIncome) / 100;
+export function CardCostCenter({ title, limit, value, total }: Props) {
+  const valor_limite_gasto = (limit * total) / 100;
   const valor_gasto = value;
   const limite_excedido = valor_gasto > valor_limite_gasto;
   const porcentagem = (valor_gasto / valor_limite_gasto) * 100;

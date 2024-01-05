@@ -3,6 +3,7 @@ import {
   ArrowUpCircle,
   Bell,
   ChevronRight,
+  DoorOpen,
   Eye,
   LayoutGrid,
   LucideLandmark,
@@ -19,6 +20,7 @@ import { CreateAccounts } from "../../modals/CreateAccounts";
 import { CreateExpense } from "../../modals/CreateExpense";
 import { CreateCostCenters } from "../../modals/CreateCostCenters";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../shared/hooks/useAuth";
 
 interface CostCenterModel {
   id: number;
@@ -27,6 +29,8 @@ interface CostCenterModel {
   percentage: number;
 }
 export function Home() {
+  const { signOut } = useAuth();
+
   const navigate = useNavigate();
 
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
@@ -73,9 +77,24 @@ export function Home() {
   return (
     <main className="p-8 flex flex-col gap-8">
       <header className="flex justify-between items-center gap-8">
-        <div className="p-1 bg-[#B2F2BB] rounded-full">
-          <User2 size={20} className="text-black" />
-        </div>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <button className="p-1 bg-[#B2F2BB] rounded-full">
+              <User2 size={20} className="text-black" />
+            </button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Item>
+              <button
+                onClick={() => signOut()}
+                className="flex gap-4 items-center w-full font-bold"
+              >
+                <DoorOpen />
+                Sair
+              </button>
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
 
         <span className="border border-solid w-full border-white/15"></span>
 
@@ -133,7 +152,7 @@ export function Home() {
           {costCenters.map((costCenter) => (
             <CardCostCenter
               key={costCenter.id}
-              totalIncome={transactionTotal.income}
+              total={account.total}
               title={costCenter.name}
               limit={costCenter.percentage}
               value={costCenter.value}
@@ -152,7 +171,7 @@ export function Home() {
           <DropdownMenu.Item>
             <button
               onClick={() => setOpenCreateIncome(!openCreateIncome)}
-              className="flex gap-4 items-center"
+              className="flex gap-4 items-center w-full"
             >
               <ArrowUpCircle className="text-teal-900" />
               Nova Receita
@@ -161,7 +180,7 @@ export function Home() {
           <DropdownMenu.Item>
             <button
               onClick={() => setOpenCreateExpense(!openCreateExpense)}
-              className="flex gap-4 items-center"
+              className="flex gap-4 items-center w-full"
             >
               <ArrowDownCircle className="text-red-900" />
               Nova Despesa
@@ -170,7 +189,7 @@ export function Home() {
           <DropdownMenu.Item>
             <button
               onClick={() => setOpenCreateAccounts(!openCreateAccounts)}
-              className="flex gap-4 items-center"
+              className="flex gap-4 items-center w-full"
             >
               <LucideLandmark className="text-blue-900" />
               Nova Conta
@@ -179,7 +198,7 @@ export function Home() {
           <DropdownMenu.Item>
             <button
               onClick={() => setOpenCreateCostCenters(!openCreateCostCenters)}
-              className="flex gap-4 items-center"
+              className="flex gap-4 items-center w-full"
             >
               <LayoutGrid />
               Novo Centro de Custo

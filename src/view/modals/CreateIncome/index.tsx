@@ -54,9 +54,11 @@ export function CreateIncome({ open, onClose }: Props) {
             id="value"
             name="value"
             prefix="R$ "
+            type="number"
             placeholder="R$ 0,00"
             groupSeparator="."
             decimalSeparator=","
+            allowDecimals={true}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             className="bg-transparent text-center outline-none font-bold text-4xl"

@@ -34,8 +34,8 @@ export function Transactions() {
     setAccount(data);
   }
 
-  async function getTransactions() {
-    const data = (await api.get("/transactions")).data;
+  async function getTransactions(search?: string) {
+    const data = (await api.get(`/transactions?search=${search ?? ""}`)).data;
     setTransactions(data);
   }
 
@@ -51,7 +51,7 @@ export function Transactions() {
           <ChevronLeft size={20} />
         </button>
 
-        <span className="text-[#AAA]">Transações</span>
+        <span className="text-[#AAA] text-xl">Transações</span>
 
         <button className="invisible">
           <ChevronLeft size={20} />
@@ -80,7 +80,14 @@ export function Transactions() {
 
       <span className="border border-solid w-full border-white/15"></span>
 
-      <Input type="search" name="search" placeholder="Pesquisar" />
+      <Input
+        type="search"
+        name="search"
+        placeholder="Pesquisar"
+        onChange={(ev) => {
+          getTransactions(ev.target.value);
+        }}
+      />
 
       <div className="flex flex-col gap-4">
         {transactions.map((item) => (
