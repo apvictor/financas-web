@@ -54,7 +54,7 @@ export function CreateIncome({ open, onClose }: Props) {
             id="value"
             name="value"
             prefix="R$ "
-            type="number"
+            type="text"
             placeholder="R$ 0,00"
             groupSeparator="."
             decimalSeparator=","
