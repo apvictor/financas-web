@@ -32,7 +32,7 @@ export function CardCostCenter({ title, limit, value, total }: Props) {
           %
         </span>
       </div>
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col w-full gap-4">
         <div
           className="bg-[#343A40] h-1 rounded-xl relative"
           style={{
@@ -40,23 +40,24 @@ export function CardCostCenter({ title, limit, value, total }: Props) {
           }}
         >
           <div
-            className="h-1 rounded-xl"
+            className="h-1 rounded-xl relative"
             style={{
               width: `${limite_excedido ? 100 : porcentagem}%`,
               backgroundColor: `${limite_excedido ? "#E86161" : "#15C770"}`,
             }}
-          ></div>
+          >
+            <span className="absolute right-0 bottom-0 text-[12px]">
+              {formatCurrency(valor_gasto)}
+            </span>
+          </div>
         </div>
         <div className="flex justify-between items-center w-full text-xs">
           <span
-            className="font-bold"
             style={{
               color: `${limite_excedido ? "#E86161" : "#FFF"}`,
             }}
           >
-            {formatCurrency(
-              limite_excedido ? valor_limite_gasto - valor_gasto : valor_gasto
-            )}
+            {formatCurrency(valor_limite_gasto - valor_gasto)}
           </span>
           <span className="text-[#AAA]">
             {formatCurrency(valor_limite_gasto)}
