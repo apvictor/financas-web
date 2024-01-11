@@ -1,10 +1,10 @@
-import CurrencyInput from "react-currency-input-field";
-import { Modal } from "../../components/Modal";
-import { api } from "../../../services/api";
 import { useFormik } from "formik";
-import { initialValues, validationSchema } from "./_validation";
+import { api } from "../../../services/api";
+import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
+import CurrencyInput from "react-currency-input-field";
+import { initialValues, validationSchema } from "./_validation";
 import { formatCurrencyFloat } from "../../../helpers/formatCurrencyFloat";
 
 interface Props {
@@ -61,24 +61,6 @@ export function CreateAccounts({ open, onClose }: Props) {
             onChange={formik.handleChange}
             error={formik.touched.name && formik.errors.name}
           />
-
-          <div className="relative">
-            <label className="absolute left-[13px] pointer-events-none text-[#CCC] text-xs top-2 peer-placeholder-shown:text-base peer-placeholder-shown:top-3.5 transition-all">
-              Tipo de conta
-            </label>
-            <select
-              id="type"
-              name="type"
-              className="bg-[#343A40] w-full rounded-lg border border-[#495057] px-3 h-[52px] pt-4 peer placeholder-shown:pt-0 focus:border-gray-800 transition-all outline-none"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.type}
-            >
-              <option value="SELECIONE">Selecione</option>
-              <option value="CASH">Carteira</option>
-              <option value="INVESTMENT">Investimento</option>
-            </select>
-          </div>
 
           <Button
             type="submit"

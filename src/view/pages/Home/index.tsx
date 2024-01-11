@@ -3,6 +3,7 @@ import {
   ArrowUpCircle,
   Bell,
   ChevronRight,
+  DollarSign,
   DoorOpen,
   Eye,
   LayoutGrid,
@@ -11,16 +12,16 @@ import {
   User2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CreateIncome } from "../../modals/CreateIncome";
-import { CardCostCenter } from "./components/CardCostCenter";
 import { api } from "../../../services/api";
-import { formatCurrency } from "../../../helpers/formatCurrency";
-import { DropdownMenu } from "../../components/DropdownMenu";
-import { CreateAccounts } from "../../modals/CreateAccounts";
-import { CreateExpense } from "../../modals/CreateExpense";
-import { CreateCostCenters } from "../../modals/CreateCostCenters";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/hooks/useAuth";
+import { CreateIncome } from "../../modals/CreateIncome";
+import { CreateExpense } from "../../modals/CreateExpense";
+import { CardCostCenter } from "./components/CardCostCenter";
+import { DropdownMenu } from "../../components/DropdownMenu";
+import { CreateAccounts } from "../../modals/CreateAccounts";
+import { formatCurrency } from "../../../helpers/formatCurrency";
+import { CreateCostCenters } from "../../modals/CreateCostCenters";
 
 interface CostCenterModel {
   id: number;
@@ -38,10 +39,7 @@ export function Home() {
   const [openCreateAccounts, setOpenCreateAccounts] = useState(false);
   const [openCreateCostCenters, setOpenCreateCostCenters] = useState(false);
 
-  const [account, setAccount] = useState<{
-    total: number;
-    totalInvestment: number;
-  }>({ total: 0, totalInvestment: 0 });
+  const [account, setAccount] = useState<{ total: number }>({ total: 0 });
   const [costCenters, setCostCenters] = useState<CostCenterModel[]>([]);
   const [transactionTotal, setTransactionTotal] = useState<{
     expense: number;
@@ -75,7 +73,7 @@ export function Home() {
   ]);
 
   return (
-    <main className="p-8 flex flex-col gap-8">
+    <main className="p-8 flex flex-col gap-6">
       <header className="flex justify-between items-center gap-8">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
@@ -112,39 +110,44 @@ export function Home() {
         </div>
         <div className="flex items-center gap-2">
           <h1 className="font-bold text-2xl">
-            {formatCurrency(account.total)}
+            {formatCurrency(
+              account.total + transactionTotal.income - transactionTotal.expense
+            )}
           </h1>
           <button>
             <Eye size={20} />
           </button>
         </div>
-        <div className="text-xs flex gap-1">
-          <p className="text-[#AAA]">Você vem investindo</p>
-          <span className="text-[#15C770] font-semibold">
-            {formatCurrency(account.totalInvestment)}
-          </span>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-4">
+          <button className="bg-[#1C1E21] flex-1 flex items-center gap-2 px-4 py-2 rounded-md">
+            <div className="bg-[#CBFFF6] p-2 rounded-lg">
+              <DollarSign size={16} color="#009D52" />
+            </div>
+            <div className="flex flex-col items-start">
+              <span className="text-xs font-light">Receitas</span>
+              <span className="text-xs font-bold">
+                {formatCurrency(transactionTotal.income)}
+              </span>
+            </div>
+          </button>
+          <button className="bg-[#1C1E21] flex-1 flex items-center gap-2 px-4 py-2 rounded-md">
+            <div className="bg-[#FFD1D1] p-2 rounded-lg">
+              <DollarSign size={16} color="#E86161" />
+            </div>
+            <div className="flex flex-col items-start">
+              <span className="text-xs font-light">Despesas</span>
+              <span className="text-xs font-bold">
+                {formatCurrency(transactionTotal.expense)}
+              </span>
+            </div>
+          </button>
         </div>
       </div>
 
       <span className="border border-solid w-full border-white/15"></span>
-
-      <div className="flex flex-col gap-2">
-        <p className="text-[#AAA] text-sm">Balanços</p>
-        <div className="flex items-center gap-4">
-          <button className="bg-[#1C1E21] text-[#E86161] flex-1 flex items-center justify-center gap-2 p-3 py-4 rounded-md">
-            <ArrowDownCircle size={16} />
-            <span className="text-xs">
-              {formatCurrency(transactionTotal.expense)}
-            </span>
-          </button>
-          <button className="bg-[#1C1E21] text-[#15C770] flex-1 flex items-center justify-center gap-2 p-3 py-4 rounded-md">
-            <ArrowUpCircle size={16} />
-            <span className="text-xs">
-              {formatCurrency(transactionTotal.income)}
-            </span>
-          </button>
-        </div>
-      </div>
 
       <div className="flex flex-col gap-2 mb-9">
         <p className="text-[#AAA] text-sm">Centros de custo</p>

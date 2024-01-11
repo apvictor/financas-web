@@ -1,11 +1,11 @@
 import { useFormik } from "formik";
+import { Link } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { Link } from "react-router-dom";
+import { useAuth } from "../../../shared/hooks/useAuth";
 import { AuthService } from "../../../services/AuthService";
 import { initialValues, validationSchema } from "./_validation";
-import { useAuth } from "../../../shared/hooks/useAuth";
 
 export function Login() {
   const { signIn } = useAuth();
@@ -30,7 +30,7 @@ export function Login() {
 
   return (
     <main className="h-screen w-screen flex flex-col justify-between p-8">
-      <div className="mb-20">
+      <div className="mt-20 mb-10">
         <img src={logo} alt="PIGPAY" />
       </div>
 
@@ -38,7 +38,9 @@ export function Login() {
         <h1 className="font-bold text-3xl">
           Bem vindo ao <br /> PigPay
         </h1>
-        <p className="text-sm text-[#AAA]">para acessar nossos serviços</p>
+        <p className="text-sm text-[#AAA]">
+          entre para acessar nossos serviços
+        </p>
       </div>
 
       <form
@@ -68,14 +70,17 @@ export function Login() {
         <Button type="submit" disabled={!formik.isValid || formik.isSubmitting}>
           {formik.isSubmitting ? "Carregando..." : "Entrar"}
         </Button>
-      </form>
 
-      <span className="w-full text-center text-sm">
-        Não tem cadastro?{" "}
-        <Link to="/register" className="text-[#15C770] hover:text-[#15c771c2]">
-          Cadastre-se
-        </Link>
-      </span>
+        <span className="w-full text-center text-sm">
+          Não tem cadastro?{" "}
+          <Link
+            to="/register"
+            className="text-[#15C770] hover:text-[#15c771c2]"
+          >
+            Cadastre-se
+          </Link>
+        </span>
+      </form>
     </main>
   );
 }

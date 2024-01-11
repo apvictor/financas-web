@@ -27,7 +27,7 @@ export function Register() {
 
   return (
     <main className="h-screen w-screen flex flex-col justify-between p-8">
-      <div className="mb-20">
+      <div className="mt-20 mb-10">
         <img src={logo} alt="PIGPAY" />
       </div>
 
@@ -72,14 +72,13 @@ export function Register() {
         <Button type="submit" disabled={!formik.isValid || formik.isSubmitting}>
           {formik.isSubmitting ? "Carregando..." : "Confirmar"}
         </Button>
+        <span className="w-full text-center text-sm">
+          Já tem uma conta?{" "}
+          <Link to="/login" className="text-[#15C770] hover:text-[#15c771c2]">
+            Entre aqui
+          </Link>
+        </span>
       </form>
-
-      <span className="w-full text-center text-sm">
-        Já tem uma conta?{" "}
-        <Link to="/login" className="text-[#15C770] hover:text-[#15c771c2]">
-          Entre aqui
-        </Link>
-      </span>
     </main>
   );
 }
