@@ -21,7 +21,7 @@ export function Welcome() {
       </div>
 
       <div className="flex justify-center items-center">
-        <img height={200} width={200} src={illustration} alt="Ilustração" />
+        <img height={300} width={300} src={illustration} alt="Ilustração" />
       </div>
 
       <button className="bg-[#15C770] hover:bg-[#15c771c2] transition-colors w-full h-12 rounded-lg px-4 py-3 uppercase">

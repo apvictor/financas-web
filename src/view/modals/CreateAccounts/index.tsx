@@ -38,6 +38,7 @@ export function CreateAccounts({ open, onClose }: Props) {
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6 flex items-center justify-center">
           <CurrencyInput
+            type="text"
             id="value"
             name="value"
             defaultValue={0}

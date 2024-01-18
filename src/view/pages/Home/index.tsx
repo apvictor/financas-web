@@ -10,12 +10,14 @@ import { CreateCostCenters } from "../../modals/CreateCostCenters";
 import { Header } from "./components/Header";
 import { CardBalance } from "./components/CardBalance";
 
-import nubank from "../../../assets/banks/nubank.png";
+import nubank from "../../../assets/banks/nubank.svg";
 import { Line } from "../../components/Line";
 import { Fab } from "./components/Fab";
 import { CostCenterModel } from "../../../models/CostCenterModel";
 import { AccountModel } from "../../../models/AccountModel";
 import { formatCurrency } from "../../../helpers/formatCurrency";
+import { CardTotal } from "./components/CardTotal";
+import { getBank } from "../../../helpers/bank";
 
 export function Home() {
   // const navigate = useNavigate();
@@ -71,7 +73,10 @@ export function Home() {
     <main className="p-8 flex flex-col gap-6">
       <Header />
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
+        <CardTotal
+          value={total + transactionTotal.income - transactionTotal.expense}
+        />
         <div className="flex items-center gap-4">
           <CardBalance type="INCOME" value={transactionTotal.income} />
           <CardBalance type="EXPENSE" value={transactionTotal.expense} />
@@ -86,7 +91,7 @@ export function Home() {
               Minhas <span className="font-bold">contas</span>
             </span>
           </div>
-          <strong>Adicionar</strong>
+          <button onClick={() => setOpenCreateAccounts(true)}>Adicionar</button>
         </div>
 
         <Line />
@@ -98,7 +103,8 @@ export function Home() {
               className="flex items-center justify-between w-full"
             >
               <div className="flex items-center gap-2">
-                <img src={nubank} alt="Nubank" />
+                <img width={20} src={getBank(account.name)} alt="Nubank" />
+
                 <span className="text-xs">{account.name}</span>
               </div>
               <div className="flex flex-col items-end">
@@ -127,7 +133,7 @@ export function Home() {
           {costCenters.map((costCenter) => (
             <CardCostCenter
               key={costCenter.id}
-              total={total}
+              total={total + transactionTotal.income}
               title={costCenter.name}
               limit={costCenter.percentage}
               value={costCenter.value}
