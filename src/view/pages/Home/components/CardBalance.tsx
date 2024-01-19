@@ -1,6 +1,6 @@
 import { DollarSign } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { formatCurrency } from "../../../../helpers/formatCurrency";
-import { useNavigate, createSearchParams } from "react-router-dom";
 
 interface Props {
   type: "INCOME" | "EXPENSE";
@@ -13,12 +13,6 @@ export function CardBalance({ type, value }: Props) {
     <button
       className="bg-[#1C1E21] flex-1 flex items-center gap-2 px-4 py-2 rounded-md"
       onClick={() => navigate(`/transactions?transactionType=${type}`)}
-      // onClick={() =>
-      //   navigate({
-      //     pathname: "/transactions",
-      //     search: createSearchParams({ transactionType: type }).toString(),
-      //   })
-      // }
     >
       <div
         className="p-2 rounded-lg"

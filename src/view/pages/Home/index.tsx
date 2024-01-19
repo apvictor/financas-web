@@ -1,4 +1,4 @@
-import { Plus, PlusCircle, WalletIcon } from "lucide-react";
+import { PlusCircle, WalletIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "../../../services/api";
 // import { useNavigate } from "react-router-dom";
