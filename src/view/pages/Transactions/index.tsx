@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { api } from "../../../services/api";
+import { Fab } from "../Home/components/Fab";
+import { Input } from "../../components/Input";
 import { ChevronLeft, Filter } from "lucide-react";
+import { CreateIncome } from "../../modals/CreateIncome";
 import { formatDate } from "../../../helpers/formatDate";
+import { CreateExpense } from "../../modals/CreateExpense";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CardTransaction } from "./components/CardTransaction";
-import { Input } from "../../components/Input";
-import { CreateIncome } from "../../modals/CreateIncome";
-import { CreateExpense } from "../../modals/CreateExpense";
-import { Fab } from "../Home/components/Fab";
+
+import transactionEmpty from "../../../assets/transactions.svg";
 
 export function Transactions() {
   const navigate = useNavigate();
@@ -81,28 +83,37 @@ export function Transactions() {
       />
 
       <div className="flex flex-col gap-4">
-        {transactions.map((item) => (
-          <div key={item.date} className="flex flex-col gap-2">
-            <span className="text-[#AAA] text-xs">{formatDate(item.date)}</span>
-            {item.transactions.map((transaction) => (
-              <CardTransaction
-                key={transaction.id}
-                {...transaction}
-                openModalEditTransaction={() => {
-                  if (transaction.transactionType == "INCOME") {
-                    setTransaction(transaction);
-                    setOpenCreateIncome(!openCreateIncome);
-                  }
+        {transactions.length > 0 ? (
+          transactions.map((item) => (
+            <div key={item.date} className="flex flex-col gap-2">
+              <span className="text-[#AAA] text-xs">
+                {formatDate(item.date)}
+              </span>
+              {item.transactions.map((transaction) => (
+                <CardTransaction
+                  key={transaction.id}
+                  {...transaction}
+                  openModalEditTransaction={() => {
+                    if (transaction.transactionType == "INCOME") {
+                      setTransaction(transaction);
+                      setOpenCreateIncome(!openCreateIncome);
+                    }
 
-                  if (transaction.transactionType == "EXPENSE") {
-                    setTransaction(transaction);
-                    setOpenCreateExpense(!openCreateExpense);
-                  }
-                }}
-              />
-            ))}
+                    if (transaction.transactionType == "EXPENSE") {
+                      setTransaction(transaction);
+                      setOpenCreateExpense(!openCreateExpense);
+                    }
+                  }}
+                />
+              ))}
+            </div>
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center mt-28">
+            <img width={250} src={transactionEmpty} alt="Transações" />
+            <span className="text-gray-400">Nenhuma transação cadastrada</span>
           </div>
-        ))}
+        )}
       </div>
 
       <Fab

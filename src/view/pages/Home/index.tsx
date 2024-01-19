@@ -105,8 +105,8 @@ export function Home() {
             <button
               className="flex flex-col items-center gap-4 rounded-md bg-[#212529] p-4"
               onClick={() => {
-                setCostCenter(null);
-                setOpenCreateCostCenters(!openCreateCostCenters);
+                setAccount(null);
+                setOpenCreateAccounts(!openCreateAccounts);
               }}
             >
               <PlusCircle />
