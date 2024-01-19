@@ -98,7 +98,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
         value: transaction.value.toString(),
         accountId: transaction.accountId.toString(),
         costCenterId: transaction.costCenterId.toString(),
-        transactionType: transaction.transactionType,
+        transactionType: "EXPENSE",
       });
     } else {
       formik.resetForm();
