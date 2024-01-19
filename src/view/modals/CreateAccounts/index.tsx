@@ -64,10 +64,14 @@ export function CreateAccounts({ account, open, onClose }: Props) {
   });
 
   useEffect(() => {
-    formik.setValues({
-      name: account ? account.name : "",
-      value: account ? account.value + "" : "0",
-    });
+    if (account) {
+      formik.setValues({
+        name: account.name,
+        value: account.value.toString(),
+      });
+    } else {
+      formik.resetForm();
+    }
   }, [open]);
 
   return (

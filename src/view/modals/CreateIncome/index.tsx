@@ -78,16 +78,20 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
 
   useEffect(() => {
     getTotalAccounts();
+
+    if (transaction) {
+      formik.setValues({
+        name: transaction.name,
+        value: transaction.value.toString(),
+        accountId: transaction.accountId.toString(),
+        transactionType: "INCOME",
+      });
+    } else {
+      formik.resetForm();
+    }
   }, [open]);
 
-  useEffect(() => {
-    formik.setValues({
-      name: transaction ? transaction.name : "",
-      value: transaction ? transaction.value + "" : "0",
-      accountId: transaction ? transaction.accountId + "" : "",
-      transactionType: transaction ? transaction.transactionType : "",
-    });
-  }, [open]);
+  console.log(formik.values);
 
   return (
     <Modal
@@ -101,15 +105,13 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
           <CurrencyInput
             name="value"
             prefix="R$ "
-            type="text"
             placeholder="R$ 0,00"
             groupSeparator="."
             decimalSeparator=","
             allowDecimals={true}
-            onBlur={formik.handleBlur}
-            value={formik.values.value}
             onChange={formik.handleChange}
             className="bg-transparent text-center outline-none font-bold text-4xl"
+            defaultValue={transaction ? transaction.value : 0}
           />
         </div>
 

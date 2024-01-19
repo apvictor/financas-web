@@ -77,10 +77,14 @@ export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
   }, [formik.values.percentage]);
 
   useEffect(() => {
-    formik.setValues({
-      name: costCenter ? costCenter.name : "",
-      percentage: costCenter ? costCenter.percentage : 0,
-    });
+    if (costCenter) {
+      formik.setValues({
+        name: costCenter.name,
+        percentage: costCenter.percentage,
+      });
+    } else {
+      formik.resetForm();
+    }
   }, [open]);
 
   return (

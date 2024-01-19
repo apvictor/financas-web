@@ -117,8 +117,14 @@ export function Transactions() {
       </div>
 
       <Fab
-        openModalIncome={() => setOpenCreateIncome(!openCreateIncome)}
-        openModalExpense={() => setOpenCreateExpense(!openCreateExpense)}
+        openModalIncome={() => {
+          setTransaction(null);
+          setOpenCreateIncome(!openCreateIncome);
+        }}
+        openModalExpense={() => {
+          setTransaction(null);
+          setOpenCreateExpense(!openCreateExpense);
+        }}
       />
 
       <CreateIncome

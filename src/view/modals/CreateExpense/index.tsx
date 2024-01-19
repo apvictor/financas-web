@@ -92,13 +92,17 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
   }, [open]);
 
   useEffect(() => {
-    formik.setValues({
-      name: transaction ? transaction.name : "",
-      value: transaction ? transaction.value + "" : "0",
-      accountId: transaction ? transaction.accountId + "" : "",
-      costCenterId: transaction ? transaction.costCenterId + "" : "",
-      transactionType: transaction ? transaction.transactionType : "",
-    });
+    if (transaction) {
+      formik.setValues({
+        name: transaction.name,
+        value: transaction.value.toString(),
+        accountId: transaction.accountId.toString(),
+        costCenterId: transaction.costCenterId.toString(),
+        transactionType: transaction.transactionType,
+      });
+    } else {
+      formik.resetForm();
+    }
   }, [open]);
 
   return (
@@ -120,7 +124,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             className="bg-transparent text-center outline-none font-bold text-4xl"
-            value={formik.values.value}
+            defaultValue={transaction ? transaction.value : 0}
           />
         </div>
 
