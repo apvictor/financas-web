@@ -1,18 +1,21 @@
-import CurrencyInput from "react-currency-input-field";
-import { Modal } from "../../components/Modal";
+import { useFormik } from "formik";
 import { api } from "../../../services/api";
 import { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import { initialValues, validationSchema } from "./_validation";
 import { Input } from "../../components/Input";
+import { Modal } from "../../components/Modal";
 import { Button } from "../../components/Button";
+import { Select } from "../../components/Select";
+import CurrencyInput from "react-currency-input-field";
+import { initialValues, validationSchema } from "./_validation";
+import { TransactionModel } from "../../../models/TransactionModel";
 import { formatCurrencyFloat } from "../../../helpers/formatCurrencyFloat";
 
 interface Props {
   open: boolean;
   onClose(): void;
+  transaction?: TransactionModel | null;
 }
-export function CreateExpense({ open, onClose }: Props) {
+export function CreateExpense({ open, onClose, transaction }: Props) {
   const [accounts, setAccounts] = useState<{ id: number; name: string }[]>([]);
   const [costCenters, setCostCenters] = useState<
     { id: number; name: string }[]
@@ -28,25 +31,56 @@ export function CreateExpense({ open, onClose }: Props) {
     setCostCenters(data);
   }
 
-  const formik = useFormik({
-    onSubmit: async (values, { resetForm }) => {
-      const { value, accountId, costCenterId } = values;
+  function createExpense(values: any) {
+    const { value, accountId, costCenterId } = values;
 
-      api
-        .post("transactions", {
-          ...values,
-          transactionType: "EXPENSE",
-          value: formatCurrencyFloat(value),
-          accountId: parseInt(accountId),
-          costCenterId: parseInt(costCenterId),
-        })
-        .then(() => {
-          onClose();
-          resetForm();
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    api
+      .post("transactions", {
+        ...values,
+        transactionType: "EXPENSE",
+        value: formatCurrencyFloat(value),
+        accountId: parseInt(accountId),
+        costCenterId: parseInt(costCenterId),
+      })
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  function editExpense(id: number, values: any) {
+    const { value, accountId } = values;
+
+    api
+      .put(`transactions/${id}`, {
+        ...values,
+        value: formatCurrencyFloat(value),
+        accountId: parseInt(accountId),
+      })
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  function deleteExpense(id: number) {
+    api
+      .delete(`transactions/${id}`)
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  const formik = useFormik({
+    onSubmit: async (values) => {
+      transaction ? editExpense(transaction.id, values) : createExpense(values);
     },
     initialValues,
     validationSchema,
@@ -57,8 +91,23 @@ export function CreateExpense({ open, onClose }: Props) {
     getCostCenters();
   }, [open]);
 
+  useEffect(() => {
+    formik.setValues({
+      name: transaction ? transaction.name : "",
+      value: transaction ? transaction.value + "" : "0",
+      accountId: transaction ? transaction.accountId + "" : "",
+      costCenterId: transaction ? transaction.costCenterId + "" : "",
+      transactionType: transaction ? transaction.transactionType : "",
+    });
+  }, [open]);
+
   return (
-    <Modal title="Criar Despesa" open={open} onClose={onClose}>
+    <Modal
+      title={transaction ? "Editar Despesa" : "Criar Despesa"}
+      open={open}
+      onClose={onClose}
+      onDelete={() => deleteExpense(transaction ? transaction.id : 0)}
+    >
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6 flex items-center justify-center">
           <CurrencyInput
@@ -71,6 +120,7 @@ export function CreateExpense({ open, onClose }: Props) {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             className="bg-transparent text-center outline-none font-bold text-4xl"
+            value={formik.values.value}
           />
         </div>
 
@@ -84,47 +134,45 @@ export function CreateExpense({ open, onClose }: Props) {
             error={formik.touched.name && formik.errors.name}
           />
 
-          <div className="relative">
-            <label className="absolute left-[13px] pointer-events-none text-[#CCC] text-xs top-2 peer-placeholder-shown:text-base peer-placeholder-shown:top-3.5 transition-all">
-              Conta
-            </label>
-            <select
-              className="bg-[#343A40] w-full rounded-lg border border-[#495057] px-3 h-[52px] pt-4 focus:border-gray-800 transition-all outline-none"
-              id="accountId"
-              name="accountId"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.accountId}
-            >
-              <option value="SELECIONE">Selecione</option>
-              {accounts.map((item) => (
+          <Select
+            placeholder="Selecione uma conta"
+            name="accountId"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            value={formik.values.accountId}
+            error={formik.touched.accountId && formik.errors.accountId}
+          >
+            <option value="" disabled hidden></option>
+            {accounts.length > 0 ? (
+              accounts.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.name}
                 </option>
-              ))}
-            </select>
-          </div>
+              ))
+            ) : (
+              <option disabled>Nenhuma conta cadastrada</option>
+            )}
+          </Select>
 
-          <div className="relative">
-            <label className="absolute left-[13px] pointer-events-none text-[#CCC] text-xs top-2 peer-placeholder-shown:text-base peer-placeholder-shown:top-3.5 transition-all">
-              Centro de custo
-            </label>
-            <select
-              className="bg-[#343A40] w-full rounded-lg border border-[#495057] px-3 h-[52px] pt-4 focus:border-gray-800 transition-all outline-none"
-              id="costCenterId"
-              name="costCenterId"
-              onBlur={formik.handleBlur}
-              value={formik.values.costCenterId}
-              onChange={formik.handleChange}
-            >
-              <option value="SELECIONE">Selecione</option>
-              {costCenters.map((item) => (
+          <Select
+            placeholder="Selecione um centro de custo"
+            name="costCenterId"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            value={formik.values.costCenterId}
+            error={formik.touched.costCenterId && formik.errors.costCenterId}
+          >
+            <option value="" disabled hidden></option>
+            {costCenters.length > 0 ? (
+              costCenters.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.name}
                 </option>
-              ))}
-            </select>
-          </div>
+              ))
+            ) : (
+              <option disabled>Nenhum centro de custo cadastrado</option>
+            )}
+          </Select>
 
           <Button
             type="submit"

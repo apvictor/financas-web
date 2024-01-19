@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { api } from "../../services/api";
+import { useQuery } from "@tanstack/react-query";
 import { Loading } from "../../view/components/Loading";
+import { createContext, useEffect, useState } from "react";
 
 interface AuthContextProps {
   signedIn: boolean;
@@ -41,9 +41,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (isError) signOut();
   }, [isError]);
 
-  if (isFetching) {
-    return <Loading isLoading={isFetching} />;
-  }
+  if (isFetching) return <Loading isLoading={isFetching} />;
 
   return (
     <AuthContext.Provider

@@ -15,7 +15,6 @@ export function Login() {
       await AuthService.login(values)
         .then((data) => {
           const { token } = data.data;
-          console.log(token);
 
           signIn(token);
           resetForm();

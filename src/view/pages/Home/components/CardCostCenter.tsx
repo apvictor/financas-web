@@ -6,15 +6,25 @@ interface Props {
   limit: number;
   value: number;
   total: number;
+  openModalCostCenterEdit: () => void;
 }
-export function CardCostCenter({ title, limit, value, total }: Props) {
+export function CardCostCenter({
+  title,
+  limit,
+  value,
+  total,
+  openModalCostCenterEdit,
+}: Props) {
   const valor_limite_gasto = (limit * total) / 100;
   const valor_gasto = value;
   const limite_excedido = valor_gasto > valor_limite_gasto;
   const porcentagem = (valor_gasto / valor_limite_gasto) * 100;
 
   return (
-    <button className="bg-[#1C1E21] flex flex-col items-center gap-6 p-3 rounded-md">
+    <button
+      onClick={openModalCostCenterEdit}
+      className="bg-[#1C1E21] flex flex-col items-center gap-4 p-3 rounded-md"
+    >
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-2">
           <IconCostCenter title={title} />
@@ -34,21 +44,28 @@ export function CardCostCenter({ title, limit, value, total }: Props) {
       </div>
       <div className="flex flex-col w-full gap-4">
         <div
-          className="bg-[#343A40] h-1 rounded-xl relative"
+          className="bg-[#343A40] h-2 rounded-xl relative"
           style={{
             width: `100%`,
           }}
         >
           <div
-            className="h-1 rounded-xl relative"
+            className="h-2 rounded-xl relative"
             style={{
               width: `${limite_excedido ? 100 : porcentagem}%`,
               backgroundColor: `${limite_excedido ? "#E86161" : "#15C770"}`,
             }}
           >
-            <span className="absolute right-0 bottom-0 text-[12px]">
-              {formatCurrency(valor_gasto)}
-            </span>
+            {porcentagem > 18 && (
+              <span
+                className="absolute right-0 bottom-[-6px] text-[10px] rounded-lg p-0.5 bg-[#343A40] border"
+                style={{
+                  borderColor: `${limite_excedido ? "#E86161" : "#15C770"}`,
+                }}
+              >
+                {formatCurrency(valor_gasto)}
+              </span>
+            )}
           </div>
         </div>
         <div className="flex justify-between items-center w-full text-xs">

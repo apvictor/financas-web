@@ -68,23 +68,23 @@
         <polygon
            points="119.295,149.535 134.244,149.535 129.126,139.328 126.174,133.44 111.269,133.44 "
            id="polygon2999"
-           style="fill:#016DB8"
+           style="fill:#FFF"
            transform="translate(13.304762,-40.115874)" />
         <path
            id="polygon3005"
            transform="matrix(0.28222223,0,0,0.28222223,58.931157,88.936022)"
            d="m 315.33203,15.783203 -16.33008,17.443359 18.16016,36.1875 50.98242,-53.630859 z"
-           style="fill:#016DB8;stroke-width:3.54330707"
+           style="fill:#F7A600;stroke-width:3.54330707"
            inkscape:connector-curvature="0" />
         <path
            id="polygon3001"
            d="m 146.60801,111.22717 8.11334,16.09604 h 5.6e-4 z m 0.56445,1.12889 -9.78738,10.24158 2.47661,4.72557 h 14.8558 z"
-           style="fill:#016DB8;stroke-width:1"
+           style="fill:#FFF;stroke-width:1"
            inkscape:connector-curvature="0" />
         <polygon
            points="118.054,167.255 123.462,161.596 133.267,151.336 118.451,151.336 103.281,167.255 "
            id="polygon3007"
-           style="fill:#016DB8"
+           style="fill:#F7A600"
            transform="translate(13.304762,-40.115874)" />
       </g>
     </g>

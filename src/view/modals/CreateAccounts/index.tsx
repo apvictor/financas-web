@@ -1,67 +1,120 @@
+import { useEffect } from "react";
 import { useFormik } from "formik";
 import { api } from "../../../services/api";
 import { Modal } from "../../components/Modal";
-import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
+import { Select } from "../../components/Select";
 import CurrencyInput from "react-currency-input-field";
+import { AccountModel } from "../../../models/AccountModel";
 import { initialValues, validationSchema } from "./_validation";
 import { formatCurrencyFloat } from "../../../helpers/formatCurrencyFloat";
 
 interface Props {
+  account: AccountModel | null;
   open: boolean;
   onClose(): void;
 }
-export function CreateAccounts({ open, onClose }: Props) {
-  const formik = useFormik({
-    onSubmit: async (values, { resetForm }) => {
-      const { value } = values;
+export function CreateAccounts({ account, open, onClose }: Props) {
+  function createAccount(values: any) {
+    const { value } = values;
 
-      api
-        .post("accounts", {
-          ...values,
-          value: formatCurrencyFloat(value),
-        })
-        .then(() => {
-          onClose();
-          resetForm();
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    api
+      .post("accounts", { ...values, value: formatCurrencyFloat(value) })
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  function editAccount(id: number, values: any) {
+    const { value } = values;
+
+    api
+      .put(`accounts/${id}`, {
+        ...values,
+        value: formatCurrencyFloat(value),
+      })
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  function deleteAccount(id: number) {
+    api
+      .delete(`accounts/${id}`)
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  const formik = useFormik({
+    onSubmit: async (values) => {
+      account ? editAccount(account.id, values) : createAccount(values);
     },
     initialValues,
     validationSchema,
   });
 
+  useEffect(() => {
+    formik.setValues({
+      name: account ? account.name : "",
+      value: account ? account.value + "" : "0",
+    });
+  }, [open]);
+
   return (
-    <Modal title="Criar Conta" open={open} onClose={onClose}>
+    <Modal
+      title={account ? "Editar Conta" : "Criar Conta"}
+      open={open}
+      onClose={onClose}
+      onDelete={() => deleteAccount(account ? account.id : 0)}
+    >
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6 flex items-center justify-center">
           <CurrencyInput
-            type="text"
             id="value"
+            type="text"
             name="value"
-            defaultValue={0}
             prefix="R$ "
-            placeholder="R$ 0,00"
             groupSeparator="."
             decimalSeparator=","
             allowDecimals={true}
+            placeholder="R$ 0,00"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
-            className="bg-transparent text-center outline-none font-bold text-4xl"
+            defaultValue={account ? account.value : 0}
+            className="bg-transparent text-center outline-none font-bold text-4xl select-none"
           />
         </div>
 
         <div className="flex flex-col gap-4">
-          <Input
+          <Select
+            placeholder="Selecione um banco"
             name="name"
-            placeholder="Nome"
             onBlur={formik.handleBlur}
-            value={formik.values.name}
             onChange={formik.handleChange}
-            error={formik.touched.name && formik.errors.name}
-          />
+            value={formik.values.name}
+          >
+            <option value="" disabled hidden></option>
+            <option value="C6 Bank">C6 Bank</option>
+            <option value="Bradesco">Bradesco</option>
+            <option value="Caixa">Caixa</option>
+            <option value="Inter">Inter</option>
+            <option value="Itau">Itau</option>
+            <option value="Next">Next</option>
+            <option value="Pan">Pan</option>
+            <option value="Nubank">Nubank</option>
+            <option value="Santander">Santander</option>
+            <option value="Will">Will</option>
+          </Select>
 
           <Button
             type="submit"

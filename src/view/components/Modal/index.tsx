@@ -1,5 +1,5 @@
-import { X } from "lucide-react";
 import { ReactNode } from "react";
+import { Trash, X } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 interface Props {
@@ -7,8 +7,9 @@ interface Props {
   open: boolean;
   children: ReactNode;
   onClose?(): void;
+  onDelete?(): void;
 }
-export function Modal({ title, open, children, onClose }: Props) {
+export function Modal({ title, open, children, onClose, onDelete }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
       <Dialog.Portal>
@@ -21,7 +22,7 @@ export function Modal({ title, open, children, onClose }: Props) {
             </div>
             <span className="text-lg">{title}</span>
             <div className="h-12 w-12 flex items-center justify-center text-red-500">
-              {/* {rightAction} */}
+              {title.includes("Editar") && <Trash onClick={onDelete} />}
             </div>
           </header>
 

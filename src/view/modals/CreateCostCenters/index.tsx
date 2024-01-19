@@ -1,34 +1,68 @@
-import { Modal } from "../../components/Modal";
-import { api } from "../../../services/api";
 import { useFormik } from "formik";
-import { initialValues, validationSchema } from "./_validation";
+import { useEffect, useState } from "react";
+import { api } from "../../../services/api";
+import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import CurrencyInput from "react-currency-input-field";
-import { useEffect, useState } from "react";
+import { initialValues, validationSchema } from "./_validation";
+import { CostCenterModel } from "../../../models/CostCenterModel";
 
 interface Props {
+  costCenter: CostCenterModel | null;
   open: boolean;
   total: number;
   onClose(): void;
 }
-export function CreateCostCenters({ open, onClose, total }: Props) {
-  const formik = useFormik({
-    onSubmit: async (values, { resetForm }) => {
-      const { percentage } = values;
+export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
+  function createCostCenter(values: any) {
+    const { percentage } = values;
 
-      api
-        .post("cost-centers", {
-          ...values,
-          percentage: parseInt(percentage + ""),
-        })
-        .then(() => {
-          onClose();
-          resetForm();
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    api
+      .post("cost-centers", {
+        ...values,
+        percentage: parseInt(percentage + ""),
+      })
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  function editCostCenter(id: number, values: any) {
+    const { percentage } = values;
+
+    api
+      .put(`cost-centers/${id}`, {
+        ...values,
+        percentage: parseInt(percentage + ""),
+      })
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  function deleteCostCenter(id: number) {
+    api
+      .delete(`cost-centers/${id}`)
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  const formik = useFormik({
+    onSubmit: async (values) => {
+      costCenter
+        ? editCostCenter(costCenter.id, values)
+        : createCostCenter(values);
     },
     initialValues,
     validationSchema,
@@ -37,15 +71,25 @@ export function CreateCostCenters({ open, onClose, total }: Props) {
   const [valorLimite, setValorLimite] = useState(0);
 
   useEffect(() => {
-    console.log(formik.values.percentage);
-
     const limite = (total * formik.values.percentage) / 100;
 
     setValorLimite(limite);
   }, [formik.values.percentage]);
 
+  useEffect(() => {
+    formik.setValues({
+      name: costCenter ? costCenter.name : "",
+      percentage: costCenter ? costCenter.percentage : 0,
+    });
+  }, [open]);
+
   return (
-    <Modal title="Criar Centro de Custo" open={open} onClose={onClose}>
+    <Modal
+      title={costCenter ? "Editar Centro de Custo" : "Criar Centro de Custo"}
+      open={open}
+      onClose={onClose}
+      onDelete={() => deleteCostCenter(costCenter ? costCenter.id : 0)}
+    >
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6 flex flex-col gap-4 items-center justify-center">
           <CurrencyInput
@@ -68,22 +112,28 @@ export function CreateCostCenters({ open, onClose, total }: Props) {
             name="name"
             placeholder="Nome"
             onBlur={formik.handleBlur}
-            value={formik.values.name}
             onChange={formik.handleChange}
+            defaultValue={costCenter ? costCenter.name : ""}
             error={formik.touched.name && formik.errors.name}
           />
-          <Input
-            min={1}
-            max={100}
-            maxLength={3}
-            minLength={1}
-            name="percentage"
-            placeholder="Porcentagem"
-            onBlur={formik.handleBlur}
-            value={formik.values.percentage}
-            onChange={formik.handleChange}
-            error={formik.touched.percentage && formik.errors.percentage}
-          />
+
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between">
+              <label className="text-xs">Porcentagem</label>
+              <label className="text-xs">{formik.values.percentage} %</label>
+            </div>
+
+            <input
+              min="1"
+              step="1"
+              max="100"
+              type="range"
+              name="percentage"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              defaultValue={costCenter ? costCenter.percentage : 0}
+            />
+          </div>
 
           <Button
             type="submit"

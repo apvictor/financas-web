@@ -1,4 +1,4 @@
-import { WalletIcon } from "lucide-react";
+import { Plus, PlusCircle, WalletIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "../../../services/api";
 // import { useNavigate } from "react-router-dom";
@@ -10,14 +10,11 @@ import { CreateCostCenters } from "../../modals/CreateCostCenters";
 import { Header } from "./components/Header";
 import { CardBalance } from "./components/CardBalance";
 
-import nubank from "../../../assets/banks/nubank.svg";
-import { Line } from "../../components/Line";
 import { Fab } from "./components/Fab";
 import { CostCenterModel } from "../../../models/CostCenterModel";
 import { AccountModel } from "../../../models/AccountModel";
-import { formatCurrency } from "../../../helpers/formatCurrency";
 import { CardTotal } from "./components/CardTotal";
-import { getBank } from "../../../helpers/bank";
+import { CardAccount } from "./components/CardAccount";
 
 export function Home() {
   // const navigate = useNavigate();
@@ -26,6 +23,9 @@ export function Home() {
   const [openCreateExpense, setOpenCreateExpense] = useState(false);
   const [openCreateAccounts, setOpenCreateAccounts] = useState(false);
   const [openCreateCostCenters, setOpenCreateCostCenters] = useState(false);
+
+  const [account, setAccount] = useState<AccountModel | null>(null);
+  const [costCenter, setCostCenter] = useState<CostCenterModel | null>(null);
 
   const [total, setTotal] = useState(0);
   const [accounts, setAccounts] = useState<AccountModel[]>([]);
@@ -39,9 +39,7 @@ export function Home() {
     const data: AccountModel[] = (await api.get("/accounts")).data;
 
     let total = 0;
-    data.map((item) => {
-      total += item.value;
-    });
+    data.map((item) => (total += item.value));
 
     setTotal(total);
 
@@ -84,44 +82,37 @@ export function Home() {
       </div>
 
       <div className="bg-[#1C1E21] flex flex-col gap-4 p-4 rounded-md">
-        <div className="flex items-center w-full justify-between text-xs">
-          <div className="flex items-center gap-2">
-            <WalletIcon size={20} />
-            <span className="font-light">
-              Minhas <span className="font-bold">contas</span>
-            </span>
-          </div>
-          <button onClick={() => setOpenCreateAccounts(true)}>Adicionar</button>
+        <div className="flex items-center gap-2 text-xs">
+          <WalletIcon size={20} />
+          <span className="font-light">
+            Minhas <span className="font-bold">contas</span>
+          </span>
         </div>
 
-        <Line />
-
         <div className="flex flex-col gap-4">
-          {accounts.map((account: AccountModel) => (
-            <div
-              key={account.id}
-              className="flex items-center justify-between w-full"
+          {accounts.length > 0 ? (
+            accounts.map((account: AccountModel) => (
+              <CardAccount
+                openModalAccountEdit={() => {
+                  setAccount(account);
+                  setOpenCreateAccounts(!openCreateAccounts);
+                }}
+                key={account.id}
+                account={account}
+              />
+            ))
+          ) : (
+            <button
+              className="flex flex-col items-center gap-4 rounded-md bg-[#212529] p-4"
+              onClick={() => {
+                setCostCenter(null);
+                setOpenCreateCostCenters(!openCreateCostCenters);
+              }}
             >
-              <div className="flex items-center gap-2">
-                <img width={20} src={getBank(account.name)} alt="Nubank" />
-
-                <span className="text-xs">{account.name}</span>
-              </div>
-              <div className="flex flex-col items-end">
-                <span className="text-[10px] font-light">
-                  na conta{" "}
-                  <span className="font-bold">
-                    {formatCurrency(account.value)}
-                  </span>
-                </span>
-                <span className="font-bold">
-                  {formatCurrency(
-                    account.value + account.incomeTotal - account.expenseTotal
-                  )}
-                </span>
-              </div>
-            </div>
-          ))}
+              <PlusCircle />
+              <span>Criar conta</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -130,25 +121,46 @@ export function Home() {
           Meus <span className="font-bold">centros de custo</span>
         </span>
         <div className="w-full flex-col gap-4 flex">
-          {costCenters.map((costCenter) => (
-            <CardCostCenter
-              key={costCenter.id}
-              total={total + transactionTotal.income}
-              title={costCenter.name}
-              limit={costCenter.percentage}
-              value={costCenter.value}
-            />
-          ))}
+          {costCenters.length > 0 ? (
+            costCenters.map((costCenter) => (
+              <CardCostCenter
+                key={costCenter.id}
+                title={costCenter.name}
+                value={costCenter.value}
+                limit={costCenter.percentage}
+                total={total + transactionTotal.income}
+                openModalCostCenterEdit={() => {
+                  setCostCenter(costCenter);
+                  setOpenCreateCostCenters(!openCreateCostCenters);
+                }}
+              />
+            ))
+          ) : (
+            <button
+              className="flex flex-col items-center gap-4 rounded-md bg-[#1C1E21] p-4"
+              onClick={() => {
+                setCostCenter(null);
+                setOpenCreateCostCenters(!openCreateCostCenters);
+              }}
+            >
+              <PlusCircle />
+              <span>Criar centro de custo</span>
+            </button>
+          )}
         </div>
       </div>
 
       <Fab
         openModalIncome={() => setOpenCreateIncome(!openCreateIncome)}
         openModalExpense={() => setOpenCreateExpense(!openCreateExpense)}
-        openModalCostCenters={() =>
-          setOpenCreateCostCenters(!openCreateCostCenters)
-        }
-        openModalAccounts={() => setOpenCreateAccounts(!openCreateAccounts)}
+        openModalCostCenters={() => {
+          setCostCenter(null);
+          setOpenCreateCostCenters(!openCreateCostCenters);
+        }}
+        openModalAccounts={() => {
+          setAccount(null);
+          setOpenCreateAccounts(!openCreateAccounts);
+        }}
       />
 
       <CreateIncome
@@ -160,13 +172,15 @@ export function Home() {
         onClose={() => setOpenCreateExpense(false)}
       />
       <CreateAccounts
+        account={account}
         open={openCreateAccounts}
         onClose={() => setOpenCreateAccounts(false)}
       />
       <CreateCostCenters
-        total={total + transactionTotal.income - transactionTotal.expense}
+        costCenter={costCenter}
         open={openCreateCostCenters}
         onClose={() => setOpenCreateCostCenters(false)}
+        total={total + transactionTotal.income - transactionTotal.expense}
       />
     </main>
   );

@@ -1,5 +1,6 @@
 import { formatCurrency } from "../../../../helpers/formatCurrency";
 import { IconCostCenter } from "../../../components/IconCostCenter";
+import { Line } from "../../../components/Line";
 
 interface Props {
   name: string;
@@ -7,6 +8,7 @@ interface Props {
   transactionType: string;
   account: { name: string };
   costCenter: { name: string };
+  openModalEditTransaction: () => void;
 }
 export function CardTransaction({
   name,
@@ -14,23 +16,26 @@ export function CardTransaction({
   transactionType,
   account,
   costCenter,
+  openModalEditTransaction,
 }: Props) {
-
   return (
-    <div className="flex items-center gap-5 bg-[#1E1E1E] w-full h-full p-4 rounded-xl">
-      {(
+    <button
+      className="flex items-center gap-3 bg-[#1E1E1E] w-full h-full p-2 px-3 rounded-xl"
+      onClick={openModalEditTransaction}
+    >
+      {
         <IconCostCenter
           title={costCenter ? costCenter.name : transactionType}
         />
-      )}
+      }
 
       <div>
-        <span className="border border-solid border-white/15 rotate-90"></span>
+        <Line />
       </div>
 
-      <div className="flex flex-col flex-1">
-        <span className="text-sm">{name}</span>
-        <span className="text-[#AAAAAA] text-xs">{account.name}</span>
+      <div className="flex flex-col flex-1 items-start">
+        <span className="text-xs">{name}</span>
+        <span className="text-[#AAAAAA] text-[10px]">{account.name}</span>
       </div>
 
       <span
@@ -41,6 +46,6 @@ export function CardTransaction({
       >
         {formatCurrency(value)}
       </span>
-    </div>
+    </button>
   );
 }

@@ -11,7 +11,6 @@ export function Register() {
 
   const formik = useFormik({
     onSubmit: async (values, { resetForm }) => {
-      console.log(values);
       await AuthService.register(values)
         .then(() => {
           navigate("/login");
