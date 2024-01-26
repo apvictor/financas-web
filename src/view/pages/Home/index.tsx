@@ -67,25 +67,36 @@ export function Home() {
     <main className="p-8 flex flex-col gap-6">
       <Header />
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <CardTotal
           value={total + transactionTotal.income - transactionTotal.expense}
         />
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <CardBalance type="INCOME" value={transactionTotal.income} />
           <CardBalance type="EXPENSE" value={transactionTotal.expense} />
         </div>
       </div>
 
-      <div className="bg-[#1C1E21] flex flex-col gap-4 p-4 rounded-md">
-        <div className="flex items-center gap-2 text-xs">
-          <WalletIcon size={20} />
-          <span className="font-light">
-            Minhas <span className="font-bold">contas</span>
-          </span>
+      <div className="bg-[#1C1E21] flex flex-col gap-2 p-4 rounded-md">
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <WalletIcon size={20} />
+            <span className="font-light">
+              Minhas <span className="font-bold">contas</span>
+            </span>
+          </div>
+          <button
+            className="font-bold"
+            onClick={() => {
+              setAccount(null);
+              setOpenCreateAccounts(!openCreateAccounts);
+            }}
+          >
+            Adicionar
+          </button>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           {accounts.length > 0 ? (
             accounts.map((account: AccountModel) => (
               <CardAccount
@@ -99,7 +110,7 @@ export function Home() {
             ))
           ) : (
             <button
-              className="flex flex-col items-center gap-4 rounded-md bg-[#212529] p-4"
+              className="flex flex-col items-center rounded-md bg-[#212529] p-4"
               onClick={() => {
                 setAccount(null);
                 setOpenCreateAccounts(!openCreateAccounts);
@@ -116,7 +127,7 @@ export function Home() {
         <span className="text-sm font-light">
           Meus <span className="font-bold">centros de custo</span>
         </span>
-        <div className="w-full flex-col gap-4 flex">
+        <div className="w-full flex-col gap-2 flex">
           {costCenters.length > 0 ? (
             costCenters.map((costCenter) => (
               <CardCostCenter

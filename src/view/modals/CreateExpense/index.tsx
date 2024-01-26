@@ -51,13 +51,14 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
   }
 
   function editExpense(id: number, values: any) {
-    const { value, accountId } = values;
+    const { value, accountId, costCenterId } = values;
 
     api
       .put(`transactions/${id}`, {
         ...values,
         value: formatCurrencyFloat(value),
         accountId: parseInt(accountId),
+        costCenterId: parseInt(costCenterId),
       })
       .then(() => {
         onClose();
