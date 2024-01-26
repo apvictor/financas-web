@@ -33,6 +33,9 @@ export function getBank(name: string) {
     case "nubank":
       bank = nubank
       break;
+    case "nuinvest":
+      bank = nubank
+      break;
     case "pan":
       bank = pan
       break;

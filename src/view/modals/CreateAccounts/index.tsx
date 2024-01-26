@@ -115,6 +115,7 @@ export function CreateAccounts({ account, open, onClose }: Props) {
             <option value="Next">Next</option>
             <option value="Pan">Pan</option>
             <option value="Nubank">Nubank</option>
+            <option value="NuInvest">NuInvest</option>
             <option value="Santander">Santander</option>
             <option value="Will">Will</option>
           </Select>
