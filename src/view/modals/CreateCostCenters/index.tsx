@@ -98,14 +98,16 @@ export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
         <div className="p-6 flex flex-col gap-4 items-center justify-center">
           <CurrencyInput
             disabled={true}
-            id="value"
+            type="text"
             name="value"
-            value={valorLimite}
-            defaultValue={0}
             prefix="R$ "
-            placeholder="R$ 0,00"
-            groupSeparator="."
-            decimalSeparator=","
+            maxLength={10}
+            defaultValue={0}
+            groupSeparator={" "}
+            decimalSeparator="."
+            allowDecimals={true}
+            placeholder="R$ 0.00"
+            value={valorLimite.toFixed(2)}
             className="bg-transparent text-center outline-none font-bold text-4xl text-[#606060]"
           />
           <span>Valor disponivel conforme sua receita</span>

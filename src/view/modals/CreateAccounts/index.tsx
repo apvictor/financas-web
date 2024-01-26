@@ -84,18 +84,17 @@ export function CreateAccounts({ account, open, onClose }: Props) {
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6 flex items-center justify-center">
           <CurrencyInput
-            id="value"
             type="text"
             name="value"
             prefix="R$ "
-            groupSeparator="."
-            decimalSeparator=","
+            maxLength={10}
+            groupSeparator={" "}
+            decimalSeparator="."
             allowDecimals={true}
-            placeholder="R$ 0,00"
-            onBlur={formik.handleBlur}
+            placeholder="R$ 0.00"
             onChange={formik.handleChange}
-            defaultValue={account ? account.value : 0}
-            className="bg-transparent text-center outline-none font-bold text-4xl select-none"
+            defaultValue={account ? account.value.toFixed(2) : 0}
+            className="bg-transparent text-center outline-none font-bold text-4xl"
           />
         </div>
 

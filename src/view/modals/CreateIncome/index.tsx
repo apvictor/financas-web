@@ -103,15 +103,17 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6 flex items-center justify-center">
           <CurrencyInput
+            type="text"
             name="value"
             prefix="R$ "
-            placeholder="R$ 0,00"
-            groupSeparator="."
-            decimalSeparator=","
+            maxLength={10}
+            groupSeparator={" "}
+            decimalSeparator="."
             allowDecimals={true}
+            placeholder="R$ 0.00"
             onChange={formik.handleChange}
+            defaultValue={transaction ? transaction.value.toFixed(2) : 0}
             className="bg-transparent text-center outline-none font-bold text-4xl"
-            defaultValue={transaction ? transaction.value : 0}
           />
         </div>
 
