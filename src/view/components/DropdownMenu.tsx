@@ -1,0 +1,88 @@
+import { ReactNode } from "react";
+import { cn } from "../../app/helpers/cn";
+import { styled, keyframes } from "@stitches/react";
+import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
+
+function DropdownMenuRoot({ children }: { children: ReactNode }) {
+  return <RadixDropdownMenu.Root>{children}</RadixDropdownMenu.Root>;
+}
+
+function DropdownMenuTrigger({ children }: { children: ReactNode }) {
+  return (
+    <RadixDropdownMenu.Trigger asChild className="outline-none cursor-pointer">
+      {children}
+    </RadixDropdownMenu.Trigger>
+  );
+}
+
+const fadeIn = keyframes({
+  from: { opacity: 0, transform: "translate3d(0px, 0px, -50px)" },
+  to: { opacity: 1, transform: "translate3d(0px, 0px, 0px)" },
+});
+
+const fadeOut = keyframes({
+  from: { opacity: 1, transform: "translate3d(0px, 0px, 0px)" },
+  to: { opacity: 0 },
+});
+
+const StyledContent = styled(DropdownMenuContent, {
+  '&[data-state="open"]': { animation: `${fadeIn} 120ms ease-in-out` },
+  '&[data-state="closed"]': { animation: `${fadeOut} 120ms ease-in-out` },
+});
+
+interface DropdownMenuContentProps {
+  children: ReactNode;
+  className?: string;
+  container?: HTMLElement | null;
+}
+function DropdownMenuContent({
+  container,
+  children,
+  className,
+}: DropdownMenuContentProps) {
+  return (
+    <RadixDropdownMenu.Portal container={container ?? undefined}>
+      <RadixDropdownMenu.Content
+        className={cn(
+          "bg-white p-2 rounded-2xl space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] z-50 transition-all duration-1000",
+          className
+        )}
+      >
+        {children}
+      </RadixDropdownMenu.Content>
+    </RadixDropdownMenu.Portal>
+  );
+}
+
+interface DropdownMenuItemProps {
+  children: ReactNode;
+  className?: string;
+  disabled?: boolean;
+  onSelect?: () => void;
+}
+function DropdownMenuItem({
+  children,
+  className,
+  disabled,
+  onSelect,
+}: DropdownMenuItemProps) {
+  return (
+    <RadixDropdownMenu.Item
+      className={cn(
+        "min-h-[40px] outline-none flex items-center py-2 px-4 text-gray-800 text-sm hover:bg-gray-50 rounded-2xl transition-colors cursor-pointer data-[disabled]:bg-gray-200 data-[disabled]:cursor-default",
+        className
+      )}
+      onSelect={onSelect}
+      disabled={disabled}
+    >
+      {children}
+    </RadixDropdownMenu.Item>
+  );
+}
+
+export const DropdownMenu = {
+  Root: DropdownMenuRoot,
+  Trigger: DropdownMenuTrigger,
+  Content: StyledContent,
+  Item: DropdownMenuItem,
+};

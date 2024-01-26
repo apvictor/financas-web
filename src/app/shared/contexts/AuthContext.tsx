@@ -1,7 +1,7 @@
 import { api } from "../../services/api";
 import { useQuery } from "@tanstack/react-query";
-import { Loading } from "../../view/components/Loading";
 import { createContext, useEffect, useState } from "react";
+import { Loading } from "../../../view/components/Loading";
 
 interface AuthContextProps {
   signedIn: boolean;

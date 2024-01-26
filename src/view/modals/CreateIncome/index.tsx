@@ -1,5 +1,4 @@
 import { useFormik } from "formik";
-import { api } from "../../../services/api";
 import { useEffect, useState } from "react";
 import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
@@ -7,8 +6,9 @@ import { Button } from "../../components/Button";
 import { Select } from "../../components/Select";
 import CurrencyInput from "react-currency-input-field";
 import { initialValues, validationSchema } from "./_validation";
-import { TransactionModel } from "../../../models/TransactionModel";
-import { formatCurrencyFloat } from "../../../helpers/formatCurrencyFloat";
+import { TransactionModel } from "../../../app/models/TransactionModel";
+import { api } from "../../../app/services/api";
+import { formatCurrencyFloat } from "../../../app/helpers/formatCurrencyFloat";
 
 interface Props {
   open: boolean;

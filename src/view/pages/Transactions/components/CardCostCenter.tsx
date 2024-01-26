@@ -1,5 +1,5 @@
-import { formatCurrency } from "../../../../helpers/formatCurrency";
 import { IconCostCenter } from "../../../components/IconCostCenter";
+import { formatCurrency } from "../../../../app/helpers/formatCurrency";
 
 interface Props {
   title: string;

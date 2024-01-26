@@ -1,5 +1,5 @@
 import { DropdownMenu } from "../../../components/DropdownMenu";
-import { useAuth } from "../../../../shared/hooks/useAuth";
+import { useAuth } from "../../../../app/shared/hooks/useAuth";
 import { Bell, DoorOpen, User2 } from "lucide-react";
 import { Line } from "../../../components/Line";
 

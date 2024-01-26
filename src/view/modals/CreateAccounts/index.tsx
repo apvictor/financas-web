@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useFormik } from "formik";
-import { api } from "../../../services/api";
 import { Modal } from "../../components/Modal";
+import { api } from "../../../app/services/api";
 import { Button } from "../../components/Button";
 import { Select } from "../../components/Select";
 import CurrencyInput from "react-currency-input-field";
-import { AccountModel } from "../../../models/AccountModel";
 import { initialValues, validationSchema } from "./_validation";
-import { formatCurrencyFloat } from "../../../helpers/formatCurrencyFloat";
+import { AccountModel } from "../../../app/models/AccountModel";
+import { formatCurrencyFloat } from "../../../app/helpers/formatCurrencyFloat";
 
 interface Props {
   account: AccountModel | null;

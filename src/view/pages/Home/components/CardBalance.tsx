@@ -1,6 +1,6 @@
 import { DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { formatCurrency } from "../../../../helpers/formatCurrency";
+import { formatCurrency } from "../../../../app/helpers/formatCurrency";
 
 interface Props {
   type: "INCOME" | "EXPENSE";

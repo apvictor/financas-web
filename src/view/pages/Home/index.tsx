@@ -1,24 +1,20 @@
-import { PlusCircle, WalletIcon } from "lucide-react";
+import { Fab } from "./components/Fab";
 import { useEffect, useState } from "react";
-import { api } from "../../../services/api";
-// import { useNavigate } from "react-router-dom";
+import { Header } from "./components/Header";
+import { api } from "../../../app/services/api";
+import { CardTotal } from "./components/CardTotal";
+import { PlusCircle, WalletIcon } from "lucide-react";
+import { CardBalance } from "./components/CardBalance";
+import { CardAccount } from "./components/CardAccount";
 import { CreateIncome } from "../../modals/CreateIncome";
 import { CreateExpense } from "../../modals/CreateExpense";
 import { CardCostCenter } from "./components/CardCostCenter";
 import { CreateAccounts } from "../../modals/CreateAccounts";
+import { AccountModel } from "../../../app/models/AccountModel";
 import { CreateCostCenters } from "../../modals/CreateCostCenters";
-import { Header } from "./components/Header";
-import { CardBalance } from "./components/CardBalance";
-
-import { Fab } from "./components/Fab";
-import { CostCenterModel } from "../../../models/CostCenterModel";
-import { AccountModel } from "../../../models/AccountModel";
-import { CardTotal } from "./components/CardTotal";
-import { CardAccount } from "./components/CardAccount";
+import { CostCenterModel } from "../../../app/models/CostCenterModel";
 
 export function Home() {
-  // const navigate = useNavigate();
-
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
   const [openCreateExpense, setOpenCreateExpense] = useState(false);
   const [openCreateAccounts, setOpenCreateAccounts] = useState(false);

@@ -1,11 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-import { Welcome } from "../view/pages/Welcome";
-import { Login } from "../view/pages/Login";
-import { Register } from "../view/pages/Register";
-import { Home } from "../view/pages/Home";
 import { AuthGuard } from "./AuthGuard";
+import { Home } from "../view/pages/Home";
+import { Login } from "../view/pages/Login";
+import { Welcome } from "../view/pages/Welcome";
+import { Register } from "../view/pages/Register";
 import { Transactions } from "../view/pages/Transactions";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export function Router() {
   return (

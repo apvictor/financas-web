@@ -3,8 +3,8 @@ import logo from "../../../assets/logo.png";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthService } from "../../../services/AuthService";
 import { initialValues, validationSchema } from "./_validation";
+import { AuthService } from "../../../app/services/AuthService";
 
 export function Register() {
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ export function Register() {
         <span className="w-full text-center text-sm">
           Já tem uma conta?{" "}
           <Link to="/login" className="text-[#15C770] hover:text-[#15c771c2]">
-            Entre aqui
+            Entrar
           </Link>
         </span>
       </form>

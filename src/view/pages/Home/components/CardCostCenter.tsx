@@ -1,5 +1,5 @@
-import { formatCurrency } from "../../../../helpers/formatCurrency";
 import { IconCostCenter } from "../../../components/IconCostCenter";
+import { formatCurrency } from "../../../../app/helpers/formatCurrency";
 
 interface Props {
   title: string;
@@ -28,12 +28,12 @@ export function CardCostCenter({
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-2">
           <IconCostCenter title={title} />
-          <span className="text-sm text-[#AAA]">{title}</span>
+          <span className="text-sm text-white">{title}</span>
         </div>
         <span
-          className="text-xs text-[#AAA]"
+          className="text-xs"
           style={{
-            color: `${limite_excedido ? "#E86161" : "#AAA"}`,
+            color: `${limite_excedido ? "#E86161" : "#FFF"}`,
           }}
         >
           {porcentagem.toString().length > 2
@@ -43,12 +43,7 @@ export function CardCostCenter({
         </span>
       </div>
       <div className="flex flex-col w-full gap-4">
-        <div
-          className="bg-[#343A40] h-2 rounded-xl relative"
-          style={{
-            width: `100%`,
-          }}
-        >
+        <div className="bg-[#343A40] h-2 rounded-xl relative w-full">
           <div
             className="h-2 rounded-xl relative"
             style={{
@@ -69,14 +64,10 @@ export function CardCostCenter({
           </div>
         </div>
         <div className="flex justify-between items-center w-full text-xs">
-          <span
-            style={{
-              color: `${limite_excedido ? "#E86161" : "#FFF"}`,
-            }}
-          >
+          <span style={{ color: `${limite_excedido ? "#E86161" : "#FFF"}` }}>
             {formatCurrency(valor_limite_gasto - valor_gasto)}
           </span>
-          <span className="text-[#AAA]">
+          <span className="text-white">
             {formatCurrency(valor_limite_gasto)}
           </span>
         </div>

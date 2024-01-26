@@ -1,7 +1,7 @@
-import { getBank } from "../../../../helpers/bank";
-import { formatCurrency } from "../../../../helpers/formatCurrency";
-import { AccountModel } from "../../../../models/AccountModel";
 import { Line } from "../../../components/Line";
+import { getBank } from "../../../../app/helpers/bank";
+import { AccountModel } from "../../../../app/models/AccountModel";
+import { formatCurrency } from "../../../../app/helpers/formatCurrency";
 
 interface Props {
   account: AccountModel;

@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { useAuth } from "../../../shared/hooks/useAuth";
-import { AuthService } from "../../../services/AuthService";
+import { useAuth } from "../../../app/shared/hooks/useAuth";
+import { AuthService } from "../../../app/services/AuthService";
 import { initialValues, validationSchema } from "./_validation";
 
 export function Login() {

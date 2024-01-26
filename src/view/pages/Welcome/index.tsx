@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import { ChevronRight } from "lucide-react";
 import illustration from "../../../assets/illustration.png";
-import { Link } from "react-router-dom";
+import { Button } from "../../components/Button";
 
 export function Welcome() {
   return (
-    <main className="h-screen w-screen flex flex-col justify-between px-8 p-4">
+    <main className="h-screen w-screen flex flex-col justify-between p-8">
       <div className="mb-5">
         <img src={logo} alt="PIGPAY" />
       </div>
@@ -24,12 +25,12 @@ export function Welcome() {
         <img height={300} width={300} src={illustration} alt="Ilustração" />
       </div>
 
-      <button className="bg-[#15C770] hover:bg-[#15c771c2] transition-colors w-full h-12 rounded-lg px-4 py-3 uppercase">
+      <Button>
         <Link to="/login" className="flex justify-between items-center">
           <span className="text-sm font-bold">Iniciar</span>
           <ChevronRight />
         </Link>
-      </button>
+      </Button>
     </main>
   );
 }

@@ -12,7 +12,7 @@ interface Props {
 export function IconCostCenter({ title }: Props) {
   return (
     <>
-      {title?.toUpperCase() === "INCOME" && (
+      {title.toUpperCase() === "INCOME" && (
         <div className="p-1.5 bg-[#15c77163] rounded-full">
           <ArrowUpCircle color="#15C770" size={16} />
         </div>
