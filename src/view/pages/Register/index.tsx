@@ -5,6 +5,7 @@ import { Button } from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { initialValues, validationSchema } from "./_validation";
 import { AuthService } from "../../../app/services/AuthService";
+import { Loader } from "../../components/Loader";
 
 export function Register() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export function Register() {
   });
 
   return (
-    <main className="h-screen w-screen flex flex-col justify-between p-8">
+    <main className="h-screen w-screen flex flex-col justify-between p-6">
       <div className="mt-20 mb-10">
         <img src={logo} alt="PIGPAY" />
       </div>
@@ -69,7 +70,7 @@ export function Register() {
         />
 
         <Button type="submit" disabled={!formik.isValid || formik.isSubmitting}>
-          {formik.isSubmitting ? "Carregando..." : "Confirmar"}
+          {formik.isSubmitting ? <Loader /> : "Confirmar"}
         </Button>
         <span className="w-full text-center text-sm">
           Já tem uma conta?{" "}

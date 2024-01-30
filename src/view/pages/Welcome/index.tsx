@@ -6,7 +6,7 @@ import { Button } from "../../components/Button";
 
 export function Welcome() {
   return (
-    <main className="h-screen w-screen flex flex-col justify-between p-8">
+    <main className="h-screen w-screen flex flex-col justify-between p-6">
       <div className="mb-5">
         <img src={logo} alt="PIGPAY" />
       </div>

@@ -20,7 +20,7 @@ export function CardTransaction({
 }: Props) {
   return (
     <button
-      className="flex items-center gap-3 bg-[#1E1E1E] w-full h-full p-2 px-3 rounded-xl"
+      className="flex items-center gap-3 bg-gray-800 w-full h-full p-2 px-3 rounded-md"
       onClick={openModalEditTransaction}
     >
       {

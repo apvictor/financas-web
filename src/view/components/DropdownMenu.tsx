@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { cn } from "../../app/helpers/cn";
-import { styled, keyframes } from "@stitches/react";
 import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
 
 function DropdownMenuRoot({ children }: { children: ReactNode }) {
@@ -14,21 +13,6 @@ function DropdownMenuTrigger({ children }: { children: ReactNode }) {
     </RadixDropdownMenu.Trigger>
   );
 }
-
-const fadeIn = keyframes({
-  from: { opacity: 0, transform: "translate3d(0px, 0px, -50px)" },
-  to: { opacity: 1, transform: "translate3d(0px, 0px, 0px)" },
-});
-
-const fadeOut = keyframes({
-  from: { opacity: 1, transform: "translate3d(0px, 0px, 0px)" },
-  to: { opacity: 0 },
-});
-
-const StyledContent = styled(DropdownMenuContent, {
-  '&[data-state="open"]': { animation: `${fadeIn} 120ms ease-in-out` },
-  '&[data-state="closed"]': { animation: `${fadeOut} 120ms ease-in-out` },
-});
 
 interface DropdownMenuContentProps {
   children: ReactNode;
@@ -44,7 +28,7 @@ function DropdownMenuContent({
     <RadixDropdownMenu.Portal container={container ?? undefined}>
       <RadixDropdownMenu.Content
         className={cn(
-          "bg-white p-2 rounded-2xl space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] z-50 transition-all duration-1000",
+          "bg-white p-2 rounded-2xl space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] z-50 transition-all duration-1000 data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out",
           className
         )}
       >
@@ -83,6 +67,6 @@ function DropdownMenuItem({
 export const DropdownMenu = {
   Root: DropdownMenuRoot,
   Trigger: DropdownMenuTrigger,
-  Content: StyledContent,
+  Content: DropdownMenuContent,
   Item: DropdownMenuItem,
 };

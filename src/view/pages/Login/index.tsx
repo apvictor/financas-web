@@ -6,6 +6,7 @@ import { Button } from "../../components/Button";
 import { useAuth } from "../../../app/shared/hooks/useAuth";
 import { AuthService } from "../../../app/services/AuthService";
 import { initialValues, validationSchema } from "./_validation";
+import { Loader } from "../../components/Loader";
 
 export function Login() {
   const { signIn } = useAuth();
@@ -28,7 +29,7 @@ export function Login() {
   });
 
   return (
-    <main className="h-screen w-screen flex flex-col justify-between p-8">
+    <main className="h-screen w-screen flex flex-col justify-between p-6">
       <div className="mt-20 mb-10">
         <img src={logo} alt="PIGPAY" />
       </div>
@@ -67,7 +68,7 @@ export function Login() {
         />
 
         <Button type="submit" disabled={!formik.isValid || formik.isSubmitting}>
-          {formik.isSubmitting ? "Carregando..." : "Entrar"}
+          {formik.isSubmitting ? <Loader /> : "Entrar"}
         </Button>
 
         <span className="w-full text-center text-sm">

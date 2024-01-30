@@ -28,47 +28,39 @@ export function Fab({
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="">
         {openModalIncome && (
-          <DropdownMenu.Item>
-            <button
-              onClick={openModalIncome}
-              className="flex gap-4 items-center w-full"
-            >
-              <ArrowUpCircle className="text-teal-900" />
-              Nova Receita
-            </button>
+          <DropdownMenu.Item
+            className="flex gap-4 items-center w-full"
+            onSelect={openModalIncome}
+          >
+            <ArrowUpCircle className="text-teal-900" />
+            Nova Receita
           </DropdownMenu.Item>
         )}
         {openModalExpense && (
-          <DropdownMenu.Item>
-            <button
-              onClick={openModalExpense}
-              className="flex gap-4 items-center w-full"
-            >
-              <ArrowDownCircle className="text-red-900" />
-              Nova Despesa
-            </button>
+          <DropdownMenu.Item
+            onSelect={openModalExpense}
+            className="flex gap-4 items-center w-full"
+          >
+            <ArrowDownCircle className="text-red-900" />
+            Nova Despesa
           </DropdownMenu.Item>
         )}
         {openModalAccounts && (
-          <DropdownMenu.Item>
-            <button
-              onClick={openModalAccounts}
-              className="flex gap-4 items-center w-full"
-            >
-              <LucideLandmark className="text-blue-900" />
-              Nova Conta
-            </button>
+          <DropdownMenu.Item
+            onSelect={openModalAccounts}
+            className="flex gap-4 items-center w-full"
+          >
+            <LucideLandmark className="text-blue-900" />
+            Nova Conta
           </DropdownMenu.Item>
         )}
         {openModalCostCenters && (
-          <DropdownMenu.Item>
-            <button
-              onClick={openModalCostCenters}
-              className="flex gap-4 items-center w-full"
-            >
-              <LayoutGrid />
-              Novo Centro de Custo
-            </button>
+          <DropdownMenu.Item
+            onSelect={openModalCostCenters}
+            className="flex gap-4 items-center w-full"
+          >
+            <LayoutGrid />
+            Novo Centro de Custo
           </DropdownMenu.Item>
         )}
       </DropdownMenu.Content>

@@ -4,6 +4,7 @@ import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
 import { api } from "../../../app/services/api";
 import { Button } from "../../components/Button";
+import { Loader } from "../../components/Loader";
 import CurrencyInput from "react-currency-input-field";
 import { initialValues, validationSchema } from "./_validation";
 import { CostCenterModel } from "../../../app/models/CostCenterModel";
@@ -126,7 +127,7 @@ export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <label className="text-xs">Porcentagem</label>
-              <label className="text-xs">{formik.values.percentage} %</label>
+              <label className="text-xs">{formik.values.percentage}%</label>
             </div>
 
             <input
@@ -138,6 +139,7 @@ export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               defaultValue={costCenter ? costCenter.percentage : 0}
+              className="text-green-400"
             />
           </div>
 
@@ -145,7 +147,7 @@ export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}
           >
-            {formik.isSubmitting ? "Carregando..." : "Salvar"}
+            {formik.isSubmitting ? <Loader /> : "Salvar"}
           </Button>
         </div>
       </form>

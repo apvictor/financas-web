@@ -23,7 +23,7 @@ export function CardCostCenter({
   return (
     <button
       onClick={openModalCostCenterEdit}
-      className="bg-[#1C1E21] flex flex-col items-center gap-4 p-3 rounded-md"
+      className="bg-gray-800 flex flex-col items-center gap-4 p-3 rounded-md"
     >
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-2">

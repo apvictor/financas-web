@@ -5,22 +5,24 @@ import { api } from "../../../app/services/api";
 import { ChevronLeft, Filter } from "lucide-react";
 import { CreateIncome } from "../../modals/CreateIncome";
 import { CreateExpense } from "../../modals/CreateExpense";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../../app/helpers/formatDate";
 import { CardTransaction } from "./components/CardTransaction";
+import { FiltersProps, Filter as ModalFilter } from "../../modals/Filter";
 import transactionEmpty from "../../../assets/transactions.svg";
 
 export function Transactions() {
   const navigate = useNavigate();
-  const location = useLocation();
 
+  const [filter, setFilter] = useState<FiltersProps>({
+    balance: "",
+    month: "",
+  });
+  const [openFilter, setOpenFilter] = useState(false);
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
   const [openCreateExpense, setOpenCreateExpense] = useState(false);
 
   const [transaction, setTransaction] = useState<any | null>(null);
-
-  const queryParams = new URLSearchParams(location.search);
-  const transactionType = queryParams.get("transactionType");
 
   const [transactions, setTransactions] = useState<
     {
@@ -39,13 +41,13 @@ export function Transactions() {
   async function getTransactions(search?: string) {
     if (search && search.length > 3) {
       let filters = `${search ? "search=" + search : ""}${
-        transactionType ? "&transactionType=" + transactionType : ""
+        filter.balance ? "&transactionType=" + filter.balance : ""
       }`;
       const data = (await api.get(`/transactions?${filters}`)).data;
       setTransactions(data);
     } else {
       let filters = `${search ? "search=" + search : ""}${
-        transactionType ? "&transactionType=" + transactionType : ""
+        filter.balance ? "&transactionType=" + filter.balance : ""
       }`;
 
       const data = (await api.get(`/transactions?${filters}`)).data;
@@ -55,18 +57,18 @@ export function Transactions() {
 
   useEffect(() => {
     getTransactions();
-  }, [openCreateExpense, openCreateIncome]);
+  }, [openCreateExpense, openCreateIncome, filter]);
 
   return (
-    <main className="p-8 flex flex-col gap-6">
+    <main className=" flex flex-col gap-6 p-6">
       <header className="flex justify-between items-center gap-8">
         <button className="text-white" onClick={() => navigate("/home")}>
           <ChevronLeft size={20} />
         </button>
 
-        <span className="text-[#AAA] text-xl">Transações</span>
+        <span className="text-xl">Transações</span>
 
-        <button className="">
+        <button onClick={() => setOpenFilter(true)}>
           <Filter size={20} />
         </button>
       </header>
@@ -81,7 +83,7 @@ export function Transactions() {
         }}
       />
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-1 flex-col gap-4">
         {transactions.length > 0 ? (
           transactions.map((item) => (
             <div key={item.date} className="flex flex-col gap-2">
@@ -108,8 +110,8 @@ export function Transactions() {
             </div>
           ))
         ) : (
-          <div className="flex flex-col items-center justify-center mt-28">
-            <img width={250} src={transactionEmpty} alt="Transações" />
+          <div className="flex flex-col justify-center items-center">
+            <img width={280} src={transactionEmpty} alt="Transações" />
             <span className="text-gray-400">Nenhuma transação cadastrada</span>
           </div>
         )}
@@ -136,6 +138,14 @@ export function Transactions() {
         transaction={transaction}
         open={openCreateExpense}
         onClose={() => setOpenCreateExpense(false)}
+      />
+
+      <ModalFilter
+        open={openFilter}
+        onClose={() => setOpenFilter(false)}
+        onFilters={({ balance, month }) => {
+          setFilter({ balance, month });
+        }}
       />
     </main>
   );

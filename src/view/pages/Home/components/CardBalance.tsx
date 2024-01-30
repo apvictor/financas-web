@@ -11,7 +11,7 @@ export function CardBalance({ type, value }: Props) {
 
   return (
     <button
-      className="bg-[#1C1E21] flex-1 flex items-center gap-2 px-4 py-2 rounded-md"
+      className="bg-gray-800 flex-1 flex items-center gap-2 px-4 py-2 rounded-md"
       onClick={() => navigate(`/transactions?transactionType=${type}`)}
     >
       {type === "INCOME" ? (

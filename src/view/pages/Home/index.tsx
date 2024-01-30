@@ -13,6 +13,7 @@ import { CreateAccounts } from "../../modals/CreateAccounts";
 import { AccountModel } from "../../../app/models/AccountModel";
 import { CreateCostCenters } from "../../modals/CreateCostCenters";
 import { CostCenterModel } from "../../../app/models/CostCenterModel";
+import { Line } from "../../components/Line";
 
 export function Home() {
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
@@ -64,20 +65,21 @@ export function Home() {
   ]);
 
   return (
-    <main className="p-8 flex flex-col gap-6">
+    <main className="p-6 flex flex-col gap-6">
       <Header />
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-6">
         <CardTotal
           value={total + transactionTotal.income - transactionTotal.expense}
         />
+        <Line />
         <div className="flex items-center gap-2">
           <CardBalance type="INCOME" value={transactionTotal.income} />
           <CardBalance type="EXPENSE" value={transactionTotal.expense} />
         </div>
       </div>
 
-      <div className="bg-[#1C1E21] flex flex-col gap-2 p-4 rounded-md">
+      <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <WalletIcon size={20} />

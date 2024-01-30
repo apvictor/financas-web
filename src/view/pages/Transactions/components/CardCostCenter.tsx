@@ -14,7 +14,7 @@ export function CardCostCenter({ title, limit, value, totalIncome }: Props) {
   const porcentagem = (valor_gasto / valor_limite_gasto) * 100;
 
   return (
-    <button className="bg-[#1C1E21] flex flex-col items-center gap-6 p-3 rounded-md">
+    <button className="bg-gray-900 flex flex-col items-center gap-6 p-3 rounded-md">
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-2">
           <IconCostCenter title={title} />

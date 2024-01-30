@@ -8,6 +8,7 @@ import CurrencyInput from "react-currency-input-field";
 import { initialValues, validationSchema } from "./_validation";
 import { AccountModel } from "../../../app/models/AccountModel";
 import { formatCurrencyFloat } from "../../../app/helpers/formatCurrencyFloat";
+import { Loader } from "../../components/Loader";
 
 interface Props {
   account: AccountModel | null;
@@ -124,7 +125,7 @@ export function CreateAccounts({ account, open, onClose }: Props) {
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}
           >
-            {formik.isSubmitting ? "Carregando..." : "Salvar"}
+            {formik.isSubmitting ? <Loader /> : "Salvar"}
           </Button>
         </div>
       </form>

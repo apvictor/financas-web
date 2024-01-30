@@ -1,14 +1,3 @@
-// /** @type {import('tailwindcss').Config} */
-// export default {
-//   content: [],
-//   theme: {
-//     extend: {},
-//   },
-//   plugins: [],
-// }
-
-
-
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
@@ -18,6 +7,12 @@ export default {
   ],
   theme: {
     extend: {
+      animation: {
+        "fade-in": "fade-in 0.4s ease",
+        "fade-out": "fade-out 0.4s ease",
+        "modal-open": "modal-open 0.5s ease",
+        "modal-close": "modal-close 0.5s ease",
+      },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"]
       },

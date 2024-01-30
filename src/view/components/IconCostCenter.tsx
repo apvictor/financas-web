@@ -22,8 +22,8 @@ export function IconCostCenter({ title }: Props) {
       )}
 
       {title.toUpperCase() === "CASA" && (
-        <div className="p-1.5 bg-[#14b8a663] rounded-full">
-          <HomeIcon color="#14b8a6" size={16} />
+        <div className="p-1.5 bg-[#89613363] rounded-full">
+          <HomeIcon color="#896133" size={16} />
         </div>
       )}
       {title.toUpperCase() === "INVESTIMENTO" && (

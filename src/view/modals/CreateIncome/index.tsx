@@ -9,6 +9,7 @@ import { initialValues, validationSchema } from "./_validation";
 import { TransactionModel } from "../../../app/models/TransactionModel";
 import { api } from "../../../app/services/api";
 import { formatCurrencyFloat } from "../../../app/helpers/formatCurrencyFloat";
+import { Loader } from "../../components/Loader";
 
 interface Props {
   open: boolean;
@@ -91,8 +92,6 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
     }
   }, [open]);
 
-  console.log(formik.values);
-
   return (
     <Modal
       title={transaction ? "Editar Receita" : "Criar Receita"}
@@ -112,8 +111,8 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
             allowDecimals={true}
             placeholder="R$ 0.00"
             onChange={formik.handleChange}
-            defaultValue={transaction ? transaction.value.toFixed(2) : 0}
-            className="bg-transparent text-center outline-none font-bold text-4xl"
+            defaultValue={transaction ? transaction.value.toFixed(2) : ""}
+            className="bg-transparent text-center outline-none font-bold text-4xl text-[#15C770] placeholder:text-[#15C770]"
           />
         </div>
 
@@ -151,7 +150,7 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}
           >
-            {formik.isSubmitting ? "Carregando..." : "Salvar"}
+            {formik.isSubmitting ? <Loader /> : "Salvar"}
           </Button>
         </div>
       </form>
