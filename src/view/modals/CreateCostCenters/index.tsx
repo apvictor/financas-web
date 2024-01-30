@@ -109,7 +109,7 @@ export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
             allowDecimals={true}
             placeholder="R$ 0.00"
             value={valorLimite.toFixed(2)}
-            className="bg-transparent text-center outline-none font-bold text-4xl text-[#606060]"
+            className="bg-transparent text-center outline-none font-bold text-4xl text-gray-700"
           />
           <span>Valor disponivel conforme sua receita</span>
         </div>

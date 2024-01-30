@@ -7,7 +7,7 @@ interface AuthContextProps {
   signedIn: boolean;
   signOut(): void;
   signIn(accessToken: string): void;
-  user: unknown | undefined;
+  user: unknown | undefined | any;
 }
 export const AuthContext = createContext({} as AuthContextProps);
 

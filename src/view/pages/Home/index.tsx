@@ -1,6 +1,7 @@
 import { Fab } from "./components/Fab";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Header } from "./components/Header";
+import { Line } from "../../components/Line";
 import { api } from "../../../app/services/api";
 import { CardTotal } from "./components/CardTotal";
 import { PlusCircle, WalletIcon } from "lucide-react";
@@ -13,9 +14,11 @@ import { CreateAccounts } from "../../modals/CreateAccounts";
 import { AccountModel } from "../../../app/models/AccountModel";
 import { CreateCostCenters } from "../../modals/CreateCostCenters";
 import { CostCenterModel } from "../../../app/models/CostCenterModel";
-import { Line } from "../../components/Line";
+import { ToggleContext } from "../../../app/shared/contexts/ToggleContext";
 
 export function Home() {
+  const { status } = useContext(ToggleContext);
+
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
   const [openCreateExpense, setOpenCreateExpense] = useState(false);
   const [openCreateAccounts, setOpenCreateAccounts] = useState(false);
@@ -73,7 +76,7 @@ export function Home() {
           value={total + transactionTotal.income - transactionTotal.expense}
         />
         <Line />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <CardBalance type="INCOME" value={transactionTotal.income} />
           <CardBalance type="EXPENSE" value={transactionTotal.expense} />
         </div>
@@ -112,7 +115,7 @@ export function Home() {
             ))
           ) : (
             <button
-              className="flex flex-col items-center rounded-md bg-[#212529] p-4"
+              className="flex flex-col items-center rounded-md bg-slate-900 p-4"
               onClick={() => {
                 setAccount(null);
                 setOpenCreateAccounts(!openCreateAccounts);
@@ -146,7 +149,7 @@ export function Home() {
             ))
           ) : (
             <button
-              className="flex flex-col items-center gap-4 rounded-md bg-[#1C1E21] p-4"
+              className="flex flex-col items-center gap-4 rounded-md bg-gray-800 p-4"
               onClick={() => {
                 setCostCenter(null);
                 setOpenCreateCostCenters(!openCreateCostCenters);

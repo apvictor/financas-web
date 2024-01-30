@@ -18,8 +18,6 @@ interface Props {
 export function Filter({ open, onClose, onFilters }: Props) {
   const formik = useFormik({
     onSubmit: async (values) => {
-      console.log(values);
-
       onFilters(values);
       onClose();
     },
@@ -42,10 +40,10 @@ export function Filter({ open, onClose, onFilters }: Props) {
 
           <div className="flex gap-4 w-full uppercase font-bold text-sm">
             <div
-              className={`flex flex-1 hover:bg-[#15C770] border border-[#15C770] rounded-lg transition-colors duration-500
+              className={`flex flex-1 hover:bg-primary border border-primary rounded-lg transition-all duration-500
               ${
                 formik.values.balance == "INCOME"
-                  ? "bg-[#15C770]"
+                  ? "bg-primary"
                   : "bg-transparent"
               }`}
             >
@@ -66,9 +64,9 @@ export function Filter({ open, onClose, onFilters }: Props) {
               </label>
             </div>
             <div
-              className={`flex flex-1 hover:bg-[#15C770] border border-[#15C770] rounded-lg transition-colors duration-500 ${
+              className={`flex flex-1 hover:bg-expense-900 border border-expense-900 rounded-lg transition-all duration-500 ${
                 formik.values.balance == "EXPENSE"
-                  ? "bg-[#15C770]"
+                  ? "bg-expense-900"
                   : "bg-transparent"
               }`}
             >

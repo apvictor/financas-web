@@ -126,7 +126,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
             placeholder="R$ 0.00"
             onChange={formik.handleChange}
             defaultValue={transaction ? transaction.value.toFixed(2) : ""}
-            className="bg-transparent text-center outline-none font-bold text-4xl text-[#E86161] placeholder:text-[#E86161]"
+            className="bg-transparent text-center outline-none font-bold text-4xl text-expense-900 placeholder:text-expense-800"
           />
         </div>
 

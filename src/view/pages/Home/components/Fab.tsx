@@ -22,11 +22,11 @@ export function Fab({
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <button className="bg-[#15C770] hover:bg-[#15c771c2] transition-colors p-2 bottom-5 right-5 fixed rounded-full">
-          <Plus color="#FFF" size={24} />
+        <button className="bg-primary hover:bg-tertiary text-white transition-all duration-500 p-2 bottom-5 right-5 fixed rounded-full">
+          <Plus size={32} />
         </button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className="">
+      <DropdownMenu.Content>
         {openModalIncome && (
           <DropdownMenu.Item
             className="flex gap-4 items-center w-full"

@@ -38,7 +38,7 @@ export function Login() {
         <h1 className="font-bold text-3xl">
           Bem vindo ao <br /> PigPay
         </h1>
-        <p className="text-sm text-[#AAA]">
+        <p className="text-sm text-gray-400">
           entre para acessar nossos serviços
         </p>
       </div>
@@ -75,7 +75,7 @@ export function Login() {
           Não tem cadastro?{" "}
           <Link
             to="/register"
-            className="text-[#15C770] hover:text-[#15c771c2]"
+            className="text-primary hover:text-secondary transition-all duration-500"
           >
             Cadastre-se
           </Link>

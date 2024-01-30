@@ -87,7 +87,7 @@ export function Transactions() {
         {transactions.length > 0 ? (
           transactions.map((item) => (
             <div key={item.date} className="flex flex-col gap-2">
-              <span className="text-[#AAA] text-xs">
+              <span className="text-gray-400 text-xs">
                 {formatDate(item.date)}
               </span>
               {item.transactions.map((transaction) => (

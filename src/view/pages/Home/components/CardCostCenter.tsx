@@ -1,5 +1,7 @@
 import { IconCostCenter } from "../../../components/IconCostCenter";
 import { formatCurrency } from "../../../../app/helpers/formatCurrency";
+import { useContext } from "react";
+import { ToggleContext } from "../../../../app/shared/contexts/ToggleContext";
 
 interface Props {
   title: string;
@@ -15,6 +17,8 @@ export function CardCostCenter({
   total,
   openModalCostCenterEdit,
 }: Props) {
+  const { status } = useContext(ToggleContext);
+
   const valor_limite_gasto = (limit * total) / 100;
   const valor_gasto = value;
   const limite_excedido = valor_gasto > valor_limite_gasto;
@@ -31,44 +35,51 @@ export function CardCostCenter({
           <span className="text-sm text-white">{title}</span>
         </div>
         <span
-          className="text-xs"
-          style={{
-            color: `${limite_excedido ? "#E86161" : "#FFF"}`,
-          }}
+          className={`text-xs
+          ${limite_excedido ? "text-expense-900" : "text-white"}`}
         >
-          {porcentagem.toString().length > 2
-            ? porcentagem.toFixed(2)
-            : porcentagem}
-          %
+          {porcentagem.toFixed(2)}%
         </span>
       </div>
       <div className="flex flex-col w-full gap-4">
-        <div className="bg-[#343A40] h-2 rounded-xl relative w-full">
+        <div className="h-2 rounded-xl relative w-full">
           <div
-            className="h-2 rounded-xl relative"
-            style={{
-              width: `${limite_excedido ? 100 : porcentagem}%`,
-              backgroundColor: `${limite_excedido ? "#E86161" : "#15C770"}`,
-            }}
+            className={`h-2 rounded-xl relative
+            ${limite_excedido ? "bg-expense-900" : "bg-primary"} ${
+              limite_excedido ? "max-w-full" : `w-[${porcentagem}]`
+            }`}
           >
             {porcentagem > 18 && (
               <span
-                className="absolute right-0 bottom-[-6px] text-[10px] rounded-lg p-0.5 bg-[#343A40] border"
-                style={{
-                  borderColor: `${limite_excedido ? "#E86161" : "#15C770"}`,
-                }}
+                className={`absolute right-0 bottom-[-6px] text-[10px] rounded-lg p-0.5 bg-gray-800 border
+                ${limite_excedido ? "border-expense-900" : "border-primary"}`}
               >
-                {formatCurrency(valor_gasto)}
+                {!status ? (
+                  <span>•••••••</span>
+                ) : (
+                  <span>{formatCurrency(valor_gasto)}</span>
+                )}
               </span>
             )}
           </div>
         </div>
         <div className="flex justify-between items-center w-full text-xs">
-          <span style={{ color: `${limite_excedido ? "#E86161" : "#FFF"}` }}>
-            {formatCurrency(valor_limite_gasto - valor_gasto)}
+          <span
+            className={`flex justify-between items-center w-full text-xs
+            ${limite_excedido ? "text-expense-900" : "text-white"}`}
+          >
+            {!status ? (
+              <span>•••••••</span>
+            ) : (
+              <span>{formatCurrency(valor_limite_gasto - valor_gasto)}</span>
+            )}
           </span>
           <span className="text-white">
-            {formatCurrency(valor_limite_gasto)}
+            {!status ? (
+              <span>•••••••</span>
+            ) : (
+              <span>{formatCurrency(valor_limite_gasto)}</span>
+            )}
           </span>
         </div>
       </div>

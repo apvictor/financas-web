@@ -1,13 +1,17 @@
+import { useContext } from "react";
 import { Line } from "../../../components/Line";
 import { getBank } from "../../../../app/helpers/bank";
 import { AccountModel } from "../../../../app/models/AccountModel";
 import { formatCurrency } from "../../../../app/helpers/formatCurrency";
+import { ToggleContext } from "../../../../app/shared/contexts/ToggleContext";
 
 interface Props {
   account: AccountModel;
   openModalAccountEdit: () => void;
 }
 export function CardAccount({ account, openModalAccountEdit }: Props) {
+  const { status } = useContext(ToggleContext);
+
   return (
     <>
       <Line />
@@ -29,11 +33,21 @@ export function CardAccount({ account, openModalAccountEdit }: Props) {
         <div className="flex flex-col items-end">
           <span className="text-[10px] font-light">
             na conta{" "}
-            <span className="font-bold">{formatCurrency(account.value)}</span>
+            {!status ? (
+              <span>•••••••</span>
+            ) : (
+              <span>{formatCurrency(account.value)}</span>
+            )}
           </span>
           <span className="font-bold text-sm">
-            {formatCurrency(
-              account.value + account.incomeTotal - account.expenseTotal
+            {!status ? (
+              <span>•••••••</span>
+            ) : (
+              <span>
+                {formatCurrency(
+                  account.value + account.incomeTotal - account.expenseTotal
+                )}
+              </span>
             )}
           </span>
         </div>

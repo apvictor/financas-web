@@ -16,7 +16,7 @@ export function Welcome() {
           Gerencie suas <br />
           finanças
         </h1>
-        <p className="text-sm text-[#AAA]">
+        <p className="text-sm text-gray-400">
           Controle suas finanças com o melhor App de gerenciamento
         </p>
       </div>

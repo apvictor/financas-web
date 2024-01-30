@@ -1,17 +1,18 @@
 import { DropdownMenu } from "../../../components/DropdownMenu";
 import { useAuth } from "../../../../app/shared/hooks/useAuth";
-import { Bell, DoorOpen, User2 } from "lucide-react";
+import { Bell, DoorOpen } from "lucide-react";
 import { Line } from "../../../components/Line";
+import { initialName } from "../../../../app/helpers/initialName";
 
 export function Header() {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
 
   return (
     <header className="flex justify-between items-center gap-8">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <button className="p-1 bg-[#B2F2BB] rounded-full">
-            <User2 size={20} className="text-black" />
+          <button className="h-8 w-12 bg-primary rounded-full text-white">
+            {initialName(user.name)}
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
@@ -29,7 +30,7 @@ export function Header() {
 
       <Line />
 
-      <button>
+      <button className=" text-white">
         <Bell />
       </button>
     </header>

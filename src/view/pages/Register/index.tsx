@@ -33,7 +33,7 @@ export function Register() {
 
       <div className="flex flex-col gap-2">
         <h1 className="font-bold text-3xl">Cadastre-se</h1>
-        <p className="text-sm text-[#AAA]">para acessar nossos serviços</p>
+        <p className="text-sm text-gray-400">para acessar nossos serviços</p>
       </div>
 
       <form
@@ -74,7 +74,10 @@ export function Register() {
         </Button>
         <span className="w-full text-center text-sm">
           Já tem uma conta?{" "}
-          <Link to="/login" className="text-[#15C770] hover:text-[#15c771c2]">
+          <Link
+            to="/login"
+            className="text-primary hover:text-secondary transition-all duration-500"
+          >
             Entrar
           </Link>
         </span>

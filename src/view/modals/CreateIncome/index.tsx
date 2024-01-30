@@ -112,7 +112,7 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
             placeholder="R$ 0.00"
             onChange={formik.handleChange}
             defaultValue={transaction ? transaction.value.toFixed(2) : ""}
-            className="bg-transparent text-center outline-none font-bold text-4xl text-[#15C770] placeholder:text-[#15C770]"
+            className="bg-transparent text-center outline-none font-bold text-4xl text-primary placeholder:text-tertiary"
           />
         </div>
 

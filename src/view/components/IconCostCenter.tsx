@@ -16,14 +16,14 @@ export function IconCostCenter({ title }: Props) {
   return (
     <>
       {title.toUpperCase() === "INCOME" && (
-        <div className="p-1.5 bg-[#009D5263] rounded-full">
-          <ArrowUpCircle color="#009D52" size={16} />
+        <div className="p-1.5 text-primary bg-tertiary rounded-full">
+          <ArrowUpCircle size={16} />
         </div>
       )}
 
       {title.toUpperCase() === "CASA" && (
-        <div className="p-1.5 bg-[#89613363] rounded-full">
-          <HomeIcon color="#896133" size={16} />
+        <div className="p-1.5  bg-gray-400 text-gray-800 rounded-full">
+          <HomeIcon size={16} />
         </div>
       )}
       {title.toUpperCase() === "INVESTIMENTO" && (
@@ -44,8 +44,8 @@ export function IconCostCenter({ title }: Props) {
 
       {!costCenters.includes(title.toLocaleUpperCase()) &&
         title.toUpperCase() !== "INCOME" && (
-          <div className="p-1.5 bg-[#E8616163] rounded-full">
-            <LayoutDashboard color="#E86161" size={16} />
+          <div className="p-1.5 bg-[#89613363]  rounded-full">
+            <LayoutDashboard size={16} color="#896133" />
           </div>
         )}
     </>
