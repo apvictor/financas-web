@@ -1,7 +1,6 @@
+import { useToggle } from "../../../../app/shared/hooks/useToggle";
 import { IconCostCenter } from "../../../components/IconCostCenter";
 import { formatCurrency } from "../../../../app/helpers/formatCurrency";
-import { useContext } from "react";
-import { ToggleContext } from "../../../../app/shared/contexts/ToggleContext";
 
 interface Props {
   title: string;
@@ -17,7 +16,7 @@ export function CardCostCenter({
   total,
   openModalCostCenterEdit,
 }: Props) {
-  const { status } = useContext(ToggleContext);
+  const { status } = useToggle();
 
   const valor_limite_gasto = (limit * total) / 100;
   const valor_gasto = value;

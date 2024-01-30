@@ -1,8 +1,7 @@
 import { Line } from "../../../components/Line";
+import { useToggle } from "../../../../app/shared/hooks/useToggle";
 import { IconCostCenter } from "../../../components/IconCostCenter";
 import { formatCurrency } from "../../../../app/helpers/formatCurrency";
-import { useContext } from "react";
-import { ToggleContext } from "../../../../app/shared/contexts/ToggleContext";
 
 interface Props {
   name: string;
@@ -20,7 +19,7 @@ export function CardTransaction({
   costCenter,
   openModalEditTransaction,
 }: Props) {
-  const { status } = useContext(ToggleContext);
+  const { status } = useToggle();
 
   return (
     <button

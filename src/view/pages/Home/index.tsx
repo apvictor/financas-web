@@ -1,5 +1,5 @@
 import { Fab } from "./components/Fab";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
 import { Line } from "../../components/Line";
 import { api } from "../../../app/services/api";
@@ -14,11 +14,8 @@ import { CreateAccounts } from "../../modals/CreateAccounts";
 import { AccountModel } from "../../../app/models/AccountModel";
 import { CreateCostCenters } from "../../modals/CreateCostCenters";
 import { CostCenterModel } from "../../../app/models/CostCenterModel";
-import { ToggleContext } from "../../../app/shared/contexts/ToggleContext";
 
 export function Home() {
-  const { status } = useContext(ToggleContext);
-
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
   const [openCreateExpense, setOpenCreateExpense] = useState(false);
   const [openCreateAccounts, setOpenCreateAccounts] = useState(false);

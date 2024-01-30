@@ -1,14 +1,13 @@
 import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
+import { useToggle } from "../../../../app/shared/hooks/useToggle";
 import { formatCurrency } from "../../../../app/helpers/formatCurrency";
-import { useContext } from "react";
-import { ToggleContext } from "../../../../app/shared/contexts/ToggleContext";
 
 interface Props {
   type: "INCOME" | "EXPENSE";
   value: number;
 }
 export function CardBalance({ type, value }: Props) {
-  const { status } = useContext(ToggleContext);
+  const { status } = useToggle();
 
   return (
     <div className="bg-gray-800 flex-1 flex items-center gap-2 px-4 py-2 rounded-md">

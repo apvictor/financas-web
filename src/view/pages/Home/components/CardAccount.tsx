@@ -1,16 +1,15 @@
-import { useContext } from "react";
 import { Line } from "../../../components/Line";
 import { getBank } from "../../../../app/helpers/bank";
 import { AccountModel } from "../../../../app/models/AccountModel";
+import { useToggle } from "../../../../app/shared/hooks/useToggle";
 import { formatCurrency } from "../../../../app/helpers/formatCurrency";
-import { ToggleContext } from "../../../../app/shared/contexts/ToggleContext";
 
 interface Props {
   account: AccountModel;
   openModalAccountEdit: () => void;
 }
 export function CardAccount({ account, openModalAccountEdit }: Props) {
-  const { status } = useContext(ToggleContext);
+  const { status } = useToggle();
 
   return (
     <>

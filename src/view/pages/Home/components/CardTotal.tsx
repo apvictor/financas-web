@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import { ChevronRight, Eye, EyeOff } from "lucide-react";
+import { useToggle } from "../../../../app/shared/hooks/useToggle";
 import { formatCurrency } from "../../../../app/helpers/formatCurrency";
-import { useContext } from "react";
-import { ToggleContext } from "../../../../app/shared/contexts/ToggleContext";
 
 interface Props {
   value: number;
 }
 export function CardTotal({ value }: Props) {
-  const { toggle, status } = useContext(ToggleContext);
+  const { toggle, status } = useToggle();
 
   return (
     <div className="flex flex-col gap-2">
