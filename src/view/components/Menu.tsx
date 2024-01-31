@@ -1,13 +1,11 @@
 import {
   CreditCard,
   DoorClosed,
-  DoorOpen,
   LayoutDashboard,
   LineChart,
   Wallet,
   X,
 } from "lucide-react";
-import { ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useAuth } from "../../app/shared/hooks/useAuth";
 import { initialName } from "../../app/helpers/initialName";

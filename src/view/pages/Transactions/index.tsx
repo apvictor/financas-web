@@ -17,6 +17,7 @@ export function Transactions() {
   const [filter, setFilter] = useState<FiltersProps>({
     balance: "",
     month: "",
+    costCenterId: "",
   });
   const [openFilter, setOpenFilter] = useState(false);
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
@@ -143,8 +144,8 @@ export function Transactions() {
       <ModalFilter
         open={openFilter}
         onClose={() => setOpenFilter(false)}
-        onFilters={({ balance, month }) => {
-          setFilter({ balance, month });
+        onFilters={(filters) => {
+          setFilter(filters);
         }}
       />
     </main>
