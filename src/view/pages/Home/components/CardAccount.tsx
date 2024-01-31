@@ -12,7 +12,7 @@ export function CardAccount({ account, openModalAccountEdit }: Props) {
   const { status } = useToggle();
 
   return (
-    <>
+    <div className="flex flex-col gap-4 mt-2">
       <Line />
 
       <button
@@ -51,6 +51,6 @@ export function CardAccount({ account, openModalAccountEdit }: Props) {
           </span>
         </div>
       </button>
-    </>
+    </div>
   );
 }

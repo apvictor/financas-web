@@ -1,21 +1,34 @@
 import { useFormik } from "formik";
+import { useState } from "react";
 import { Modal } from "../../components/Modal";
+import { Input } from "../../components/Input";
+import { api } from "../../../app/services/api";
 import { Button } from "../../components/Button";
 import { Loader } from "../../components/Loader";
-import { Input } from "../../components/Input";
+import { Select } from "../../components/Select";
 import { initialValues, validationSchema } from "../Filter/_validation";
 
 export interface FiltersProps {
   balance: string;
   month: string;
+  costCenterId: string;
 }
 
 interface Props {
   open: boolean;
   onClose(): void;
-  onFilters({ balance, month }: FiltersProps): void;
+  onFilters({ balance, month, costCenterId }: FiltersProps): void;
 }
 export function Filter({ open, onClose, onFilters }: Props) {
+  const [costCenters, setCostCenters] = useState<
+    { id: number; name: string }[]
+  >([]);
+
+  async function getCostCenters() {
+    const data = (await api.get("/cost-centers")).data;
+    setCostCenters(data);
+  }
+
   const formik = useFormik({
     onSubmit: async (values) => {
       onFilters(values);
@@ -26,9 +39,32 @@ export function Filter({ open, onClose, onFilters }: Props) {
   });
 
   return (
-    <Modal title={"Filtros"} open={open} onClose={onClose}>
+    <Modal animate="CENTER" title={"Filtros"} open={open} onClose={onClose}>
       <form className="py-4" onSubmit={formik.handleSubmit}>
         <div className="flex flex-col gap-4">
+          <Select
+            placeholder="Selecione um centro de custo"
+            name="costCenterId"
+            onBlur={formik.handleBlur}
+            onClick={() => {
+              getCostCenters();
+            }}
+            onChange={formik.handleChange}
+            value={formik.values.costCenterId}
+            error={formik.touched.costCenterId && formik.errors.costCenterId}
+          >
+            <option value="" disabled hidden></option>
+            {costCenters.length > 0 ? (
+              costCenters.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))
+            ) : (
+              <option disabled>Nenhum centro de custo cadastrado</option>
+            )}
+          </Select>
+
           <Input
             type="month"
             name="month"
@@ -64,7 +100,8 @@ export function Filter({ open, onClose, onFilters }: Props) {
               </label>
             </div>
             <div
-              className={`flex flex-1 hover:bg-expense-900 border border-expense-900 rounded-lg transition-all duration-500 ${
+              className={`flex flex-1 hover:bg-expense-900 border border-expense-900 rounded-lg transition-all duration-500
+              ${
                 formik.values.balance == "EXPENSE"
                   ? "bg-expense-900"
                   : "bg-transparent"

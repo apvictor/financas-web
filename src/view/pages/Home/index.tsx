@@ -4,7 +4,7 @@ import { Header } from "./components/Header";
 import { Line } from "../../components/Line";
 import { api } from "../../../app/services/api";
 import { CardTotal } from "./components/CardTotal";
-import { PlusCircle, WalletIcon } from "lucide-react";
+import { LayoutDashboard, PlusCircle, WalletIcon } from "lucide-react";
 import { CardBalance } from "./components/CardBalance";
 import { CardAccount } from "./components/CardAccount";
 import { CreateIncome } from "../../modals/CreateIncome";
@@ -72,12 +72,13 @@ export function Home() {
         <CardTotal
           value={total + transactionTotal.income - transactionTotal.expense}
         />
-        <Line />
         <div className="flex items-center gap-4">
           <CardBalance type="INCOME" value={transactionTotal.income} />
           <CardBalance type="EXPENSE" value={transactionTotal.expense} />
         </div>
       </div>
+
+      <Line />
 
       <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
         <div className="flex items-center justify-between text-xs">
@@ -125,11 +126,26 @@ export function Home() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 mb-9">
-        <span className="text-sm font-light">
-          Meus <span className="font-bold">centros de custo</span>
-        </span>
-        <div className="w-full flex-col gap-2 flex">
+      <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <LayoutDashboard size={20} />
+            <span className="font-light">
+              Meus <span className="font-bold">centros de custo</span>
+            </span>
+          </div>
+          <button
+            className="font-bold"
+            onClick={() => {
+              setCostCenter(null);
+              setOpenCreateCostCenters(!openCreateCostCenters);
+            }}
+          >
+            Adicionar
+          </button>
+        </div>
+
+        <div className="flex flex-col gap-2">
           {costCenters.length > 0 ? (
             costCenters.map((costCenter) => (
               <CardCostCenter
@@ -146,7 +162,7 @@ export function Home() {
             ))
           ) : (
             <button
-              className="flex flex-col items-center gap-4 rounded-md bg-gray-800 p-4"
+              className="flex flex-col items-center rounded-md bg-gray-900 p-4"
               onClick={() => {
                 setCostCenter(null);
                 setOpenCreateCostCenters(!openCreateCostCenters);

@@ -21,16 +21,14 @@ export function CardTransaction({
 }: Props) {
   const { status } = useToggle();
 
+  const category = costCenter ? costCenter.name : transactionType;
+
   return (
     <button
       className="flex items-center gap-3 bg-gray-800 w-full h-full p-2 px-3 rounded-md"
       onClick={openModalEditTransaction}
     >
-      {
-        <IconCostCenter
-          title={costCenter ? costCenter.name : transactionType}
-        />
-      }
+      <IconCostCenter title={category} />
 
       <div>
         <Line />
@@ -38,15 +36,24 @@ export function CardTransaction({
 
       <div className="flex flex-col flex-1 items-start">
         <span className="text-xs">{name}</span>
-        <span className="text-gray-400 text-[10px]">{account.name}</span>
+        {transactionType != "INCOME" && (
+          <span className="text-gray-400 text-[10px]">{category}</span>
+        )}
       </div>
 
-      <span
-        className={`text-xs
+      <div className="flex flex-col items-end">
+        <span
+          className={`text-xs
         ${transactionType === "INCOME" ? "text-primary" : "text-expense-900"}`}
-      >
-        {!status ? <span>•••••••</span> : <span>{formatCurrency(value)}</span>}
-      </span>
+        >
+          {!status ? (
+            <span>•••••••</span>
+          ) : (
+            <span>{formatCurrency(value)}</span>
+          )}
+        </span>
+        <span className="text-gray-400 text-[10px]">{account.name}</span>
+      </div>
     </button>
   );
 }

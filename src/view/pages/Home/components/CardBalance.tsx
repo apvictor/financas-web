@@ -10,7 +10,7 @@ export function CardBalance({ type, value }: Props) {
   const { status } = useToggle();
 
   return (
-    <div className="bg-gray-800 flex-1 flex items-center gap-2 px-4 py-2 rounded-md">
+    <div className="bg-gray-800 flex-1 flex items-center gap-2 p-3 rounded-md">
       {type === "INCOME" ? (
         <div className="p-2 rounded-full text-secondary bg-tertiary">
           <ArrowUpCircle size={16} />

@@ -10,21 +10,25 @@ export function CardTotal({ value }: Props) {
   const { toggle, status } = useToggle();
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
-        <p className="text-white text-sm">Saldo atual em contas</p>
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-2xl">
+            {!status ? (
+              <span>•••••••</span>
+            ) : (
+              <span>{formatCurrency(value)}</span>
+            )}
+          </span>
+          <button onClick={toggle}>
+            {status ? <Eye size={20} /> : <EyeOff size={20} />}
+          </button>
+        </div>
         <Link to={"/transactions"}>
           <ChevronRight />
         </Link>
       </div>
-      <div className="flex items-center gap-2">
-        <span className="font-bold text-2xl">
-          {!status ? <span>•••••••</span> : <span>{formatCurrency(value)}</span>}
-        </span>
-        <button onClick={toggle}>
-          {status ? <Eye size={20} /> : <EyeOff size={20} />}
-        </button>
-      </div>
+      <span className="text-white font-light text-sm">Saldo atual em contas</span>
     </div>
   );
 }

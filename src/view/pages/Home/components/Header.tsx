@@ -1,38 +1,26 @@
-import { DropdownMenu } from "../../../components/DropdownMenu";
-import { useAuth } from "../../../../app/shared/hooks/useAuth";
-import { Bell, DoorOpen } from "lucide-react";
+import { Bell, MenuIcon } from "lucide-react";
 import { Line } from "../../../components/Line";
-import { initialName } from "../../../../app/helpers/initialName";
+import { Menu } from "../../../components/Menu";
+import { useState } from "react";
 
 export function Header() {
-  const { signOut, user } = useAuth();
+  const [openMenu, setOpenMenu] = useState(false);
 
   return (
-    <header className="flex justify-between items-center gap-8">
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger>
-          <button className="h-8 w-12 bg-primary rounded-full text-white">
-            {initialName(user.name)}
-          </button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
-          <DropdownMenu.Item>
-            <button
-              onClick={() => signOut()}
-              className="flex gap-4 items-center w-full font-bold"
-            >
-              <DoorOpen />
-              Sair
-            </button>
-          </DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
+    <>
+      <header className="flex justify-between items-center gap-8">
+        <button className="text-white" onClick={() => setOpenMenu(!openMenu)}>
+          <MenuIcon />
+        </button>
 
-      <Line />
+        <Line />
 
-      <button className=" text-white">
-        <Bell />
-      </button>
-    </header>
+        <button className="text-white">
+          <Bell />
+        </button>
+      </header>
+
+      <Menu open={openMenu} onClose={() => setOpenMenu(false)} />
+    </>
   );
 }

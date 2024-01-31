@@ -94,6 +94,7 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
 
   return (
     <Modal
+      animate="BOTTOM"
       title={transaction ? "Editar Receita" : "Criar Receita"}
       open={open}
       onClose={onClose}

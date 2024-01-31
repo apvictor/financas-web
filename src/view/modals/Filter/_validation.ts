@@ -6,11 +6,13 @@ const year = (new Date().getFullYear())
 export const date = `${year}-${month > 9 ? month : "0" + month}`
 
 export const validationSchema = object().shape({
-  balance: string(),
   month: string(),
+  balance: string(),
+  costCenterId: string(),
 })
 
 export const initialValues = {
+  month: date,
   balance: "",
-  month: date
+  costCenterId: "",
 }

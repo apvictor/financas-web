@@ -108,9 +108,10 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
 
   return (
     <Modal
-      title={transaction ? "Editar Despesa" : "Criar Despesa"}
       open={open}
+      animate="BOTTOM"
       onClose={onClose}
+      title={transaction ? "Editar Despesa" : "Criar Despesa"}
       onDelete={() => deleteExpense(transaction ? transaction.id : 0)}
     >
       <form onSubmit={formik.handleSubmit}>

@@ -77,6 +77,7 @@ export function CreateAccounts({ account, open, onClose }: Props) {
 
   return (
     <Modal
+      animate="BOTTOM"
       title={account ? "Editar Conta" : "Criar Conta"}
       open={open}
       onClose={onClose}
