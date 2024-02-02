@@ -2,11 +2,12 @@ import { Fab } from "./components/Fab";
 import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
 import { Line } from "../../components/Line";
+import { Menu } from "../../components/Menu";
 import { api } from "../../../app/services/api";
 import { CardTotal } from "./components/CardTotal";
-import { LayoutDashboard, PlusCircle, WalletIcon } from "lucide-react";
 import { CardBalance } from "./components/CardBalance";
 import { CardAccount } from "./components/CardAccount";
+import { FilterMonth } from "../../modals/FilterMonth";
 import { CreateIncome } from "../../modals/CreateIncome";
 import { CreateExpense } from "../../modals/CreateExpense";
 import { CardCostCenter } from "./components/CardCostCenter";
@@ -14,8 +15,14 @@ import { CreateAccounts } from "../../modals/CreateAccounts";
 import { AccountModel } from "../../../app/models/AccountModel";
 import { CreateCostCenters } from "../../modals/CreateCostCenters";
 import { CostCenterModel } from "../../../app/models/CostCenterModel";
+import { LayoutDashboard, PlusCircle, WalletIcon } from "lucide-react";
+import { useMonth } from "../../../app/shared/hooks/useMonth";
 
 export function Home() {
+  const { setMonth, month } = useMonth();
+
+  const [openMenu, setOpenMenu] = useState(false);
+  const [openFilterMonth, setOpenFilterMonth] = useState(false);
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
   const [openCreateExpense, setOpenCreateExpense] = useState(false);
   const [openCreateAccounts, setOpenCreateAccounts] = useState(false);
@@ -33,7 +40,8 @@ export function Home() {
   }>({ expense: 0, income: 0 });
 
   async function getTotalAccounts() {
-    const data: AccountModel[] = (await api.get("/accounts")).data;
+    const data: AccountModel[] = (await api.get(`/accounts?month=${month}`))
+      .data;
 
     let total = 0;
     data.map((item) => (total += item.value));
@@ -44,12 +52,12 @@ export function Home() {
   }
 
   async function getCostCenters() {
-    const data = (await api.get("/cost-centers")).data;
+    const data = (await api.get(`/cost-centers?month=${month}`)).data;
     setCostCenters(data);
   }
 
   async function getTransactionsTotal() {
-    const data = (await api.get("/transactions/total")).data;
+    const data = (await api.get(`/transactions/total?month=${month}`)).data;
     setTransactionTotal(data);
   }
 
@@ -62,11 +70,15 @@ export function Home() {
     openCreateCostCenters,
     openCreateExpense,
     openCreateIncome,
+    openFilterMonth,
   ]);
 
   return (
     <main className="p-6 flex flex-col gap-6">
-      <Header />
+      <Header
+        openMenu={() => setOpenMenu(!openMenu)}
+        openModalFilterMonth={() => setOpenFilterMonth(!openFilterMonth)}
+      />
 
       <div className="flex flex-col gap-6">
         <CardTotal
@@ -186,6 +198,14 @@ export function Home() {
           setAccount(null);
           setOpenCreateAccounts(!openCreateAccounts);
         }}
+      />
+
+      <Menu open={openMenu} onClose={() => setOpenMenu(false)} />
+
+      <FilterMonth
+        open={openFilterMonth}
+        onClose={() => setOpenFilterMonth(false)}
+        onFilter={({ month }) => setMonth(month)}
       />
 
       <CreateIncome

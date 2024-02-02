@@ -7,11 +7,14 @@ import { CreateIncome } from "../../modals/CreateIncome";
 import { CreateExpense } from "../../modals/CreateExpense";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../../app/helpers/formatDate";
+import { useMonth } from "../../../app/shared/hooks/useMonth";
 import { CardTransaction } from "./components/CardTransaction";
-import { FiltersProps, Filter as ModalFilter } from "../../modals/Filter";
 import transactionEmpty from "../../../assets/transactions.svg";
+import { FiltersProps, Filter as ModalFilter } from "../../modals/Filter";
 
 export function Transactions() {
+  const { month } = useMonth();
+
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState<FiltersProps>({
@@ -51,7 +54,7 @@ export function Transactions() {
         filter.balance ? "&transactionType=" + filter.balance : ""
       }`;
 
-      const data = (await api.get(`/transactions?${filters}`)).data;
+      const data = (await api.get(`/transactions?month=${month}&${filters}`)).data;
       setTransactions(data);
     }
   }

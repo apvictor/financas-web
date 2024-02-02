@@ -1,26 +1,24 @@
-import { Bell, MenuIcon } from "lucide-react";
+import { CalendarDays, MenuIcon } from "lucide-react";
 import { Line } from "../../../components/Line";
-import { Menu } from "../../../components/Menu";
-import { useState } from "react";
 
-export function Header() {
-  const [openMenu, setOpenMenu] = useState(false);
-
+interface Props {
+  openModalFilterMonth: () => void;
+  openMenu: () => void;
+}
+export function Header({ openModalFilterMonth, openMenu }: Props) {
   return (
     <>
       <header className="flex justify-between items-center gap-8">
-        <button className="text-white" onClick={() => setOpenMenu(!openMenu)}>
+        <button className="text-white" onClick={openMenu}>
           <MenuIcon />
         </button>
 
         <Line />
 
-        <button className="text-white">
-          <Bell />
+        <button className="text-white" onClick={openModalFilterMonth}>
+          <CalendarDays />
         </button>
       </header>
-
-      <Menu open={openMenu} onClose={() => setOpenMenu(false)} />
     </>
   );
 }

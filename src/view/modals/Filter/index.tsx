@@ -6,6 +6,7 @@ import { api } from "../../../app/services/api";
 import { Button } from "../../components/Button";
 import { Loader } from "../../components/Loader";
 import { Select } from "../../components/Select";
+import { useMonth } from "../../../app/shared/hooks/useMonth";
 import { initialValues, validationSchema } from "../Filter/_validation";
 
 export interface FiltersProps {
@@ -20,6 +21,8 @@ interface Props {
   onFilters({ balance, month, costCenterId }: FiltersProps): void;
 }
 export function Filter({ open, onClose, onFilters }: Props) {
+  const { setMonth, month } = useMonth();
+
   const [costCenters, setCostCenters] = useState<
     { id: number; name: string }[]
   >([]);
@@ -32,6 +35,7 @@ export function Filter({ open, onClose, onFilters }: Props) {
   const formik = useFormik({
     onSubmit: async (values) => {
       onFilters(values);
+      setMonth(values.month)
       onClose();
     },
     initialValues,
@@ -69,7 +73,7 @@ export function Filter({ open, onClose, onFilters }: Props) {
             type="month"
             name="month"
             placeholder="Mês"
-            value={formik.values.month}
+            defaultValue={month}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
           />
