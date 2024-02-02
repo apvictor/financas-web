@@ -31,7 +31,6 @@ export function Home() {
   const [account, setAccount] = useState<AccountModel | null>(null);
   const [costCenter, setCostCenter] = useState<CostCenterModel | null>(null);
 
-  const [total, setTotal] = useState(0);
   const [accounts, setAccounts] = useState<AccountModel[]>([]);
   const [costCenters, setCostCenters] = useState<CostCenterModel[]>([]);
   const [transactionTotal, setTransactionTotal] = useState<{
@@ -42,11 +41,6 @@ export function Home() {
   async function getTotalAccounts() {
     const data: AccountModel[] = (await api.get(`/accounts?month=${month}`))
       .data;
-
-    let total = 0;
-    data.map((item) => (total += item.value));
-
-    setTotal(total);
 
     setAccounts(data);
   }
@@ -82,7 +76,7 @@ export function Home() {
 
       <div className="flex flex-col gap-6">
         <CardTotal
-          value={total + transactionTotal.income - transactionTotal.expense}
+          value={transactionTotal.income - transactionTotal.expense}
         />
         <div className="flex items-center gap-4">
           <CardBalance type="INCOME" value={transactionTotal.income} />
@@ -165,7 +159,7 @@ export function Home() {
                 title={costCenter.name}
                 value={costCenter.value}
                 limit={costCenter.percentage}
-                total={total + transactionTotal.income}
+                total={transactionTotal.income}
                 openModalCostCenterEdit={() => {
                   setCostCenter(costCenter);
                   setOpenCreateCostCenters(!openCreateCostCenters);
@@ -225,7 +219,7 @@ export function Home() {
         costCenter={costCenter}
         open={openCreateCostCenters}
         onClose={() => setOpenCreateCostCenters(false)}
-        total={total + transactionTotal.income - transactionTotal.expense}
+        total={transactionTotal.income - transactionTotal.expense}
       />
     </main>
   );

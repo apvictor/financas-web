@@ -90,7 +90,7 @@ export function Transactions() {
       <div className="flex flex-1 flex-col gap-4">
         {transactions.length > 0 ? (
           transactions.map((item) => (
-            <div key={item.date} className="flex flex-col gap-2">
+            <div key={item.date} className="flex flex-col gap-4">
               <span className="text-gray-400 text-xs">
                 {formatDate(item.date)}
               </span>

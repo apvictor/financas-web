@@ -1,7 +1,8 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useState } from "react";
 import { date } from "../../../view/modals/FilterMonth/_validation";
 
 interface MonthContextProps {
+  monthName: string;
   month: string;
   setMonth(month: string): void;
 }
@@ -13,14 +14,14 @@ interface MonthProviderProps {
 export function MonthProvider({ children }: MonthProviderProps) {
   const [month, setMonth] = useState(date);
 
-  console.log(month);
+  const [ano, mes] = month.split("-");
 
-  useEffect(() => {
-    setMonth(date);
-  }, []);
+  const monthName = new Date(Number(ano), Number(mes) - 1)
+    .toLocaleString("default", { month: "short" })
+    .toString();
 
   return (
-    <MonthContext.Provider value={{ month, setMonth }}>
+    <MonthContext.Provider value={{ month, monthName, setMonth }}>
       {children}
     </MonthContext.Provider>
   );

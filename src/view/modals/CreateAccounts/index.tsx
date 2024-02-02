@@ -4,10 +4,8 @@ import { Modal } from "../../components/Modal";
 import { api } from "../../../app/services/api";
 import { Button } from "../../components/Button";
 import { Select } from "../../components/Select";
-import CurrencyInput from "react-currency-input-field";
 import { initialValues, validationSchema } from "./_validation";
 import { AccountModel } from "../../../app/models/AccountModel";
-import { formatCurrencyFloat } from "../../../app/helpers/formatCurrencyFloat";
 import { Loader } from "../../components/Loader";
 
 interface Props {
@@ -16,11 +14,9 @@ interface Props {
   onClose(): void;
 }
 export function CreateAccounts({ account, open, onClose }: Props) {
-  function createAccount(values: any) {
-    const { value } = values;
-
+  function createAccount(name: string) {
     api
-      .post("accounts", { ...values, value: formatCurrencyFloat(value) })
+      .post("accounts", { name })
       .then(() => {
         onClose();
       })
@@ -29,14 +25,9 @@ export function CreateAccounts({ account, open, onClose }: Props) {
       });
   }
 
-  function editAccount(id: number, values: any) {
-    const { value } = values;
-
+  function editAccount(id: number, name: string) {
     api
-      .put(`accounts/${id}`, {
-        ...values,
-        value: formatCurrencyFloat(value),
-      })
+      .put(`accounts/${id}`, { name })
       .then(() => {
         onClose();
       })
@@ -57,8 +48,8 @@ export function CreateAccounts({ account, open, onClose }: Props) {
   }
 
   const formik = useFormik({
-    onSubmit: async (values) => {
-      account ? editAccount(account.id, values) : createAccount(values);
+    onSubmit: async ({ name }) => {
+      account ? editAccount(account.id, name) : createAccount(name);
     },
     initialValues,
     validationSchema,
@@ -68,7 +59,6 @@ export function CreateAccounts({ account, open, onClose }: Props) {
     if (account) {
       formik.setValues({
         name: account.name,
-        value: account.value.toString(),
       });
     } else {
       formik.resetForm();
@@ -83,24 +73,8 @@ export function CreateAccounts({ account, open, onClose }: Props) {
       onClose={onClose}
       onDelete={() => deleteAccount(account ? account.id : 0)}
     >
-      <form onSubmit={formik.handleSubmit}>
-        <div className="p-6 flex items-center justify-center">
-          <CurrencyInput
-            type="text"
-            name="value"
-            prefix="R$ "
-            maxLength={10}
-            groupSeparator={" "}
-            decimalSeparator="."
-            allowDecimals={true}
-            placeholder="R$ 0.00"
-            onChange={formik.handleChange}
-            defaultValue={account ? account.value.toFixed(2) : 0}
-            className="bg-transparent text-center outline-none font-bold text-4xl"
-          />
-        </div>
-
-        <div className="flex flex-col gap-4">
+      <form className="mt-4" onSubmit={formik.handleSubmit}>
+        <div className="flex flex-col gap-6">
           <Select
             placeholder="Selecione um banco"
             name="name"

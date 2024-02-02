@@ -42,30 +42,30 @@ export function Menu({ open, onClose }: Props) {
           <main className="py-4 pb-14 flex flex-col flex-1 items-center justify-between h-full">
             <div className="w-full flex flex-col gap-4">
               <Line />
-              <button className="flex gap-4 items-center bg-gray-600 hover:bg-tertiary transition-all duration-500 p-4 rounded-lg">
+              <div className="flex gap-4 items-center bg-gray-600 hover:bg-tertiary transition-all duration-500 p-4 rounded-lg">
                 <CreditCard />
                 Cartões
-              </button>
-              <button className="flex gap-4 items-center bg-gray-600 hover:bg-tertiary transition-all duration-500 p-4 rounded-lg">
+              </div>
+              <div className="flex gap-4 items-center bg-gray-600 hover:bg-tertiary transition-all duration-500 p-4 rounded-lg">
                 <LayoutDashboard />
                 Centros de Custo
-              </button>
-              <button className="flex gap-4 items-center bg-gray-600 hover:bg-tertiary transition-all duration-500 p-4 rounded-lg">
+              </div>
+              <div className="flex gap-4 items-center bg-gray-600 hover:bg-tertiary transition-all duration-500 p-4 rounded-lg">
                 <Wallet />
                 Contas
-              </button>
-              <button className="flex gap-4 items-center bg-gray-600 hover:bg-tertiary transition-all duration-500 p-4 rounded-lg">
+              </div>
+              <div className="flex gap-4 items-center bg-gray-600 hover:bg-tertiary transition-all duration-500 p-4 rounded-lg">
                 <LineChart />
                 Investimentos
-              </button>
+              </div>
             </div>
-            <button
+            <div
               className="flex gap-4 items-center w-full bg-expense-800 hover:bg-expense-900 transition-all duration-500 p-4 rounded-lg"
               onClick={signOut}
             >
               <DoorClosed />
               Sair
-            </button>
+            </div>
           </main>
         </Dialog.Content>
       </Dialog.Portal>

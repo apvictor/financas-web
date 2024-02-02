@@ -41,7 +41,7 @@ export function CardCostCenter({
             className={`text-xs
           ${limite_excedido ? "text-expense-900" : "text-white"}`}
           >
-            {porcentagem.toFixed(0)}%
+            {isNaN(porcentagem) ? 0 : porcentagem}%
           </span>
         </div>
         <div className="flex flex-col w-full gap-4">
@@ -50,7 +50,9 @@ export function CardCostCenter({
               className={`h-2 rounded-xl relative
               ${limite_excedido ? "bg-expense-900" : "bg-primary"}`}
               style={{
-                width: `${limite_excedido ? 100 : porcentagem}%`,
+                width: `${
+                  limite_excedido ? 100 : isNaN(porcentagem) ? 0 : porcentagem
+                }%`,
               }}
             >
               {porcentagem > 18 && (
@@ -76,7 +78,7 @@ export function CardCostCenter({
               {!status ? (
                 <span>•••••••</span>
               ) : (
-                <span>{formatCurrency(valor_limite_gasto - valor_gasto)}</span>
+                <span>{formatCurrency(valor_gasto)}</span>
               )}
             </span>
             <span className="text-white">

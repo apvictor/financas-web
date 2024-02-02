@@ -1,4 +1,3 @@
-import { Line } from "../../../components/Line";
 import { useToggle } from "../../../../app/shared/hooks/useToggle";
 import { IconCostCenter } from "../../../components/IconCostCenter";
 import { formatCurrency } from "../../../../app/helpers/formatCurrency";
@@ -25,20 +24,16 @@ export function CardTransaction({
 
   return (
     <button
-      className="flex items-center gap-3 bg-gray-800 w-full h-full p-2 px-3 rounded-md"
+      className="flex items-center gap-3 bg-gray-800 w-full h-full p-3 rounded-md"
       onClick={openModalEditTransaction}
     >
       <IconCostCenter title={category} />
 
-      <div>
-        <Line />
-      </div>
-
-      <div className="flex flex-col flex-1 items-start">
+      <div className="flex flex-col flex-1 items-start bottom-0 border-l-[1px] border-gray-400 pl-3">
         <span className="text-xs">{name}</span>
-        {transactionType != "INCOME" && (
-          <span className="text-gray-400 text-[10px]">{category}</span>
-        )}
+        <span className="text-gray-400 text-[10px]">
+          {transactionType == "INCOME" ? "Entrada" : `${costCenter.name}`}
+        </span>
       </div>
 
       <div className="flex flex-col items-end">

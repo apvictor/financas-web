@@ -29,27 +29,15 @@ export function CardAccount({ account, openModalAccountEdit }: Props) {
           ></div>
           <span className="text-xs">{account.name}</span>
         </div>
-        <div className="flex flex-col items-end">
-          <span className="text-[10px] font-light">
-            na conta{" "}
-            {!status ? (
-              <span>•••••••</span>
-            ) : (
-              <span>{formatCurrency(account.value)}</span>
-            )}
-          </span>
-          <span className="font-bold text-sm">
-            {!status ? (
-              <span>•••••••</span>
-            ) : (
-              <span>
-                {formatCurrency(
-                  account.value + account.incomeTotal - account.expenseTotal
-                )}
-              </span>
-            )}
-          </span>
-        </div>
+        <span className="font-bold text-sm">
+          {!status ? (
+            <span>•••••••</span>
+          ) : (
+            <span>
+              {formatCurrency(account.incomeTotal - account.expenseTotal)}
+            </span>
+          )}
+        </span>
       </button>
     </div>
   );
