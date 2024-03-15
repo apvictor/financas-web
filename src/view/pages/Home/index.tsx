@@ -41,7 +41,6 @@ export function Home() {
   const [card, setCard] = useState<CardModel | null>(null);
   const [costCenter, setCostCenter] = useState<CostCenterModel | null>(null);
 
-  // const [cards, setCards] = useState<CardModel[]>([]);
   const [accounts, setAccounts] = useState<AccountModel[]>([]);
   const [costCenters, setCostCenters] = useState<CostCenterModel[]>([]);
   const [transactionTotal, setTransactionTotal] = useState<{
@@ -56,11 +55,6 @@ export function Home() {
     setAccounts(data);
   }
 
-  // async function getCards() {
-  //   const data = (await api.get(`/cards`)).data;
-  //   setCards(data);
-  // }
-
   async function getCostCenters() {
     const data = (await api.get(`/cost-centers?month=${month}`)).data;
     setCostCenters(data);
@@ -73,7 +67,6 @@ export function Home() {
 
   useEffect(() => {
     getAccounts();
-    // getCards();
     getCostCenters();
     getTransactionsTotal();
   }, [
@@ -95,8 +88,6 @@ export function Home() {
       <div className="flex flex-col gap-4">
         <CardTotal value={transactionTotal.income - transactionTotal.expense} />
 
-        <Line />
-
         <div className="flex items-center gap-4">
           <CardBalance
             title="Receita"
@@ -112,71 +103,11 @@ export function Home() {
           />
         </div>
 
-        {/* <div className="flex items-center gap-4">
-          <CardBalance
-            title="Pagas"
-            icon={<Check size={20} />}
-            value={transactionTotal.paid}
-            className="text-blue-400 bg-blue-900"
-          />
-          <CardBalance
-            title="A pagar"
-            value={transactionTotal.debtor}
-            icon={<ArrowUpRight size={20} />}
-            className="text-gray-400 bg-gray-700"
-          />
-        </div> */}
       </div>
 
       <Line />
 
-      {/* <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
-        <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2">
-            <CreditCard size={20} />
-            <span className="font-light">
-              Meus <span className="font-bold">cartões</span>
-            </span>
-          </div>
-          <button
-            className="font-bold"
-            onClick={() => {
-              setCard(null);
-              setOpenCreateCards(!openCreateCards);
-            }}
-          >
-            Adicionar
-          </button>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          {cards.length > 0 ? (
-            cards.map((card: CardModel) => (
-              <CardCredit
-                openModalCardEdit={() => {
-                  setCard(card);
-                  setOpenCreateCards(!openCreateCards);
-                }}
-                key={card.id}
-                card={card}
-              />
-            ))
-          ) : (
-            <button
-              className="flex flex-col items-center rounded-md bg-slate-900 p-4"
-              onClick={() => {
-                setCard(null);
-                setOpenCreateCards(!openCreateCards);
-              }}
-            >
-              <PlusCircle />
-              <span>Criar cartão</span>
-            </button>
-          )}
-        </div>
-      </div> */}
-
-      <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
+      <div className="flex flex-col gap-2 rounded-md">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <WalletIcon size={20} />
@@ -222,7 +153,7 @@ export function Home() {
         </div>
       </div>
 
-      <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
+      <div className="flex flex-col gap-2 rounded-md mt-2">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <LayoutDashboard size={20} />

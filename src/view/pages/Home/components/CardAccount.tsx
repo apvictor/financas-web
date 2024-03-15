@@ -9,7 +9,7 @@ interface Props {
 export function CardAccount({ account, openModalAccountEdit }: Props) {
   return (
     <button
-      className="flex items-center justify-between w-full p-4 mt-2 rounded-lg bg-slate-900"
+      className="flex items-center justify-between w-full p-4 mt-2 rounded-lg bg-slate-800"
       onClick={openModalAccountEdit}
     >
       <div className="flex items-center gap-2">

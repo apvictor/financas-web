@@ -22,7 +22,7 @@ export function CardCostCenter({
 
   return (
     <button
-      className="flex flex-col items-center justify-between gap-4 p-4 mt-2 rounded-lg bg-slate-900"
+      className="flex flex-col items-center justify-between gap-4 p-4 mt-2 rounded-lg bg-slate-800"
       onClick={openModalCostCenterEdit}
     >
       <div className="w-full flex items-center justify-between">
@@ -38,7 +38,7 @@ export function CardCostCenter({
         </span>
       </div>
       <div className="flex flex-col w-full gap-4">
-        <div className="bg-gray-800 h-2 rounded-xl relative w-full">
+        <div className="bg-gray-900 h-2 rounded-xl relative w-full">
           <div
             className={`h-2 rounded-xl relative
               ${limite_excedido ? "bg-expense-900" : "bg-primary"}`}
