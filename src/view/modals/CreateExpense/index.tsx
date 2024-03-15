@@ -12,7 +12,6 @@ import {
   TransactionModel,
 } from "../../../app/models/TransactionModel";
 import { formatCurrencyFloat } from "../../../app/helpers/formatCurrencyFloat";
-import { Switch } from "../../components/Switch";
 
 interface Props {
   open: boolean;
@@ -20,7 +19,7 @@ interface Props {
   transaction?: TransactionModel | null;
 }
 export function CreateExpense({ open, onClose, transaction }: Props) {
-  const [cards, setCards] = useState<{ id: number; name: string }[]>([]);
+  // const [cards, setCards] = useState<{ id: number; name: string }[]>([]);
   const [accounts, setAccounts] = useState<{ id: number; name: string }[]>([]);
   const [costCenters, setCostCenters] = useState<
     { id: number; name: string }[]
@@ -31,10 +30,10 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
     setAccounts(data);
   }
 
-  async function getCards() {
-    const data = (await api.get("/cards")).data;
-    setCards(data);
-  }
+  // async function getCards() {
+  //   const data = (await api.get("/cards")).data;
+  //   setCards(data);
+  // }
 
   async function getCostCenters() {
     const data = (await api.get("/cost-centers")).data;
@@ -72,7 +71,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
 
   useEffect(() => {
     getAccounts();
-    getCards();
+    // getCards();
     getCostCenters();
     if (transaction) {
       formik.setValues({

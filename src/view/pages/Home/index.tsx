@@ -5,7 +5,6 @@ import { Line } from "../../components/Line";
 import { Menu } from "../../components/Menu";
 import { api } from "../../../app/services/api";
 import { CardTotal } from "./components/CardTotal";
-import { CardCredit } from "./components/CardCredit";
 import { CardBalance } from "./components/CardBalance";
 import { CardAccount } from "./components/CardAccount";
 import { FilterMonth } from "../../modals/FilterMonth";
@@ -22,9 +21,6 @@ import { CostCenterModel } from "../../../app/models/CostCenterModel";
 import {
   ArrowDown,
   ArrowUp,
-  ArrowUpRight,
-  Check,
-  CreditCard,
   LayoutDashboard,
   PlusCircle,
   WalletIcon,
@@ -45,7 +41,7 @@ export function Home() {
   const [card, setCard] = useState<CardModel | null>(null);
   const [costCenter, setCostCenter] = useState<CostCenterModel | null>(null);
 
-  const [cards, setCards] = useState<CardModel[]>([]);
+  // const [cards, setCards] = useState<CardModel[]>([]);
   const [accounts, setAccounts] = useState<AccountModel[]>([]);
   const [costCenters, setCostCenters] = useState<CostCenterModel[]>([]);
   const [transactionTotal, setTransactionTotal] = useState<{
@@ -60,10 +56,10 @@ export function Home() {
     setAccounts(data);
   }
 
-  async function getCards() {
-    const data = (await api.get(`/cards`)).data;
-    setCards(data);
-  }
+  // async function getCards() {
+  //   const data = (await api.get(`/cards`)).data;
+  //   setCards(data);
+  // }
 
   async function getCostCenters() {
     const data = (await api.get(`/cost-centers?month=${month}`)).data;
@@ -77,7 +73,7 @@ export function Home() {
 
   useEffect(() => {
     getAccounts();
-    getCards();
+    // getCards();
     getCostCenters();
     getTransactionsTotal();
   }, [

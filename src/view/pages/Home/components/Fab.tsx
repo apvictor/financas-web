@@ -1,7 +1,6 @@
 import {
   ArrowDownCircle,
   ArrowUpCircle,
-  CreditCard,
   LayoutGrid,
   LucideLandmark,
   Plus,
@@ -17,7 +16,6 @@ interface Props {
 }
 export function Fab({
   openModalAccounts,
-  openModalCards,
   openModalCostCenters,
   openModalExpense,
   openModalIncome,
