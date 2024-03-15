@@ -3,7 +3,7 @@ export interface TransactionModel {
   name: string;
   value: number;
   accountId: number;
-  cardId: number;
+  cardId: number | null;
   costCenterId: number;
   transactionType: string;
 }

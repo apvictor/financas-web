@@ -116,7 +116,7 @@ export function Home() {
           />
         </div>
 
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           <CardBalance
             title="Pagas"
             icon={<Check size={20} />}
@@ -129,12 +129,12 @@ export function Home() {
             icon={<ArrowUpRight size={20} />}
             className="text-gray-400 bg-gray-700"
           />
-        </div>
+        </div> */}
       </div>
 
       <Line />
 
-      <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
+      {/* <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <CreditCard size={20} />
@@ -178,7 +178,7 @@ export function Home() {
             </button>
           )}
         </div>
-      </div>
+      </div> */}
 
       <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
         <div className="flex items-center justify-between text-xs">

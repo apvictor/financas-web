@@ -6,7 +6,7 @@ interface Props extends ComponentProps<"switch"> {
 }
 export function Switch({ title, ...props }: Props) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between py-2">
       <label
         className="text-white text-[15px] leading-none pr-[15px]"
         htmlFor={title}

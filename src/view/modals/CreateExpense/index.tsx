@@ -78,8 +78,8 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
       formik.setValues({
         name: transaction.name,
         value: transaction.value.toString(),
-        cardId: transaction.cardId.toString(),
         accountId: transaction.accountId.toString(),
+        cardId: transaction.cardId ? transaction.cardId.toString() : "",
         costCenterId: transaction.costCenterId.toString(),
         transactionType: "EXPENSE",
       });
@@ -142,7 +142,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
               <option disabled>Nenhuma conta cadastrada</option>
             )}
           </Select>
-          <Select
+          {/* <Select
             placeholder="Selecione um cartão"
             name="cardId"
             onBlur={formik.handleBlur}
@@ -160,7 +160,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
             ) : (
               <option disabled>Nenhum cartão cadastrado</option>
             )}
-          </Select>
+          </Select> */}
           <Select
             placeholder="Selecione um centro de custo"
             name="costCenterId"
@@ -180,12 +180,12 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
               <option disabled>Nenhum centro de custo cadastrado</option>
             )}
           </Select>
-          <Switch
+          {/* <Switch
             name="paid"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             title="Despesa paga?"
-          />
+          /> */}
           <Button
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}

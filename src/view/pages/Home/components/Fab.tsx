@@ -48,7 +48,7 @@ export function Fab({
             Nova Despesa
           </DropdownMenu.Item>
         )}
-        {openModalCards && (
+        {/* {openModalCards && (
           <DropdownMenu.Item
             onSelect={openModalCards}
             className="flex gap-4 items-center w-full"
@@ -56,7 +56,7 @@ export function Fab({
             <CreditCard className="text-yellow-500" />
             Novo Cartão
           </DropdownMenu.Item>
-        )}
+        )} */}
         {openModalAccounts && (
           <DropdownMenu.Item
             onSelect={openModalAccounts}
