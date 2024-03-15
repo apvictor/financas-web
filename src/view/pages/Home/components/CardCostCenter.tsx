@@ -1,7 +1,6 @@
-import { useToggle } from "../../../../app/shared/hooks/useToggle";
-import { IconCostCenter } from "../../../components/IconCostCenter";
-import { formatCurrency } from "../../../../app/helpers/formatCurrency";
 import { Line } from "../../../components/Line";
+import { IconCostCenter } from "../../../components/IconCostCenter";
+import { VisibilityValue } from "../../../components/VisibilityValue";
 
 interface Props {
   title: string;
@@ -17,8 +16,6 @@ export function CardCostCenter({
   total,
   openModalCostCenterEdit,
 }: Props) {
-  const { status } = useToggle();
-
   const valor_limite_gasto = (limit * total) / 100;
   const valor_gasto = value;
   const limite_excedido = valor_gasto > valor_limite_gasto;
@@ -41,7 +38,7 @@ export function CardCostCenter({
             className={`text-xs
           ${limite_excedido ? "text-expense-900" : "text-white"}`}
           >
-            {isNaN(porcentagem) ? 0 : porcentagem}%
+            {isNaN(porcentagem) ? 0 : porcentagem.toFixed(0)}%
           </span>
         </div>
         <div className="flex flex-col w-full gap-4">
@@ -51,7 +48,11 @@ export function CardCostCenter({
               ${limite_excedido ? "bg-expense-900" : "bg-primary"}`}
               style={{
                 width: `${
-                  limite_excedido ? 100 : isNaN(porcentagem) ? 0 : porcentagem
+                  limite_excedido
+                    ? 100
+                    : isNaN(porcentagem)
+                    ? 0
+                    : porcentagem.toFixed(0)
                 }%`,
               }}
             >
@@ -61,11 +62,7 @@ export function CardCostCenter({
                   ${limite_excedido ? "border-expense-900" : "border-primary"}
                   `}
                 >
-                  {!status ? (
-                    <span>•••••••</span>
-                  ) : (
-                    <span>{formatCurrency(valor_gasto)}</span>
-                  )}
+                  <VisibilityValue value={valor_gasto} />
                 </span>
               )}
             </div>
@@ -75,18 +72,10 @@ export function CardCostCenter({
               className={`flex justify-between items-center w-full text-xs
             ${limite_excedido ? "text-expense-900" : "text-white"}`}
             >
-              {!status ? (
-                <span>•••••••</span>
-              ) : (
-                <span>{formatCurrency(valor_gasto)}</span>
-              )}
+              <VisibilityValue value={valor_gasto} />
             </span>
             <span className="text-white">
-              {!status ? (
-                <span>•••••••</span>
-              ) : (
-                <span>{formatCurrency(valor_limite_gasto)}</span>
-              )}
+              <VisibilityValue value={valor_limite_gasto} />
             </span>
           </div>
         </div>

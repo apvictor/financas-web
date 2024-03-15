@@ -5,44 +5,64 @@ import { Line } from "../../components/Line";
 import { Menu } from "../../components/Menu";
 import { api } from "../../../app/services/api";
 import { CardTotal } from "./components/CardTotal";
+import { CardCredit } from "./components/CardCredit";
 import { CardBalance } from "./components/CardBalance";
 import { CardAccount } from "./components/CardAccount";
 import { FilterMonth } from "../../modals/FilterMonth";
+import { CreateCards } from "../../modals/CreateCards";
 import { CreateIncome } from "../../modals/CreateIncome";
+import { CardModel } from "../../../app/models/CardModel";
 import { CreateExpense } from "../../modals/CreateExpense";
 import { CardCostCenter } from "./components/CardCostCenter";
 import { CreateAccounts } from "../../modals/CreateAccounts";
+import { useMonth } from "../../../app/shared/hooks/useMonth";
 import { AccountModel } from "../../../app/models/AccountModel";
 import { CreateCostCenters } from "../../modals/CreateCostCenters";
 import { CostCenterModel } from "../../../app/models/CostCenterModel";
-import { LayoutDashboard, PlusCircle, WalletIcon } from "lucide-react";
-import { useMonth } from "../../../app/shared/hooks/useMonth";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpRight,
+  Check,
+  CreditCard,
+  LayoutDashboard,
+  PlusCircle,
+  WalletIcon,
+} from "lucide-react";
 
 export function Home() {
   const { setMonth, month } = useMonth();
 
   const [openMenu, setOpenMenu] = useState(false);
   const [openFilterMonth, setOpenFilterMonth] = useState(false);
+  const [openCreateCards, setOpenCreateCards] = useState(false);
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
   const [openCreateExpense, setOpenCreateExpense] = useState(false);
   const [openCreateAccounts, setOpenCreateAccounts] = useState(false);
   const [openCreateCostCenters, setOpenCreateCostCenters] = useState(false);
 
   const [account, setAccount] = useState<AccountModel | null>(null);
+  const [card, setCard] = useState<CardModel | null>(null);
   const [costCenter, setCostCenter] = useState<CostCenterModel | null>(null);
 
+  const [cards, setCards] = useState<CardModel[]>([]);
   const [accounts, setAccounts] = useState<AccountModel[]>([]);
   const [costCenters, setCostCenters] = useState<CostCenterModel[]>([]);
   const [transactionTotal, setTransactionTotal] = useState<{
     expense: number;
     income: number;
-  }>({ expense: 0, income: 0 });
+    paid: number;
+    debtor: number;
+  }>({ expense: 0, income: 0, paid: 0, debtor: 0 });
 
-  async function getTotalAccounts() {
-    const data: AccountModel[] = (await api.get(`/accounts?month=${month}`))
-      .data;
-
+  async function getAccounts() {
+    const data = (await api.get(`/accounts?month=${month}`)).data;
     setAccounts(data);
+  }
+
+  async function getCards() {
+    const data = (await api.get(`/cards`)).data;
+    setCards(data);
   }
 
   async function getCostCenters() {
@@ -56,11 +76,13 @@ export function Home() {
   }
 
   useEffect(() => {
+    getAccounts();
+    getCards();
     getCostCenters();
-    getTotalAccounts();
     getTransactionsTotal();
   }, [
     openCreateAccounts,
+    openCreateCards,
     openCreateCostCenters,
     openCreateExpense,
     openCreateIncome,
@@ -74,17 +96,89 @@ export function Home() {
         openModalFilterMonth={() => setOpenFilterMonth(!openFilterMonth)}
       />
 
-      <div className="flex flex-col gap-6">
-        <CardTotal
-          value={transactionTotal.income - transactionTotal.expense}
-        />
+      <div className="flex flex-col gap-4">
+        <CardTotal value={transactionTotal.income - transactionTotal.expense} />
+
+        <Line />
+
         <div className="flex items-center gap-4">
-          <CardBalance type="INCOME" value={transactionTotal.income} />
-          <CardBalance type="EXPENSE" value={transactionTotal.expense} />
+          <CardBalance
+            title="Receita"
+            icon={<ArrowUp size={20} />}
+            value={transactionTotal.income}
+            className="text-green-400 bg-green-900"
+          />
+          <CardBalance
+            title="Despesa"
+            icon={<ArrowDown size={20} />}
+            value={transactionTotal.expense}
+            className="text-red-400 bg-red-900"
+          />
+        </div>
+
+        <div className="flex items-center gap-4">
+          <CardBalance
+            title="Pagas"
+            icon={<Check size={20} />}
+            value={transactionTotal.paid}
+            className="text-blue-400 bg-blue-900"
+          />
+          <CardBalance
+            title="A pagar"
+            value={transactionTotal.debtor}
+            icon={<ArrowUpRight size={20} />}
+            className="text-gray-400 bg-gray-700"
+          />
         </div>
       </div>
 
       <Line />
+
+      <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <CreditCard size={20} />
+            <span className="font-light">
+              Meus <span className="font-bold">cartões</span>
+            </span>
+          </div>
+          <button
+            className="font-bold"
+            onClick={() => {
+              setCard(null);
+              setOpenCreateCards(!openCreateCards);
+            }}
+          >
+            Adicionar
+          </button>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {cards.length > 0 ? (
+            cards.map((card: CardModel) => (
+              <CardCredit
+                openModalCardEdit={() => {
+                  setCard(card);
+                  setOpenCreateCards(!openCreateCards);
+                }}
+                key={card.id}
+                card={card}
+              />
+            ))
+          ) : (
+            <button
+              className="flex flex-col items-center rounded-md bg-slate-900 p-4"
+              onClick={() => {
+                setCard(null);
+                setOpenCreateCards(!openCreateCards);
+              }}
+            >
+              <PlusCircle />
+              <span>Criar cartão</span>
+            </button>
+          )}
+        </div>
+      </div>
 
       <div className="bg-gray-800 flex flex-col gap-2 p-4 rounded-md">
         <div className="flex items-center justify-between text-xs">
@@ -192,6 +286,10 @@ export function Home() {
           setAccount(null);
           setOpenCreateAccounts(!openCreateAccounts);
         }}
+        openModalCards={() => {
+          setCard(null);
+          setOpenCreateCards(!openCreateCards);
+        }}
       />
 
       <Menu open={openMenu} onClose={() => setOpenMenu(false)} />
@@ -214,6 +312,11 @@ export function Home() {
         account={account}
         open={openCreateAccounts}
         onClose={() => setOpenCreateAccounts(false)}
+      />
+      <CreateCards
+        card={card}
+        open={openCreateCards}
+        onClose={() => setOpenCreateCards(false)}
       />
       <CreateCostCenters
         costCenter={costCenter}
