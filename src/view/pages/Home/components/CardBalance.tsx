@@ -1,35 +1,20 @@
-import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
-import { useToggle } from "../../../../app/shared/hooks/useToggle";
-import { formatCurrency } from "../../../../app/helpers/formatCurrency";
+import { ReactNode } from "react";
+import { VisibilityValue } from "../../../components/VisibilityValue";
 
 interface Props {
-  type: "INCOME" | "EXPENSE";
+  title: string;
   value: number;
+  icon: ReactNode;
+  className: string;
 }
-export function CardBalance({ type, value }: Props) {
-  const { status } = useToggle();
-
+export function CardBalance({ title, value, className, icon }: Props) {
   return (
     <div className="bg-gray-800 flex-1 flex items-center gap-2 p-3 rounded-md">
-      {type === "INCOME" ? (
-        <div className="p-2 rounded-full text-secondary bg-tertiary">
-          <ArrowUpCircle size={16} />
-        </div>
-      ) : (
-        <div className="p-2 rounded-full text-expense-900 bg-expense-800">
-          <ArrowDownCircle size={16} />
-        </div>
-      )}
+      <div className={`p-2 rounded-full ${className}`}>{icon}</div>
       <div className="flex flex-col items-start">
-        <span className="text-xs font-light">
-          {type == "INCOME" ? "Receitas" : "Despesas"}
-        </span>
+        <span className="text-xs font-light">{title}</span>
         <span className="text-xs font-bold">
-          {!status ? (
-            <span>•••••••</span>
-          ) : (
-            <span>{formatCurrency(value)}</span>
-          )}
+          <VisibilityValue value={value} />
         </span>
       </div>
     </div>

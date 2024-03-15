@@ -7,8 +7,12 @@ import { Button } from "../../components/Button";
 import { Select } from "../../components/Select";
 import CurrencyInput from "react-currency-input-field";
 import { initialValues, validationSchema } from "./_validation";
-import { TransactionModel } from "../../../app/models/TransactionModel";
+import {
+  FormTransactionModel,
+  TransactionModel,
+} from "../../../app/models/TransactionModel";
 import { formatCurrencyFloat } from "../../../app/helpers/formatCurrencyFloat";
+import { Switch } from "../../components/Switch";
 
 interface Props {
   open: boolean;
@@ -16,14 +20,20 @@ interface Props {
   transaction?: TransactionModel | null;
 }
 export function CreateExpense({ open, onClose, transaction }: Props) {
+  const [cards, setCards] = useState<{ id: number; name: string }[]>([]);
   const [accounts, setAccounts] = useState<{ id: number; name: string }[]>([]);
   const [costCenters, setCostCenters] = useState<
     { id: number; name: string }[]
   >([]);
 
-  async function getTotalAccounts() {
+  async function getAccounts() {
     const data = (await api.get("/accounts")).data;
     setAccounts(data);
+  }
+
+  async function getCards() {
+    const data = (await api.get("/cards")).data;
+    setCards(data);
   }
 
   async function getCostCenters() {
@@ -31,73 +41,45 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
     setCostCenters(data);
   }
 
-  function createExpense(values: any) {
-    const { value, accountId, costCenterId } = values;
-
-    api
-      .post("transactions", {
-        ...values,
-        transactionType: "EXPENSE",
-        value: formatCurrencyFloat(value),
-        accountId: parseInt(accountId),
-        costCenterId: parseInt(costCenterId),
-      })
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  function createExpense(data: FormTransactionModel) {
+    api.post("transactions", data).finally(() => onClose());
   }
 
-  function editExpense(id: number, values: any) {
-    const { value, accountId, costCenterId } = values;
-
-    api
-      .put(`transactions/${id}`, {
-        ...values,
-        value: formatCurrencyFloat(value),
-        accountId: parseInt(accountId),
-        costCenterId: parseInt(costCenterId),
-      })
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  function editExpense(id: number, data: FormTransactionModel) {
+    api.put(`transactions/${id}`, data).finally(() => onClose());
   }
 
   function deleteExpense(id: number) {
-    api
-      .delete(`transactions/${id}`)
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    api.delete(`transactions/${id}`).finally(() => onClose());
   }
 
   const formik = useFormik({
-    onSubmit: async (values) => {
-      transaction ? editExpense(transaction.id, values) : createExpense(values);
+    onSubmit: async ({ accountId, cardId, costCenterId, name, value }) => {
+      const data = {
+        accountId: parseInt(accountId),
+        cardId: parseInt(cardId),
+        costCenterId: parseInt(costCenterId),
+        name,
+        transactionType: "EXPENSE",
+        value: formatCurrencyFloat(value),
+      };
+
+      transaction ? editExpense(transaction.id, data) : createExpense(data);
     },
     initialValues,
     validationSchema,
   });
 
   useEffect(() => {
-    getTotalAccounts();
+    getAccounts();
+    getCards();
     getCostCenters();
-  }, [open]);
-
-  useEffect(() => {
     if (transaction) {
       formik.setValues({
         name: transaction.name,
         value: transaction.value.toString(),
         accountId: transaction.accountId.toString(),
+        cardId: transaction.cardId ? transaction.cardId.toString() : "",
         costCenterId: transaction.costCenterId.toString(),
         transactionType: "EXPENSE",
       });
@@ -160,7 +142,25 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
               <option disabled>Nenhuma conta cadastrada</option>
             )}
           </Select>
-
+          {/* <Select
+            placeholder="Selecione um cartão"
+            name="cardId"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            value={formik.values.cardId}
+            error={formik.touched.cardId && formik.errors.cardId}
+          >
+            <option value="" disabled hidden></option>
+            {cards.length > 0 ? (
+              cards.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))
+            ) : (
+              <option disabled>Nenhum cartão cadastrado</option>
+            )}
+          </Select> */}
           <Select
             placeholder="Selecione um centro de custo"
             name="costCenterId"
@@ -180,7 +180,12 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
               <option disabled>Nenhum centro de custo cadastrado</option>
             )}
           </Select>
-
+          {/* <Switch
+            name="paid"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            title="Despesa paga?"
+          /> */}
           <Button
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}

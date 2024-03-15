@@ -1,6 +1,5 @@
-import { useToggle } from "../../../../app/shared/hooks/useToggle";
 import { IconCostCenter } from "../../../components/IconCostCenter";
-import { formatCurrency } from "../../../../app/helpers/formatCurrency";
+import { VisibilityValue } from "../../../components/VisibilityValue";
 
 interface Props {
   name: string;
@@ -18,8 +17,6 @@ export function CardTransaction({
   costCenter,
   openModalEditTransaction,
 }: Props) {
-  const { status } = useToggle();
-
   const category = costCenter ? costCenter.name : transactionType;
 
   return (
@@ -29,7 +26,7 @@ export function CardTransaction({
     >
       <IconCostCenter title={category} />
 
-      <div className="flex flex-col flex-1 items-start bottom-0 border-l-[1px] border-gray-400 pl-3">
+      <div className="flex flex-col flex-1 items-start bottom-0 border-l-[2px] border-gray-500 pl-3">
         <span className="text-xs">{name}</span>
         <span className="text-gray-400 text-[10px]">
           {transactionType == "INCOME" ? "Entrada" : `${costCenter.name}`}
@@ -41,11 +38,7 @@ export function CardTransaction({
           className={`text-xs
         ${transactionType === "INCOME" ? "text-primary" : "text-expense-900"}`}
         >
-          {!status ? (
-            <span>•••••••</span>
-          ) : (
-            <span>{formatCurrency(value)}</span>
-          )}
+          <VisibilityValue value={value} />
         </span>
         <span className="text-gray-400 text-[10px]">{account.name}</span>
       </div>
