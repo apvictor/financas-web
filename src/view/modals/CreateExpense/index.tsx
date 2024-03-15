@@ -19,7 +19,6 @@ interface Props {
   transaction?: TransactionModel | null;
 }
 export function CreateExpense({ open, onClose, transaction }: Props) {
-  // const [cards, setCards] = useState<{ id: number; name: string }[]>([]);
   const [accounts, setAccounts] = useState<{ id: number; name: string }[]>([]);
   const [costCenters, setCostCenters] = useState<
     { id: number; name: string }[]
@@ -29,11 +28,6 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
     const data = (await api.get("/accounts")).data;
     setAccounts(data);
   }
-
-  // async function getCards() {
-  //   const data = (await api.get("/cards")).data;
-  //   setCards(data);
-  // }
 
   async function getCostCenters() {
     const data = (await api.get("/cost-centers")).data;
@@ -53,10 +47,9 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
   }
 
   const formik = useFormik({
-    onSubmit: async ({ accountId, cardId, costCenterId, name, value }) => {
+    onSubmit: async ({ accountId, costCenterId, name, value }) => {
       const data = {
         accountId: parseInt(accountId),
-        cardId: parseInt(cardId),
         costCenterId: parseInt(costCenterId),
         name,
         transactionType: "EXPENSE",
@@ -78,7 +71,6 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
         name: transaction.name,
         value: transaction.value.toString(),
         accountId: transaction.accountId.toString(),
-        cardId: transaction.cardId ? transaction.cardId.toString() : "",
         costCenterId: transaction.costCenterId.toString(),
         transactionType: "EXPENSE",
       });
@@ -141,25 +133,6 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
               <option disabled>Nenhuma conta cadastrada</option>
             )}
           </Select>
-          {/* <Select
-            placeholder="Selecione um cartão"
-            name="cardId"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.cardId}
-            error={formik.touched.cardId && formik.errors.cardId}
-          >
-            <option value="" disabled hidden></option>
-            {cards.length > 0 ? (
-              cards.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))
-            ) : (
-              <option disabled>Nenhum cartão cadastrado</option>
-            )}
-          </Select> */}
           <Select
             placeholder="Selecione um centro de custo"
             name="costCenterId"
