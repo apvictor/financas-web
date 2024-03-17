@@ -46,9 +46,9 @@ export function Home() {
   const [transactionTotal, setTransactionTotal] = useState<{
     expense: number;
     income: number;
-    paid: number;
-    debtor: number;
-  }>({ expense: 0, income: 0, paid: 0, debtor: 0 });
+    totalExpense: number;
+    totalIncome: number;
+  }>({ expense: 0, income: 0, totalExpense: 0, totalIncome: 0 });
 
   async function getAccounts() {
     const data = (await api.get(`/accounts?month=${month}`)).data;
@@ -86,28 +86,25 @@ export function Home() {
       />
 
       <div className="flex flex-col gap-4">
-        <CardTotal value={transactionTotal.income - transactionTotal.expense} />
+        <CardTotal value={transactionTotal.totalIncome - transactionTotal.totalExpense} />
 
         <div className="flex items-center gap-4">
           <CardBalance
             title="Receita"
-            icon={<ArrowUp size={20} />}
+            icon={<ArrowUp size={16} />}
             value={transactionTotal.income}
             className="text-green-400 bg-green-900"
           />
           <CardBalance
             title="Despesa"
-            icon={<ArrowDown size={20} />}
+            icon={<ArrowDown size={16} />}
             value={transactionTotal.expense}
             className="text-red-400 bg-red-900"
           />
         </div>
-
       </div>
 
-      <Line />
-
-      <div className="flex flex-col gap-2 rounded-md">
+      <div className="flex flex-col gap-2 rounded-md mt-2">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <WalletIcon size={20} />
@@ -122,7 +119,7 @@ export function Home() {
               setOpenCreateAccounts(!openCreateAccounts);
             }}
           >
-            Adicionar
+            {accounts.length > 0 ? <PlusCircle size={20} /> : ""}
           </button>
         </div>
 
@@ -140,14 +137,14 @@ export function Home() {
             ))
           ) : (
             <button
-              className="flex flex-col items-center rounded-md bg-slate-900 p-4"
+              className="flex flex-col items-center gap-2 rounded-md bg-slate-800 p-4 mt-1"
               onClick={() => {
                 setAccount(null);
                 setOpenCreateAccounts(!openCreateAccounts);
               }}
             >
               <PlusCircle />
-              <span>Criar conta</span>
+              <span className="text-sm">Criar conta</span>
             </button>
           )}
         </div>
@@ -168,7 +165,7 @@ export function Home() {
               setOpenCreateCostCenters(!openCreateCostCenters);
             }}
           >
-            Adicionar
+            {costCenters.length > 0 ? <PlusCircle size={20} /> : ""}
           </button>
         </div>
 
@@ -189,14 +186,14 @@ export function Home() {
             ))
           ) : (
             <button
-              className="flex flex-col items-center rounded-md bg-gray-900 p-4"
+              className="flex flex-col items-center gap-2 rounded-md bg-slate-800 p-4 mt-1"
               onClick={() => {
                 setCostCenter(null);
                 setOpenCreateCostCenters(!openCreateCostCenters);
               }}
             >
               <PlusCircle />
-              <span>Criar centro de custo</span>
+              <span className="text-sm">Criar centro de custo</span>
             </button>
           )}
         </div>

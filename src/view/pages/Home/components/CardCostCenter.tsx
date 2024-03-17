@@ -22,7 +22,7 @@ export function CardCostCenter({
 
   return (
     <button
-      className="flex flex-col items-center justify-between gap-4 p-4 mt-2 rounded-lg bg-slate-800"
+      className="flex flex-col items-center justify-between gap-4 p-4 mt-1 rounded-lg bg-slate-800"
       onClick={openModalCostCenterEdit}
     >
       <div className="w-full flex items-center justify-between">

@@ -1,5 +1,6 @@
 import {
-  ArrowUpCircle,
+  ArrowDown,
+  ArrowUp,
   GraduationCap,
   HomeIcon,
   LayoutDashboard,
@@ -17,7 +18,13 @@ export function IconCostCenter({ title }: Props) {
     <>
       {title.toUpperCase() === "INCOME" && (
         <div className="p-1.5 text-primary bg-tertiary rounded-full">
-          <ArrowUpCircle size={16} />
+          <ArrowUp size={16} />
+        </div>
+      )}
+
+      {title.toUpperCase() === "EXPENSE" && (
+        <div className="p-1.5 text-red-400 bg-red-900 rounded-full">
+          <ArrowDown size={16} />
         </div>
       )}
 
@@ -43,7 +50,8 @@ export function IconCostCenter({ title }: Props) {
       )}
 
       {!costCenters.includes(title.toLocaleUpperCase()) &&
-        title.toUpperCase() !== "INCOME" && (
+        title.toUpperCase() !== "INCOME" &&
+        title.toUpperCase() !== "EXPENSE" && (
           <div className="p-1.5 bg-[#89613363]  rounded-full">
             <LayoutDashboard size={16} color="#896133" />
           </div>

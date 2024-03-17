@@ -17,16 +17,14 @@ export function CardTransaction({
   costCenter,
   openModalEditTransaction,
 }: Props) {
-  const category = costCenter ? costCenter.name : transactionType;
-
   return (
     <button
-      className="flex items-center gap-3 bg-gray-800 w-full h-full p-3 rounded-md"
+      className="flex items-center gap-3 bg-slate-800 w-full h-full p-3 rounded-md"
       onClick={openModalEditTransaction}
     >
-      <IconCostCenter title={category} />
+      <IconCostCenter title={transactionType} />
 
-      <div className="flex flex-col flex-1 items-start bottom-0 border-l-[2px] border-gray-500 pl-3">
+      <div className="flex flex-col flex-1 items-start bottom-0 border-l-2 border-slate-900 pl-3">
         <span className="text-xs">{name}</span>
         <span className="text-gray-400 text-[10px]">
           {transactionType == "INCOME" ? "Entrada" : `${costCenter.name}`}

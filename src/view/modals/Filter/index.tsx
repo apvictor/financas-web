@@ -1,41 +1,28 @@
 import { useFormik } from "formik";
-import { useState } from "react";
 import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
-import { api } from "../../../app/services/api";
 import { Button } from "../../components/Button";
 import { Loader } from "../../components/Loader";
-import { Select } from "../../components/Select";
 import { useMonth } from "../../../app/shared/hooks/useMonth";
 import { initialValues, validationSchema } from "../Filter/_validation";
 
 export interface FiltersProps {
   balance: string;
   month: string;
-  costCenterId: string;
 }
 
 interface Props {
   open: boolean;
   onClose(): void;
-  onFilters({ balance, month, costCenterId }: FiltersProps): void;
+  onFilters({ balance, month }: FiltersProps): void;
 }
 export function Filter({ open, onClose, onFilters }: Props) {
   const { setMonth, month } = useMonth();
 
-  const [costCenters, setCostCenters] = useState<
-    { id: number; name: string }[]
-  >([]);
-
-  async function getCostCenters() {
-    const data = (await api.get("/cost-centers")).data;
-    setCostCenters(data);
-  }
-
   const formik = useFormik({
     onSubmit: async (values) => {
       onFilters(values);
-      setMonth(values.month)
+      setMonth(values.month);
       onClose();
     },
     initialValues,
@@ -46,29 +33,6 @@ export function Filter({ open, onClose, onFilters }: Props) {
     <Modal animate="CENTER" title={"Filtros"} open={open} onClose={onClose}>
       <form className="py-4" onSubmit={formik.handleSubmit}>
         <div className="flex flex-col gap-4">
-          <Select
-            placeholder="Selecione um centro de custo"
-            name="costCenterId"
-            onBlur={formik.handleBlur}
-            onClick={() => {
-              getCostCenters();
-            }}
-            onChange={formik.handleChange}
-            value={formik.values.costCenterId}
-            error={formik.touched.costCenterId && formik.errors.costCenterId}
-          >
-            <option value="" disabled hidden></option>
-            {costCenters.length > 0 ? (
-              costCenters.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))
-            ) : (
-              <option disabled>Nenhum centro de custo cadastrado</option>
-            )}
-          </Select>
-
           <Input
             type="month"
             name="month"

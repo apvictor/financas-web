@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Fab } from "../Home/components/Fab";
-import { Input } from "../../components/Input";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../app/services/api";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, Filter } from "lucide-react";
 import { CreateIncome } from "../../modals/CreateIncome";
 import { CreateExpense } from "../../modals/CreateExpense";
-import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../../app/helpers/formatDate";
 import { useMonth } from "../../../app/shared/hooks/useMonth";
 import { CardTransaction } from "./components/CardTransaction";
@@ -18,9 +18,8 @@ export function Transactions() {
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState<FiltersProps>({
-    balance: "",
     month: "",
-    costCenterId: "",
+    balance: "",
   });
   const [openFilter, setOpenFilter] = useState(false);
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
@@ -28,43 +27,23 @@ export function Transactions() {
 
   const [transaction, setTransaction] = useState<any | null>(null);
 
-  const [transactions, setTransactions] = useState<
-    {
-      date: string;
-      transactions: {
-        id: number;
-        name: string;
-        value: number;
-        account: { name: string };
-        costCenter: { name: string };
-        transactionType: string;
-      }[];
-    }[]
-  >([]);
-
-  async function getTransactions(search?: string) {
-    if (search && search.length > 3) {
-      let filters = `${search ? "search=" + search : ""}${
-        filter.balance ? "&transactionType=" + filter.balance : ""
-      }`;
-      const data = (await api.get(`/transactions?${filters}`)).data;
-      setTransactions(data);
-    } else {
-      let filters = `${search ? "search=" + search : ""}${
-        filter.balance ? "&transactionType=" + filter.balance : ""
+  const { data: transactions, isLoading } = useQuery({
+    queryKey: ["transactions", filter, month],
+    queryFn: async () => {
+      let filters = `${
+        filter.balance ? "transactionType=" + filter.balance : ""
       }`;
 
-      const data = (await api.get(`/transactions?month=${month}&${filters}`)).data;
-      setTransactions(data);
-    }
-  }
+      const { data } = await api.get(`/transactions?month=${month}&${filters}`);
 
-  useEffect(() => {
-    getTransactions();
-  }, [openCreateExpense, openCreateIncome, filter]);
+      return data;
+    },
+  });
+
+  console.log(isLoading);
 
   return (
-    <main className=" flex flex-col gap-6 p-6">
+    <main className="relative flex flex-col gap-6 p-6">
       <header className="flex justify-between items-center gap-8">
         <button className="text-white" onClick={() => navigate("/home")}>
           <ChevronLeft size={20} />
@@ -77,24 +56,19 @@ export function Transactions() {
         </button>
       </header>
 
-      <Input
-        type="search"
-        name="search"
-        placeholder="Pesquisar"
-        onChange={(ev) => {
-          if (ev.target.value.length > 3) getTransactions(ev.target.value);
-          if (ev.target.value.length === 0) getTransactions();
-        }}
-      />
-
       <div className="flex flex-1 flex-col gap-4">
-        {transactions.length > 0 ? (
-          transactions.map((item) => (
-            <div key={item.date} className="flex flex-col gap-4">
+        {isLoading ? (
+          <div className="flex flex-col justify-center items-center gap-4 mt-[30%]">
+            <img width={280} src={transactionEmpty} alt="Transações" />
+            <span className="text-gray-400">Nenhuma transação cadastrada</span>
+          </div>
+        ) : (
+          transactions.map((item: any) => (
+            <div key={item.date} className="flex flex-col items-center gap-3">
               <span className="text-gray-400 text-xs">
                 {formatDate(item.date)}
               </span>
-              {item.transactions.map((transaction) => (
+              {item.transactions.map((transaction: any) => (
                 <CardTransaction
                   key={transaction.id}
                   {...transaction}
@@ -113,11 +87,6 @@ export function Transactions() {
               ))}
             </div>
           ))
-        ) : (
-          <div className="flex flex-col justify-center items-center">
-            <img width={280} src={transactionEmpty} alt="Transações" />
-            <span className="text-gray-400">Nenhuma transação cadastrada</span>
-          </div>
         )}
       </div>
 
