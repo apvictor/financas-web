@@ -1,7 +1,6 @@
 import { Fab } from "./components/Fab";
 import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
-import { Line } from "../../components/Line";
 import { Menu } from "../../components/Menu";
 import { api } from "../../../app/services/api";
 import { CardTotal } from "./components/CardTotal";
