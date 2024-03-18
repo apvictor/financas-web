@@ -2,16 +2,9 @@ import { ComponentProps } from "react";
 
 interface Props extends ComponentProps<"input"> {
   name: string;
-  error?: string | boolean;
   messageError?: string | boolean;
 }
-export function Input({
-  name,
-  error,
-  messageError,
-  placeholder,
-  ...props
-}: Props) {
+export function Input({ name, messageError, placeholder, ...props }: Props) {
   return (
     <div>
       <div className="relative">
@@ -19,8 +12,8 @@ export function Input({
           {...props}
           name={name}
           placeholder=" "
-          className={`bg-gray-800 w-full rounded-lg border border-gray-600 px-3 h-14 pt-4 peer placeholder-shown:pt-0 focus:border-2 transition-all outline-none
-          ${error ? "text-red-500" : "text-gray-200"}`}
+          className={`bg-gray-800 w-full text-gray-200 rounded-lg border px-3 h-14 pt-4 peer placeholder-shown:pt-0 focus:border-2 transition-all outline-none
+          ${messageError ? "border-red-500" : " border-gray-600"}`}
         />
 
         <label

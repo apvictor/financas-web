@@ -4,9 +4,9 @@ import { Modal } from "../../components/Modal";
 import { api } from "../../../app/services/api";
 import { Button } from "../../components/Button";
 import { Select } from "../../components/Select";
+import { Loader } from "../../components/Loader";
 import { initialValues, validationSchema } from "./_validation";
 import { AccountModel } from "../../../app/models/AccountModel";
-import { Loader } from "../../components/Loader";
 
 interface Props {
   account: AccountModel | null;
@@ -14,42 +14,24 @@ interface Props {
   onClose(): void;
 }
 export function CreateAccounts({ account, open, onClose }: Props) {
-  function createAccount(name: string) {
-    api
-      .post("accounts", { name })
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  async function createAccount(name: string) {
+    await api.post("accounts", { name });
   }
 
-  function editAccount(id: number, name: string) {
-    api
-      .put(`accounts/${id}`, { name })
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  async function editAccount(id: number, name: string) {
+    await api.put(`accounts/${id}`, { name });
   }
 
   function deleteAccount(id: number) {
-    api
-      .delete(`accounts/${id}`)
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    api.delete(`accounts/${id}`).then(() => {
+      onClose();
+    });
   }
 
   const formik = useFormik({
     onSubmit: async ({ name }) => {
-      account ? editAccount(account.id, name) : createAccount(name);
+      account ? await editAccount(account.id, name) : await createAccount(name);
+      onClose();
     },
     initialValues,
     validationSchema,
@@ -81,6 +63,7 @@ export function CreateAccounts({ account, open, onClose }: Props) {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             value={formik.values.name}
+            messageError={formik.touched.name && formik.errors.name}
           >
             <option value="" disabled hidden></option>
             <option value="C6 Bank">C6 Bank</option>

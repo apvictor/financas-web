@@ -7,9 +7,7 @@ import { CardTotal } from "./components/CardTotal";
 import { CardBalance } from "./components/CardBalance";
 import { CardAccount } from "./components/CardAccount";
 import { FilterMonth } from "../../modals/FilterMonth";
-import { CreateCards } from "../../modals/CreateCards";
 import { CreateIncome } from "../../modals/CreateIncome";
-import { CardModel } from "../../../app/models/CardModel";
 import { CreateExpense } from "../../modals/CreateExpense";
 import { CardCostCenter } from "./components/CardCostCenter";
 import { CreateAccounts } from "../../modals/CreateAccounts";
@@ -30,14 +28,12 @@ export function Home() {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [openFilterMonth, setOpenFilterMonth] = useState(false);
-  const [openCreateCards, setOpenCreateCards] = useState(false);
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
   const [openCreateExpense, setOpenCreateExpense] = useState(false);
   const [openCreateAccounts, setOpenCreateAccounts] = useState(false);
   const [openCreateCostCenters, setOpenCreateCostCenters] = useState(false);
 
   const [account, setAccount] = useState<AccountModel | null>(null);
-  const [card, setCard] = useState<CardModel | null>(null);
   const [costCenter, setCostCenter] = useState<CostCenterModel | null>(null);
 
   const [accounts, setAccounts] = useState<AccountModel[]>([]);
@@ -70,7 +66,6 @@ export function Home() {
     getTransactionsTotal();
   }, [
     openCreateAccounts,
-    openCreateCards,
     openCreateCostCenters,
     openCreateExpense,
     openCreateIncome,
@@ -85,7 +80,9 @@ export function Home() {
       />
 
       <div className="flex flex-col gap-4">
-        <CardTotal value={transactionTotal.totalIncome - transactionTotal.totalExpense} />
+        <CardTotal
+          value={transactionTotal.totalIncome - transactionTotal.totalExpense}
+        />
 
         <div className="flex items-center gap-4">
           <CardBalance
@@ -209,10 +206,6 @@ export function Home() {
           setAccount(null);
           setOpenCreateAccounts(!openCreateAccounts);
         }}
-        openModalCards={() => {
-          setCard(null);
-          setOpenCreateCards(!openCreateCards);
-        }}
       />
 
       <Menu open={openMenu} onClose={() => setOpenMenu(false)} />
@@ -235,11 +228,6 @@ export function Home() {
         account={account}
         open={openCreateAccounts}
         onClose={() => setOpenCreateAccounts(false)}
-      />
-      <CreateCards
-        card={card}
-        open={openCreateCards}
-        onClose={() => setOpenCreateCards(false)}
       />
       <CreateCostCenters
         costCenter={costCenter}

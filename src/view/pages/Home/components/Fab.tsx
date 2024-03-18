@@ -10,7 +10,6 @@ import { DropdownMenu } from "../../../components/DropdownMenu";
 interface Props {
   openModalIncome?: () => void;
   openModalExpense?: () => void;
-  openModalCards?: () => void;
   openModalAccounts?: () => void;
   openModalCostCenters?: () => void;
 }
@@ -46,15 +45,6 @@ export function Fab({
             Nova Despesa
           </DropdownMenu.Item>
         )}
-        {/* {openModalCards && (
-          <DropdownMenu.Item
-            onSelect={openModalCards}
-            className="flex gap-4 items-center w-full"
-          >
-            <CreditCard className="text-yellow-500" />
-            Novo Cartão
-          </DropdownMenu.Item>
-        )} */}
         {openModalAccounts && (
           <DropdownMenu.Item
             onSelect={openModalAccounts}

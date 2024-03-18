@@ -16,54 +16,37 @@ interface Props {
   onClose(): void;
 }
 export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
-  function createCostCenter(values: any) {
+  async function createCostCenter(values: any) {
     const { percentage } = values;
 
-    api
-      .post("cost-centers", {
-        ...values,
-        percentage: parseInt(percentage + ""),
-      })
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    await api.post("cost-centers", {
+      ...values,
+      percentage: parseInt(percentage + ""),
+    });
   }
 
-  function editCostCenter(id: number, values: any) {
+  async function editCostCenter(id: number, values: any) {
     const { percentage } = values;
 
-    api
-      .put(`cost-centers/${id}`, {
-        ...values,
-        percentage: parseInt(percentage + ""),
-      })
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    await api.put(`cost-centers/${id}`, {
+      ...values,
+      percentage: parseInt(percentage + ""),
+    });
   }
 
   function deleteCostCenter(id: number) {
-    api
-      .delete(`cost-centers/${id}`)
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    api.delete(`cost-centers/${id}`).then(() => {
+      onClose();
+    });
   }
 
   const formik = useFormik({
     onSubmit: async (values) => {
       costCenter
-        ? editCostCenter(costCenter.id, values)
-        : createCostCenter(values);
+        ? await editCostCenter(costCenter.id, values)
+        : await createCostCenter(values);
+
+      onClose();
     },
     initialValues,
     validationSchema,
@@ -112,7 +95,9 @@ export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
             value={valorLimite.toFixed(2)}
             className="bg-transparent text-center outline-none font-bold text-4xl text-gray-400"
           />
-          <span className="text-gray-400">Valor disponivel conforme sua receita</span>
+          <span className="text-gray-400">
+            Valor disponivel conforme sua receita
+          </span>
         </div>
 
         <div className="flex flex-col gap-4">
@@ -122,7 +107,7 @@ export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             defaultValue={costCenter ? costCenter.name : ""}
-            error={formik.touched.name && formik.errors.name}
+            messageError={formik.touched.name && formik.errors.name}
           />
 
           <div className="flex flex-col gap-2">
@@ -142,6 +127,9 @@ export function CreateCostCenters({ open, onClose, total, costCenter }: Props) {
               defaultValue={costCenter ? costCenter.percentage : 0}
               className="text-green-400"
             />
+            {formik.touched.percentage && formik.errors.percentage && (
+              <span className="text-sm text-red-400">{formik.errors.name}</span>
+            )}
           </div>
 
           <Button

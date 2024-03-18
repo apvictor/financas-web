@@ -28,19 +28,21 @@ export function Transactions() {
   const [transaction, setTransaction] = useState<any | null>(null);
 
   const { data: transactions, isLoading } = useQuery({
-    queryKey: ["transactions", filter, month],
+    queryKey: [
+      "transactions",
+      filter,
+      month,
+      openCreateIncome,
+      openCreateExpense,
+    ],
     queryFn: async () => {
       let filters = `${
         filter.balance ? "transactionType=" + filter.balance : ""
       }`;
 
-      const { data } = await api.get(`/transactions?month=${month}&${filters}`);
-
-      return data;
+      return (await api.get(`/transactions?month=${month}&${filters}`)).data;
     },
   });
-
-  console.log(isLoading);
 
   return (
     <main className="relative flex flex-col gap-6 p-6">

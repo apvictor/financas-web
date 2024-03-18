@@ -1,7 +1,7 @@
 import { object, string } from "yup";
 
 export const validationSchema = object().shape({
-  name: string().required(),
+  name: string().required("Campo obrigatório"),
 });
 
 export const initialValues = {

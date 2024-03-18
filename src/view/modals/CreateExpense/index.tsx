@@ -34,16 +34,16 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
     setCostCenters(data);
   }
 
-  function createExpense(data: FormTransactionModel) {
-    api.post("transactions", data).finally(() => onClose());
+  async function createExpense(data: FormTransactionModel) {
+    await api.post("transactions", data);
   }
 
-  function editExpense(id: number, data: FormTransactionModel) {
-    api.put(`transactions/${id}`, data).finally(() => onClose());
+  async function editExpense(id: number, data: FormTransactionModel) {
+    await api.put(`transactions/${id}`, data);
   }
 
   function deleteExpense(id: number) {
-    api.delete(`transactions/${id}`).finally(() => onClose());
+    api.delete(`transactions/${id}`).then(() => onClose());
   }
 
   const formik = useFormik({
@@ -56,7 +56,11 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
         value: formatCurrencyFloat(value),
       };
 
-      transaction ? editExpense(transaction.id, data) : createExpense(data);
+      transaction
+        ? await editExpense(transaction.id, data)
+        : await createExpense(data);
+
+      onClose();
     },
     initialValues,
     validationSchema,
@@ -64,7 +68,6 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
 
   useEffect(() => {
     getAccounts();
-    // getCards();
     getCostCenters();
     if (transaction) {
       formik.setValues({
@@ -111,7 +114,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
             onBlur={formik.handleBlur}
             value={formik.values.name}
             onChange={formik.handleChange}
-            error={formik.touched.name && formik.errors.name}
+            messageError={formik.touched.name && formik.errors.name}
           />
 
           <Select
@@ -120,7 +123,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             value={formik.values.accountId}
-            error={formik.touched.accountId && formik.errors.accountId}
+            messageError={formik.touched.accountId && formik.errors.accountId}
           >
             <option value="" disabled hidden></option>
             {accounts.length > 0 ? (
@@ -133,13 +136,16 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
               <option disabled>Nenhuma conta cadastrada</option>
             )}
           </Select>
+
           <Select
             placeholder="Selecione um centro de custo"
             name="costCenterId"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             value={formik.values.costCenterId}
-            error={formik.touched.costCenterId && formik.errors.costCenterId}
+            messageError={
+              formik.touched.costCenterId && formik.errors.costCenterId
+            }
           >
             <option value="" disabled hidden></option>
             {costCenters.length > 0 ? (
@@ -152,12 +158,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
               <option disabled>Nenhum centro de custo cadastrado</option>
             )}
           </Select>
-          {/* <Switch
-            name="paid"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            title="Despesa paga?"
-          /> */}
+
           <Button
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}

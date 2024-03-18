@@ -2,14 +2,14 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
+import { api } from "../../../app/services/api";
 import { Button } from "../../components/Button";
 import { Select } from "../../components/Select";
+import { Loader } from "../../components/Loader";
 import CurrencyInput from "react-currency-input-field";
 import { initialValues, validationSchema } from "./_validation";
 import { TransactionModel } from "../../../app/models/TransactionModel";
-import { api } from "../../../app/services/api";
 import { formatCurrencyFloat } from "../../../app/helpers/formatCurrencyFloat";
-import { Loader } from "../../components/Loader";
 
 interface Props {
   open: boolean;
@@ -24,38 +24,24 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
     setAccounts(data);
   }
 
-  function createIncome(values: any) {
+  async function createIncome(values: any) {
     const { value, accountId } = values;
 
-    api
-      .post("transactions", {
-        ...values,
-        value: formatCurrencyFloat(value),
-        accountId: parseInt(accountId),
-      })
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    await api.post("transactions", {
+      ...values,
+      value: formatCurrencyFloat(value),
+      accountId: parseInt(accountId),
+    });
   }
 
-  function editIncome(id: number, values: any) {
+  async function editIncome(id: number, values: any) {
     const { value, accountId } = values;
 
-    api
-      .put(`transactions/${id}`, {
-        ...values,
-        value: formatCurrencyFloat(value),
-        accountId: parseInt(accountId),
-      })
-      .then(() => {
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    await api.put(`transactions/${id}`, {
+      ...values,
+      value: formatCurrencyFloat(value),
+      accountId: parseInt(accountId),
+    });
   }
 
   function deleteIncome(id: number) {
@@ -71,7 +57,10 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
 
   const formik = useFormik({
     onSubmit: async (values) => {
-      transaction ? editIncome(transaction.id, values) : createIncome(values);
+      transaction
+        ? await editIncome(transaction.id, values)
+        : await createIncome(values);
+      onClose();
     },
     initialValues,
     validationSchema,
@@ -124,7 +113,7 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
             onBlur={formik.handleBlur}
             value={formik.values.name}
             onChange={formik.handleChange}
-            error={formik.touched.name && formik.errors.name}
+            messageError={formik.touched.name && formik.errors.name}
           />
 
           <Select
@@ -133,7 +122,7 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             value={formik.values.accountId}
-            error={formik.touched.accountId && formik.errors.accountId}
+            messageError={formik.touched.accountId && formik.errors.accountId}
           >
             <option value="" disabled hidden></option>
             {accounts.length > 0 ? (
