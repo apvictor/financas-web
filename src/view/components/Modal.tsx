@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Trash, X } from "lucide-react";
+import { Trash, X } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 interface Props {
@@ -21,10 +21,10 @@ export function Modal({
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out" />
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out" />
 
         <Dialog.Content
-          className={`fixed w-full bg-gray-900 border-2 border-gray-700 p-6
+          className={`fixed w-full bg-slate-900 p-6
           ${
             animate === "TOP" &&
             "w-full border-t-0 right-0 top-0 rounded-b-3xl data-[state=open]:animate-modal-t-open data-[state=closed]:animate-modal-t-close"
@@ -48,13 +48,18 @@ export function Modal({
           `}
         >
           <header className="h-12 flex items-center justify-between font-bold uppercase">
-            <div className="h-12 w-12 flex items-center justify-center outline-none text-white">
-              <X onClick={onClose} className="cursor-pointer" />
-            </div>
-            <span className="text-lg">{title}</span>
-            <div className="h-12 w-12 flex items-center justify-center outline-none text-red-500">
+            <button
+              className="h-8 w-8 flex items-center justify-center outline-none text-white "
+              onClick={onClose}
+            >
+              <X weight="bold" size={20} />
+            </button>
+            <span>{title}</span>
+            <div className="h-8 w-8 flex items-center justify-center outline-none text-red-500">
               {title?.toString().includes("Editar") && (
-                <Trash onClick={onDelete} className="cursor-pointer" />
+                <button onClick={onDelete}>
+                  <Trash weight="fill" size={20} />
+                </button>
               )}
             </div>
           </header>

@@ -10,5 +10,5 @@ export const initialValues = {
   name: "",
   value: "",
   accountId: "",
-  transactionType: "INCOME"
+  type: "INCOME"
 }

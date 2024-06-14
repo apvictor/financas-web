@@ -1,29 +1,21 @@
-import {
-  ArrowDownCircle,
-  ArrowUpCircle,
-  LayoutGrid,
-  LucideLandmark,
-  Plus,
-} from "lucide-react";
+import { CurrencyDollar, Bank, Plus } from "@phosphor-icons/react";
 import { DropdownMenu } from "../../../components/DropdownMenu";
 
 interface Props {
   openModalIncome?: () => void;
   openModalExpense?: () => void;
   openModalAccounts?: () => void;
-  openModalCostCenters?: () => void;
 }
 export function Fab({
   openModalAccounts,
-  openModalCostCenters,
   openModalExpense,
   openModalIncome,
 }: Props) {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <button className="bg-primary hover:bg-tertiary text-white transition-all duration-500 p-2 bottom-5 right-5 fixed rounded-full">
-          <Plus size={32} />
+        <button className="bg-success-500 hover:bg-success-500/50 text-white transition-all duration-500 p-2 bottom-5 right-5 absolute rounded-full">
+          <Plus size={28} />
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
@@ -32,7 +24,7 @@ export function Fab({
             className="flex gap-4 items-center w-full"
             onSelect={openModalIncome}
           >
-            <ArrowUpCircle className="text-teal-900" />
+            <CurrencyDollar className="text-success-500" weight="bold" />
             Nova Receita
           </DropdownMenu.Item>
         )}
@@ -41,7 +33,7 @@ export function Fab({
             onSelect={openModalExpense}
             className="flex gap-4 items-center w-full"
           >
-            <ArrowDownCircle className="text-red-900" />
+            <CurrencyDollar className="text-danger-500" weight="bold" />
             Nova Despesa
           </DropdownMenu.Item>
         )}
@@ -50,17 +42,8 @@ export function Fab({
             onSelect={openModalAccounts}
             className="flex gap-4 items-center w-full"
           >
-            <LucideLandmark className="text-blue-900" />
+            <Bank className="text-slate-900" weight="bold" />
             Nova Conta
-          </DropdownMenu.Item>
-        )}
-        {openModalCostCenters && (
-          <DropdownMenu.Item
-            onSelect={openModalCostCenters}
-            className="flex gap-4 items-center w-full"
-          >
-            <LayoutGrid />
-            Novo Centro de Custo
           </DropdownMenu.Item>
         )}
       </DropdownMenu.Content>

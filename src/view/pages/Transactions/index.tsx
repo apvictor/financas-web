@@ -3,7 +3,7 @@ import { Fab } from "../Home/components/Fab";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../app/services/api";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft, Filter } from "lucide-react";
+import { CaretLeft, Funnel } from "@phosphor-icons/react";
 import { CreateIncome } from "../../modals/CreateIncome";
 import { CreateExpense } from "../../modals/CreateExpense";
 import { formatDate } from "../../../app/helpers/formatDate";
@@ -11,6 +11,7 @@ import { useMonth } from "../../../app/shared/hooks/useMonth";
 import { CardTransaction } from "./components/CardTransaction";
 import transactionEmpty from "../../../assets/transactions.svg";
 import { FiltersProps, Filter as ModalFilter } from "../../modals/Filter";
+import { Line } from "../../components/Line";
 
 export function Transactions() {
   const { month } = useMonth();
@@ -36,27 +37,27 @@ export function Transactions() {
       openCreateExpense,
     ],
     queryFn: async () => {
-      let filters = `${
-        filter.balance ? "transactionType=" + filter.balance : ""
-      }`;
+      let filters = `${filter.balance ? "type=" + filter.balance : ""}`;
 
       return (await api.get(`/transactions?month=${month}&${filters}`)).data;
     },
   });
 
   return (
-    <main className="relative flex flex-col gap-6 p-6">
+    <main className="relative w-screen h-screen flex flex-col gap-6 p-6">
       <header className="flex justify-between items-center gap-8">
         <button className="text-white" onClick={() => navigate("/home")}>
-          <ChevronLeft size={20} />
+          <CaretLeft size={20} weight="bold" />
         </button>
 
         <span className="text-xl">Transações</span>
 
         <button onClick={() => setOpenFilter(true)}>
-          <Filter size={20} />
+          <Funnel size={20} weight="fill" />
         </button>
       </header>
+
+      <Line />
 
       <div className="flex flex-1 flex-col gap-4">
         {isLoading ? (
@@ -66,8 +67,8 @@ export function Transactions() {
           </div>
         ) : (
           transactions.map((item: any) => (
-            <div key={item.date} className="flex flex-col items-center gap-3">
-              <span className="text-gray-400 text-xs">
+            <div key={item.date} className="flex flex-col items-start gap-3">
+              <span className="text-white text-xs">
                 {formatDate(item.date)}
               </span>
               {item.transactions.map((transaction: any) => (
@@ -75,12 +76,12 @@ export function Transactions() {
                   key={transaction.id}
                   {...transaction}
                   openModalEditTransaction={() => {
-                    if (transaction.transactionType == "INCOME") {
+                    if (transaction.type == "INCOME") {
                       setTransaction(transaction);
                       setOpenCreateIncome(!openCreateIncome);
                     }
 
-                    if (transaction.transactionType == "EXPENSE") {
+                    if (transaction.type == "EXPENSE") {
                       setTransaction(transaction);
                       setOpenCreateExpense(!openCreateExpense);
                     }
@@ -118,9 +119,7 @@ export function Transactions() {
       <ModalFilter
         open={openFilter}
         onClose={() => setOpenFilter(false)}
-        onFilters={(filters) => {
-          setFilter(filters);
-        }}
+        onFilters={(filters) => setFilter(filters)}
       />
     </main>
   );

@@ -74,7 +74,7 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
         name: transaction.name,
         value: transaction.value.toString(),
         accountId: transaction.accountId.toString(),
-        transactionType: "INCOME",
+        type: "INCOME",
       });
     } else {
       formik.resetForm();

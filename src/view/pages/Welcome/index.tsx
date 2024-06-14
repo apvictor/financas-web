@@ -1,23 +1,22 @@
 import { Link } from "react-router-dom";
-import logo from "../../../assets/logo.png";
-import { ChevronRight } from "lucide-react";
+import logo from "../../../assets/logo.svg";
+import { CaretRight } from "@phosphor-icons/react";
 import illustration from "../../../assets/illustration.png";
 import { Button } from "../../components/Button";
 
 export function Welcome() {
   return (
-    <main className="h-screen w-screen flex flex-col justify-between p-6">
+    <main className="h-screen w-screen flex flex-col justify-between p-8">
       <div className="mb-5">
         <img src={logo} alt="PIGPAY" />
       </div>
 
       <div className="flex flex-col gap-2">
-        <h1 className="font-bold text-3xl">
-          Gerencie suas <br />
-          finanças
+        <h1 className="font-bold text-4xl">
+          Gerencie suas <br /> finanças
         </h1>
-        <p className="text-sm text-gray-400">
-          Controle suas finanças com o melhor App de gerenciamento
+        <p className="text-slate-500">
+          Controle suas finanças com o melhor aplicativo de gerenciamento
         </p>
       </div>
 
@@ -28,7 +27,7 @@ export function Welcome() {
       <Button>
         <Link to="/login" className="flex justify-between items-center">
           <span className="text-sm font-bold">Iniciar</span>
-          <ChevronRight />
+          <CaretRight weight="bold" />
         </Link>
       </Button>
     </main>

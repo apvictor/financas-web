@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ChevronRight, Eye, EyeOff } from "lucide-react";
+import { CaretRight, Eye, EyeClosed } from "@phosphor-icons/react";
 import { useToggle } from "../../../../app/shared/hooks/useToggle";
 import { VisibilityValue } from "../../../components/VisibilityValue";
 
@@ -17,11 +17,11 @@ export function CardTotal({ value }: Props) {
             <VisibilityValue value={value} />
           </span>
           <button onClick={toggle}>
-            {status ? <Eye size={20} /> : <EyeOff size={20} />}
+            {status ? <Eye size={20} /> : <EyeClosed size={20} />}
           </button>
         </div>
         <Link to={"/transactions"}>
-          <ChevronRight />
+          <CaretRight weight="bold" />
         </Link>
       </div>
       <span className="text-white font-light text-sm">

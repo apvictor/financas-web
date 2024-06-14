@@ -3,15 +3,12 @@ export interface TransactionModel {
   name: string;
   value: number;
   accountId: number;
-  costCenterId: number;
-  transactionType: string;
+  type: string;
 }
-
 
 export interface FormTransactionModel {
   name: string;
   value: number;
   accountId: number;
-  costCenterId: number;
-  transactionType: string;
+  type: string;
 }

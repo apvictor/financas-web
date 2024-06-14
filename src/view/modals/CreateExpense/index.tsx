@@ -20,18 +20,11 @@ interface Props {
 }
 export function CreateExpense({ open, onClose, transaction }: Props) {
   const [accounts, setAccounts] = useState<{ id: number; name: string }[]>([]);
-  const [costCenters, setCostCenters] = useState<
-    { id: number; name: string }[]
-  >([]);
+
 
   async function getAccounts() {
     const data = (await api.get("/accounts")).data;
     setAccounts(data);
-  }
-
-  async function getCostCenters() {
-    const data = (await api.get("/cost-centers")).data;
-    setCostCenters(data);
   }
 
   async function createExpense(data: FormTransactionModel) {
@@ -47,12 +40,11 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
   }
 
   const formik = useFormik({
-    onSubmit: async ({ accountId, costCenterId, name, value }) => {
+    onSubmit: async ({ accountId, name, value }) => {
       const data = {
         accountId: parseInt(accountId),
-        costCenterId: parseInt(costCenterId),
         name,
-        transactionType: "EXPENSE",
+        type: "EXPENSE",
         value: formatCurrencyFloat(value),
       };
 
@@ -68,14 +60,12 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
 
   useEffect(() => {
     getAccounts();
-    getCostCenters();
     if (transaction) {
       formik.setValues({
         name: transaction.name,
         value: transaction.value.toString(),
         accountId: transaction.accountId.toString(),
-        costCenterId: transaction.costCenterId.toString(),
-        transactionType: "EXPENSE",
+        type: "EXPENSE",
       });
     } else {
       formik.resetForm();
@@ -134,28 +124,6 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
               ))
             ) : (
               <option disabled>Nenhuma conta cadastrada</option>
-            )}
-          </Select>
-
-          <Select
-            placeholder="Selecione um centro de custo"
-            name="costCenterId"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.costCenterId}
-            messageError={
-              formik.touched.costCenterId && formik.errors.costCenterId
-            }
-          >
-            <option value="" disabled hidden></option>
-            {costCenters.length > 0 ? (
-              costCenters.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))
-            ) : (
-              <option disabled>Nenhum centro de custo cadastrado</option>
             )}
           </Select>
 

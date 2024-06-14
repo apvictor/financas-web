@@ -8,11 +8,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#15C770",
-        secondary: "#15c771c2",
-        tertiary: "#42a7768d",
-        "expense-900": "#E86161",
-        "expense-800": "#E8616163"
+        "success-100": "#CBFFF6",
+        "success-500": "#15C770",
+        "danger-100": "#FFD1D1",
+        "danger-500": "#E86161",
       },
       animation: {
         "fade-in": "fade-in 0.4s ease",
@@ -34,7 +33,7 @@ export default {
         "modal-r-close": "modal-r-close 0.5s ease",
       },
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"]
+        "space-grotesk": ["Space Grotesk", "sans-serif"]
       },
     },
   },

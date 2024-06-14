@@ -9,7 +9,7 @@ interface Props {
 export function CardAccount({ account, openModalAccountEdit }: Props) {
   return (
     <button
-      className="flex items-center justify-between w-full p-4 mt-1 rounded-lg bg-slate-800"
+      className="flex items-center justify-between w-full p-1"
       onClick={openModalAccountEdit}
     >
       <div className="flex items-center gap-2">
@@ -18,9 +18,9 @@ export function CardAccount({ account, openModalAccountEdit }: Props) {
           src={getBank(account.name)}
           className="h-8 w-8 rounded-full"
         />
-        <span className="text-xs">{account.name}</span>
+        <span className="text-xs font-light">{account.name}</span>
       </div>
-      <span className="font-bold text-sm">
+      <span className="font-bold">
         <VisibilityValue value={account.incomeTotal - account.expenseTotal} />
       </span>
     </button>

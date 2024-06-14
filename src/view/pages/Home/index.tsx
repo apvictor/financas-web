@@ -1,7 +1,6 @@
 import { Fab } from "./components/Fab";
 import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
-import { Menu } from "../../components/Menu";
 import { api } from "../../../app/services/api";
 import { CardTotal } from "./components/CardTotal";
 import { CardBalance } from "./components/CardBalance";
@@ -9,35 +8,24 @@ import { CardAccount } from "./components/CardAccount";
 import { FilterMonth } from "../../modals/FilterMonth";
 import { CreateIncome } from "../../modals/CreateIncome";
 import { CreateExpense } from "../../modals/CreateExpense";
-import { CardCostCenter } from "./components/CardCostCenter";
 import { CreateAccounts } from "../../modals/CreateAccounts";
 import { useMonth } from "../../../app/shared/hooks/useMonth";
 import { AccountModel } from "../../../app/models/AccountModel";
-import { CreateCostCenters } from "../../modals/CreateCostCenters";
-import { CostCenterModel } from "../../../app/models/CostCenterModel";
-import {
-  ArrowDown,
-  ArrowUp,
-  LayoutDashboard,
-  PlusCircle,
-  WalletIcon,
-} from "lucide-react";
+import { Line } from "../../components/Line";
+
+import { CurrencyDollar, PlusCircle, Wallet } from "@phosphor-icons/react";
 
 export function Home() {
   const { setMonth, month } = useMonth();
 
-  const [openMenu, setOpenMenu] = useState(false);
   const [openFilterMonth, setOpenFilterMonth] = useState(false);
   const [openCreateIncome, setOpenCreateIncome] = useState(false);
   const [openCreateExpense, setOpenCreateExpense] = useState(false);
   const [openCreateAccounts, setOpenCreateAccounts] = useState(false);
-  const [openCreateCostCenters, setOpenCreateCostCenters] = useState(false);
 
   const [account, setAccount] = useState<AccountModel | null>(null);
-  const [costCenter, setCostCenter] = useState<CostCenterModel | null>(null);
 
   const [accounts, setAccounts] = useState<AccountModel[]>([]);
-  const [costCenters, setCostCenters] = useState<CostCenterModel[]>([]);
   const [transactionTotal, setTransactionTotal] = useState<{
     expense: number;
     income: number;
@@ -50,11 +38,6 @@ export function Home() {
     setAccounts(data);
   }
 
-  async function getCostCenters() {
-    const data = (await api.get(`/cost-centers?month=${month}`)).data;
-    setCostCenters(data);
-  }
-
   async function getTransactionsTotal() {
     const data = (await api.get(`/transactions/total?month=${month}`)).data;
     setTransactionTotal(data);
@@ -62,20 +45,17 @@ export function Home() {
 
   useEffect(() => {
     getAccounts();
-    getCostCenters();
     getTransactionsTotal();
   }, [
     openCreateAccounts,
-    openCreateCostCenters,
     openCreateExpense,
     openCreateIncome,
     openFilterMonth,
   ]);
 
   return (
-    <main className="p-6 flex flex-col gap-6">
+    <main className="h-screen relative w-screen p-6 flex flex-col gap-6">
       <Header
-        openMenu={() => setOpenMenu(!openMenu)}
         openModalFilterMonth={() => setOpenFilterMonth(!openFilterMonth)}
       />
 
@@ -87,23 +67,23 @@ export function Home() {
         <div className="flex items-center gap-4">
           <CardBalance
             title="Receita"
-            icon={<ArrowUp size={16} />}
+            icon={<CurrencyDollar size={20} weight="bold" />}
             value={transactionTotal.income}
-            className="text-green-400 bg-green-900"
+            className="text-success-500 bg-success-100"
           />
           <CardBalance
             title="Despesa"
-            icon={<ArrowDown size={16} />}
+            icon={<CurrencyDollar size={20} weight="bold" />}
             value={transactionTotal.expense}
-            className="text-red-400 bg-red-900"
+            className="text-danger-500 bg-danger-100"
           />
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 rounded-md mt-2">
-        <div className="flex items-center justify-between text-xs">
+      <div className="flex flex-col gap-4 rounded-md mt-2 bg-slate-800 p-4">
+        <div className="flex items-center justify-between text-sm ">
           <div className="flex items-center gap-2">
-            <WalletIcon size={20} />
+            <Wallet size={24} weight="fill" />
             <span className="font-light">
               Minhas <span className="font-bold">contas</span>
             </span>
@@ -115,9 +95,11 @@ export function Home() {
               setOpenCreateAccounts(!openCreateAccounts);
             }}
           >
-            {accounts.length > 0 ? <PlusCircle size={20} /> : ""}
+            <PlusCircle size={20} weight="fill" />
           </button>
         </div>
+
+        <Line />
 
         <div className="flex flex-col gap-2">
           {accounts.length > 0 ? (
@@ -132,65 +114,9 @@ export function Home() {
               />
             ))
           ) : (
-            <button
-              className="flex flex-col items-center gap-2 rounded-md bg-slate-800 p-4 mt-1"
-              onClick={() => {
-                setAccount(null);
-                setOpenCreateAccounts(!openCreateAccounts);
-              }}
-            >
-              <PlusCircle />
-              <span className="text-sm">Criar conta</span>
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2 rounded-md mt-2">
-        <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2">
-            <LayoutDashboard size={20} />
-            <span className="font-light">
-              Meus <span className="font-bold">centros de custo</span>
-            </span>
-          </div>
-          <button
-            className="font-bold"
-            onClick={() => {
-              setCostCenter(null);
-              setOpenCreateCostCenters(!openCreateCostCenters);
-            }}
-          >
-            {costCenters.length > 0 ? <PlusCircle size={20} /> : ""}
-          </button>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          {costCenters.length > 0 ? (
-            costCenters.map((costCenter) => (
-              <CardCostCenter
-                key={costCenter.id}
-                title={costCenter.name}
-                value={costCenter.value}
-                limit={costCenter.percentage}
-                total={transactionTotal.income}
-                openModalCostCenterEdit={() => {
-                  setCostCenter(costCenter);
-                  setOpenCreateCostCenters(!openCreateCostCenters);
-                }}
-              />
-            ))
-          ) : (
-            <button
-              className="flex flex-col items-center gap-2 rounded-md bg-slate-800 p-4 mt-1"
-              onClick={() => {
-                setCostCenter(null);
-                setOpenCreateCostCenters(!openCreateCostCenters);
-              }}
-            >
-              <PlusCircle />
-              <span className="text-sm">Criar centro de custo</span>
-            </button>
+            <div className="text-center">
+              <span className="text-sm">Nenhuma conta cadastrada</span>
+            </div>
           )}
         </div>
       </div>
@@ -198,17 +124,11 @@ export function Home() {
       <Fab
         openModalIncome={() => setOpenCreateIncome(!openCreateIncome)}
         openModalExpense={() => setOpenCreateExpense(!openCreateExpense)}
-        openModalCostCenters={() => {
-          setCostCenter(null);
-          setOpenCreateCostCenters(!openCreateCostCenters);
-        }}
         openModalAccounts={() => {
           setAccount(null);
           setOpenCreateAccounts(!openCreateAccounts);
         }}
       />
-
-      <Menu open={openMenu} onClose={() => setOpenMenu(false)} />
 
       <FilterMonth
         open={openFilterMonth}
@@ -228,12 +148,6 @@ export function Home() {
         account={account}
         open={openCreateAccounts}
         onClose={() => setOpenCreateAccounts(false)}
-      />
-      <CreateCostCenters
-        costCenter={costCenter}
-        open={openCreateCostCenters}
-        onClose={() => setOpenCreateCostCenters(false)}
-        total={transactionTotal.income - transactionTotal.expense}
       />
     </main>
   );

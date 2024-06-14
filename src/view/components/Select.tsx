@@ -18,7 +18,7 @@ export function Select({
     <div>
       <div className="relative">
         <label
-          className={`absolute left-[13px] pointer-events-none text-gray-400
+          className={`absolute left-[13px] pointer-events-none text-slate-500
           ${
             value
               ? "text-xs top-2"
@@ -29,8 +29,8 @@ export function Select({
         </label>
         <select
           {...props}
-          className={`bg-gray-800 w-full rounded-lg text-gray-200 border  px-3 h-14 pt-4 focus:border-2 transition-all outline-none
-          ${messageError ? "border-red-500" : "border-gray-600"}`}
+          className={`bg-slate-800 font-bold w-full rounded-lg text-gray-200 border px-3 h-14 pt-4 focus:border transition-all outline-none
+          ${messageError ? "border-red-500" : "border-slate-700"}`}
           name={name}
           value={value}
         >
