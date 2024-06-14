@@ -4,6 +4,7 @@ interface Props {
   name: string;
   value: number;
   type: string;
+  paid: boolean;
   account: { name: string };
   openModalEditTransaction: () => void;
 }
@@ -11,6 +12,7 @@ export function CardTransaction({
   name,
   value,
   type,
+  paid,
   account,
   openModalEditTransaction,
 }: Props) {
@@ -25,7 +27,8 @@ export function CardTransaction({
       </div>
 
       <span
-        className={`text-xs font-bold
+        className={`text-sm font-bold
+        ${paid && "line-through decoration-white"}
         ${type === "INCOME" ? "text-success-500" : "text-danger-500"}`}
       >
         <VisibilityValue value={value} />

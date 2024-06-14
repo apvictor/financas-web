@@ -75,6 +75,7 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
         value: transaction.value.toString(),
         accountId: transaction.accountId.toString(),
         type: "INCOME",
+        paid: transaction.paid,
       });
     } else {
       formik.resetForm();
@@ -135,6 +136,19 @@ export function CreateIncome({ open, onClose, transaction }: Props) {
               <option disabled>Nenhuma conta cadastrada</option>
             )}
           </Select>
+
+          <div className="flex items-center justify-between">
+            Receita está paga?
+            <button
+              type="button"
+              onClick={() => formik.setFieldValue("paid", !formik.values.paid)}
+              className={`${
+                formik.values.paid && "bg-success-500 border-0"
+              } h-10 w-14 text-white transition-all p-2 te rounded-lg border border-slate-700`}
+            >
+              {formik.values.paid ? "SIM" : "NÃO"}
+            </button>
+          </div>
 
           <Button
             type="submit"

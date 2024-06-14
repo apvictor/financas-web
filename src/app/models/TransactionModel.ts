@@ -4,6 +4,7 @@ export interface TransactionModel {
   value: number;
   accountId: number;
   type: string;
+  paid: boolean;
 }
 
 export interface FormTransactionModel {
@@ -11,4 +12,5 @@ export interface FormTransactionModel {
   value: number;
   accountId: number;
   type: string;
+  paid: boolean;
 }

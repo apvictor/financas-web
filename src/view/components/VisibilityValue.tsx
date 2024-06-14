@@ -7,9 +7,5 @@ interface Props {
 export function VisibilityValue({ value }: Props) {
   const { status } = useToggle();
 
-  return (
-    <span>
-      {!status ? <span>•••••••</span> : <span>{formatCurrency(value)}</span>}
-    </span>
-  );
+  return <span>{!status ? "•••••••" : formatCurrency(value)}</span>;
 }

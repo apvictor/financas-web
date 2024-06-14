@@ -11,6 +11,7 @@ import {
   FormTransactionModel,
   TransactionModel,
 } from "../../../app/models/TransactionModel";
+import { Loader } from "../../components/Loader";
 import { formatCurrencyFloat } from "../../../app/helpers/formatCurrencyFloat";
 
 interface Props {
@@ -20,7 +21,7 @@ interface Props {
 }
 export function CreateExpense({ open, onClose, transaction }: Props) {
   const [accounts, setAccounts] = useState<{ id: number; name: string }[]>([]);
-
+  // const [paid, setPaid] = useState<boolean>(false);
 
   async function getAccounts() {
     const data = (await api.get("/accounts")).data;
@@ -40,12 +41,13 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
   }
 
   const formik = useFormik({
-    onSubmit: async ({ accountId, name, value }) => {
+    onSubmit: async ({ accountId, name, value, paid }) => {
       const data = {
         accountId: parseInt(accountId),
         name,
         type: "EXPENSE",
         value: formatCurrencyFloat(value),
+        paid,
       };
 
       transaction
@@ -66,6 +68,7 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
         value: transaction.value.toString(),
         accountId: transaction.accountId.toString(),
         type: "EXPENSE",
+        paid: transaction.paid,
       });
     } else {
       formik.resetForm();
@@ -127,11 +130,24 @@ export function CreateExpense({ open, onClose, transaction }: Props) {
             )}
           </Select>
 
+          <div className="flex items-center justify-between">
+            Despesa está paga?
+            <button
+              type="button"
+              onClick={() => formik.setFieldValue("paid", !formik.values.paid)}
+              className={`${
+                formik.values.paid && "bg-success-500 border-0"
+              } h-10 w-14 text-white transition-all p-2 te rounded-lg border border-slate-700`}
+            >
+              {formik.values.paid ? "SIM" : "NÃO"}
+            </button>
+          </div>
+
           <Button
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}
           >
-            {formik.isSubmitting ? "Carregando..." : "Salvar"}
+            {formik.isSubmitting ? <Loader /> : "Salvar"}
           </Button>
         </div>
       </form>

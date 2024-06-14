@@ -1,6 +1,7 @@
 import { Fab } from "./components/Fab";
 import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
+import { Line } from "../../components/Line";
 import { api } from "../../../app/services/api";
 import { CardTotal } from "./components/CardTotal";
 import { CardBalance } from "./components/CardBalance";
@@ -11,9 +12,9 @@ import { CreateExpense } from "../../modals/CreateExpense";
 import { CreateAccounts } from "../../modals/CreateAccounts";
 import { useMonth } from "../../../app/shared/hooks/useMonth";
 import { AccountModel } from "../../../app/models/AccountModel";
-import { Line } from "../../components/Line";
 
 import { CurrencyDollar, PlusCircle, Wallet } from "@phosphor-icons/react";
+import { Link } from "react-router-dom";
 
 export function Home() {
   const { setMonth, month } = useMonth();
@@ -31,7 +32,20 @@ export function Home() {
     income: number;
     totalExpense: number;
     totalIncome: number;
-  }>({ expense: 0, income: 0, totalExpense: 0, totalIncome: 0 });
+    prevExpense: number;
+    prevIncome: number;
+    totalPrevIncome: number;
+    totalPrevExpense: number;
+  }>({
+    expense: 0,
+    income: 0,
+    totalExpense: 0,
+    totalIncome: 0,
+    totalPrevExpense: 0,
+    totalPrevIncome: 0,
+    prevIncome: 0,
+    prevExpense: 0,
+  });
 
   async function getAccounts() {
     const data = (await api.get(`/accounts?month=${month}`)).data;
@@ -59,23 +73,52 @@ export function Home() {
         openModalFilterMonth={() => setOpenFilterMonth(!openFilterMonth)}
       />
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 bg-slate-800 p-4 rounded-lg">
         <CardTotal
+          title="Saldo atual"
           value={transactionTotal.totalIncome - transactionTotal.totalExpense}
         />
 
         <div className="flex items-center gap-4">
+          <Link className="flex-1" to={"/transactions"}>
+            <CardBalance
+              title="Receita"
+              icon={<CurrencyDollar size={20} weight="bold" />}
+              value={transactionTotal.income}
+              className="text-success-500 bg-success-100"
+            />
+          </Link>
+          <Link className="flex-1" to={"/transactions"}>
+            <CardBalance
+              title="Despesa"
+              icon={<CurrencyDollar size={20} weight="bold" />}
+              value={transactionTotal.expense}
+              className="text-danger-500 bg-danger-100"
+            />
+          </Link>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4 bg-slate-800 p-4 rounded-lg">
+        <CardTotal
+          title="Saldo previsão"
+          value={
+            transactionTotal.totalPrevIncome - transactionTotal.totalPrevExpense
+          }
+        />
+
+        <div className="flex items-center gap-4">
           <CardBalance
-            title="Receita"
+            title="Prev. Receita"
             icon={<CurrencyDollar size={20} weight="bold" />}
-            value={transactionTotal.income}
-            className="text-success-500 bg-success-100"
+            value={transactionTotal.prevIncome}
+            className="text-success-100 bg-success-500"
           />
           <CardBalance
-            title="Despesa"
+            title="Prev. Despesa"
             icon={<CurrencyDollar size={20} weight="bold" />}
-            value={transactionTotal.expense}
-            className="text-danger-500 bg-danger-100"
+            value={transactionTotal.prevExpense}
+            className="text-danger-100 bg-danger-500"
           />
         </div>
       </div>
@@ -95,7 +138,7 @@ export function Home() {
               setOpenCreateAccounts(!openCreateAccounts);
             }}
           >
-            <PlusCircle size={20} weight="fill" />
+            <PlusCircle size={24} weight="fill" />
           </button>
         </div>
 

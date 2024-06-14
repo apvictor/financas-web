@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
-import { CaretRight, Eye, EyeClosed } from "@phosphor-icons/react";
+import { Eye, EyeClosed } from "@phosphor-icons/react";
 import { useToggle } from "../../../../app/shared/hooks/useToggle";
 import { VisibilityValue } from "../../../components/VisibilityValue";
 
 interface Props {
+  title: string;
   value: number;
 }
-export function CardTotal({ value }: Props) {
+export function CardTotal({ value, title }: Props) {
   const { toggle, status } = useToggle();
 
   return (
@@ -16,17 +16,12 @@ export function CardTotal({ value }: Props) {
           <span className="font-bold text-2xl">
             <VisibilityValue value={value} />
           </span>
-          <button onClick={toggle}>
-            {status ? <Eye size={20} /> : <EyeClosed size={20} />}
-          </button>
         </div>
-        <Link to={"/transactions"}>
-          <CaretRight weight="bold" />
-        </Link>
+        <button onClick={toggle}>
+          {status ? <Eye size={20} /> : <EyeClosed size={20} />}
+        </button>
       </div>
-      <span className="text-white font-light text-sm">
-        Saldo atual em contas
-      </span>
+      <span className="text-white font-light text-sm">{title}</span>
     </div>
   );
 }
